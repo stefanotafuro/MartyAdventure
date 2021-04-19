@@ -48,7 +48,6 @@ com_crashlytics_export_strings.xml
 .settings/
 .loadpath
 .externalToolBuilders/
-*.launch
 
 ## NetBeans
 
