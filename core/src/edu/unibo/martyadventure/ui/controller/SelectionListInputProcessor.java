@@ -3,8 +3,6 @@ package edu.unibo.martyadventure.ui.controller;
 import java.util.Optional;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 
 /**
  * Allows to choose a selection from an indexed list of elements via UP/DOWN
@@ -75,18 +73,4 @@ public class SelectionListInputProcessor extends SelectionInputProcessor<Integer
         super(selectionList, 0, Input.Keys.INSERT);
         this.directionMultiplier = topdown ? -1 : 1;
     }
-
-    /**
-     * Attempts to parse the given character to a valid selection index and use it
-     * to set the current selection.
-     * 
-     * @return if the character was a valid selection.
-     */
-    @Override
-    public boolean keyTyped(char character) {
-
-        // If it is a single digit within the selection list range
-        return tryChangeSelection(value);
-    }
-
 }
