@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 /**
  * Controllable selection shared logic.
  */
-public abstract class ControllableSelectionInputProvider<T> implements InputProcessor {
+abstract class SelectionInputProcessor<T> implements InputProcessor {
 
     private final int confirmKeycode;
     private final ControllableSelection<T> controllableSelection;
@@ -45,7 +45,7 @@ public abstract class ControllableSelectionInputProvider<T> implements InputProc
      *                              one.
      * @param confirmKeycode        the keycode that triggers the selection confirm
      */
-    protected ControllableSelectionInputProvider(final ControllableSelection<T> controllableSelection,
+    protected SelectionInputProcessor(final ControllableSelection<T> controllableSelection,
             final T defaultSelection, final int confirmKeycode) {
         this.confirmKeycode = confirmKeycode;
         this.controllableSelection = controllableSelection;

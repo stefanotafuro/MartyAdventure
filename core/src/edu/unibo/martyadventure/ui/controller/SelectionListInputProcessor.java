@@ -10,7 +10,7 @@ import com.badlogic.gdx.InputProcessor;
  * Allows to choose a selection from an indexed list of elements via UP/DOWN
  * arrow keys and numeric pad.
  */
-public class SelectionListInputProcessor extends ControllableSelectionInputProvider<Integer> {
+public class SelectionListInputProcessor extends SelectionInputProcessor<Integer> {
 
     private final int directionMultiplier;
 
