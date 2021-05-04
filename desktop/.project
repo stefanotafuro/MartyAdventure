@@ -24,7 +24,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<locationURI>PROJECT_ROOT/core/assets</locationURI>
+			<location>C:/Users/Tafuro/ProgettoOOP/MartyAdventure/core/assets</location>
 		</link>
 	</linkedResources>
 	<variableList>
