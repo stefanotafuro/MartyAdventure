@@ -2,19 +2,19 @@ package edu.unibo.martyadventure.ui.controller;
 
 import java.util.Optional;
 
-public interface ControllableSelectionList {
+public interface ControllableSelection<T> {
     /**
      * @return the number of possible selections indexed from 0.
      */
-    int getSelectionsCount();
+    T getSelectionsBounds();
 
     /**
      * @return the current selection.
      */
-    Optional<Integer> getCurrentSelection();
+    Optional<T> getCurrentSelection();
 
     /**
      * @param the selection at the index has been chosen.
      */
-    void selection(int selection);
+    void select(T selection);
 }
