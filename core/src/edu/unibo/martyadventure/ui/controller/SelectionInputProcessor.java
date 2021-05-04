@@ -5,9 +5,9 @@ import java.util.Optional;
 import com.badlogic.gdx.InputProcessor;
 
 /**
- * Controllable selection shared logic.
+ * An abstraction over a selection logic controllable with input.
  */
-abstract class SelectionInputProcessor<T> implements InputProcessor {
+public abstract class SelectionInputProcessor<T> implements InputProcessor {
 
     private final int confirmKeycode;
     private final ControllableSelection<T> controllableSelection;
