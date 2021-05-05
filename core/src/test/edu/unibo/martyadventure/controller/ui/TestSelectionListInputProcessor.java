@@ -21,7 +21,7 @@ class TestSelectionListInputProcessor {
                 TEST_LIST_LENGTH);
         SelectionListInputProcessor list = new SelectionListInputProcessor(sel, topDown);
 
-        for (int i = 1; i < keypresses; i++) {
+        for (int i = 0; i < keypresses; i++) {
             list.keyDown(keycode);
         }
 
@@ -34,7 +34,7 @@ class TestSelectionListInputProcessor {
         assertEquals(0, moveSelection(false, 0, Input.Keys.DOWN, TEST_LIST_LENGTH / 2));
         // Topdown
         assertEquals(TEST_LIST_MAX_INDEX,
-                moveSelection(true, TEST_LIST_MAX_INDEX, Input.Keys.UP, TEST_LIST_LENGTH / 2));
+                moveSelection(true, TEST_LIST_MAX_INDEX, Input.Keys.DOWN, TEST_LIST_LENGTH / 2));
     }
 
     @Test
@@ -43,16 +43,16 @@ class TestSelectionListInputProcessor {
         assertEquals(TEST_LIST_MAX_INDEX,
                 moveSelection(false, TEST_LIST_MAX_INDEX, Input.Keys.UP, TEST_LIST_LENGTH / 2));
         // Topdown
-        assertEquals(0, moveSelection(true, 0, Input.Keys.DOWN, TEST_LIST_LENGTH / 2));
+        assertEquals(0, moveSelection(true, 0, Input.Keys.UP, TEST_LIST_LENGTH / 2));
     }
 
     @Test
     void testChangeSelection() {
         assertEquals(7, moveSelection(false, TEST_LIST_LENGTH / 2, Input.Keys.UP, 2));
-        assertEquals(7, moveSelection(true, TEST_LIST_LENGTH / 2, Input.Keys.DOWN, 2));
+        assertEquals(3, moveSelection(false, TEST_LIST_LENGTH / 2, Input.Keys.DOWN, 2));
 
-        assertEquals(3, moveSelection(false, TEST_LIST_LENGTH / 2, Input.Keys.UP, -2));
-        assertEquals(3, moveSelection(true, TEST_LIST_LENGTH / 2, Input.Keys.DOWN, -2));
+        assertEquals(7, moveSelection(true, TEST_LIST_LENGTH / 2, Input.Keys.DOWN, 2));
+        assertEquals(3, moveSelection(true, TEST_LIST_LENGTH / 2, Input.Keys.UP, 2));
     }
 
     @Test
