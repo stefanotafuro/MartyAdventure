@@ -1,7 +1,7 @@
-package edu.unibo.martyadventure.entity.controller;
+package edu.unibo.martyadventure.controller.entity;
 
-import edu.unibo.martyadventure.entity.EntityDirection;
-import edu.unibo.martyadventure.entity.EntityState;
+import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.entity.EntityState;
 
 public interface ControllableEntity {
     void calculateNextPosition(EntityDirection direction, float delta);
