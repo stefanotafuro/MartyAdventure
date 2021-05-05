@@ -45,8 +45,8 @@ public abstract class SelectionInputProcessor<T> implements InputProcessor {
      *                              one.
      * @param confirmKeycode        the keycode that triggers the selection confirm
      */
-    protected SelectionInputProcessor(final ControllableSelection<T> controllableSelection,
-            final T defaultSelection, final int confirmKeycode) {
+    protected SelectionInputProcessor(final ControllableSelection<T> controllableSelection, final T defaultSelection,
+            final int confirmKeycode) {
         this.confirmKeycode = confirmKeycode;
         this.controllableSelection = controllableSelection;
 
@@ -54,9 +54,9 @@ public abstract class SelectionInputProcessor<T> implements InputProcessor {
         if (initialSelection.isPresent()) {
             T selection = initialSelection.get();
             if (isWithinBounds(selection, controllableSelection.getSelectionsBounds())) {
-                throw new IndexOutOfBoundsException("Invalid default selection");
-            } else {
                 this.currentSelection = selection;
+            } else {
+                throw new IndexOutOfBoundsException("Invalid default selection");
             }
         } else {
             this.currentSelection = defaultSelection;
