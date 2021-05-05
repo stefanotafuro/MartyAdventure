@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.entity.controller;
+package edu.unibo.martyadventure.controller.entity;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
-import edu.unibo.martyadventure.entity.EntityDirection;
-import edu.unibo.martyadventure.entity.EntityState;
+import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.entity.EntityState;
 
 /**
  * Handles the player input

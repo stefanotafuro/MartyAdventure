@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.ui.controller;
+package edu.unibo.martyadventure.controller.ui;
 
 import java.util.Optional;
 
@@ -13,7 +13,8 @@ public class SelectionGridInputProcessor extends SelectionInputProcessor<Pair<In
 
     private final int xAxisMultiplier;
     private final int yAxisMultiplier;
-    
+
+
     @Override
     protected boolean isWithinBounds(Pair<Integer, Integer> candidate, Pair<Integer, Integer> bounds) {
         final int x = candidate.getValue0();

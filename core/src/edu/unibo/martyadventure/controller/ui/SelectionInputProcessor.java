@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.ui.controller;
+package edu.unibo.martyadventure.controller.ui;
 
 import java.util.Optional;
 
