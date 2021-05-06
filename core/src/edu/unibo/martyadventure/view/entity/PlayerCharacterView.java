@@ -9,7 +9,7 @@ import edu.unibo.martyadventure.controller.entity.ControllableEntity;
 import edu.unibo.martyadventure.view.AnimationsPack;
 import edu.unibo.martyadventure.view.FramesPack;
 
-public abstract class CharacterView implements ControllableEntity {
+public abstract class PlayerCharacterView implements ControllableEntity {
 
     // Sprite pixel sizes.
     protected static final int SPRITE_WITDTH = 68;
@@ -31,15 +31,15 @@ public abstract class CharacterView implements ControllableEntity {
     private Vector2 velocity;
 
 
-    public CharacterView(final Sprite sprite, final Vector2 initialPosition, final AnimationsPack animations,
+    public PlayerCharacterView(final Sprite sprite, final Vector2 initialPosition, final AnimationsPack animations,
             final FramesPack frames) {
         this.sprite = sprite;
 
         this.animations = animations;
         this.frames = frames;
 
-        this.boundingBox = new Rectangle(initialPosition.x, initialPosition.y, CharacterView.SPRITE_WITDTH,
-                CharacterView.SPRITE_HEIGHT / 2);
+        this.boundingBox = new Rectangle(initialPosition.x, initialPosition.y, PlayerCharacterView.SPRITE_WITDTH,
+                PlayerCharacterView.SPRITE_HEIGHT / 2);
 
         this.movementState = EntityState.IDLE;
         this.direction = EntityDirection.UP;
