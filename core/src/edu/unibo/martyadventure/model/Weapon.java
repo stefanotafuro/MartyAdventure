@@ -1,7 +1,7 @@
 package edu.unibo.martyadventure.model;
 
 
-public class Weapon implements WeaponFactory {
+public class Weapon {
     
     String name;
     String type;
