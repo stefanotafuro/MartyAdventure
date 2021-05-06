@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view.entity;
+package edu.unibo.martyadventure.view;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.controller.entity.ControllableEntity;
-import edu.unibo.martyadventure.view.AnimationsPack;
-import edu.unibo.martyadventure.view.FramesPack;
+import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.entity.EntityState;
 
 public abstract class PlayerCharacterView implements ControllableEntity {
 
