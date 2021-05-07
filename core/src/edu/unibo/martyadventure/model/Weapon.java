@@ -32,6 +32,7 @@ public class Weapon {
     public List<Move> getMoveList() {
         return moveList;
     }
+    
     public void setMoveList(List<Move> moveList) {
         if(moveList.size()==4) 
             this.moveList = moveList;
