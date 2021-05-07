@@ -1,20 +1,22 @@
 package edu.unibo.martyadventure.model;
 
-public class PlayerCharacter extends Character {
-	private Shoes shoes;
-	
-	public PlayerCharacter(Shoes shoes) {
-		setShoes(shoes);
-	}
-	
-	  // Getter
-	  public Shoes getShoes() {
-	    return shoes;
-	  }
+import com.badlogic.gdx.math.Vector2;
 
-	  // Setter
-	  public void setShoes(Shoes shoes) {
-	    this.shoes = shoes;
-	  }
+public class PlayerCharacter extends Character {
+    private Shoes shoes;
+
+    public PlayerCharacter(Shoes shoes, String name, int hp, Weapon weapon, Vector2 position, float speed,
+            Vector2 velocity) {
+        super(name, hp, weapon, position, speed, velocity);
+        setShoes(shoes);
+    }
+
+    public Shoes getShoes() {
+        return shoes;
+    }
+
+    public void setShoes(Shoes shoes) {
+        this.shoes = shoes;
+    }
 
 }
