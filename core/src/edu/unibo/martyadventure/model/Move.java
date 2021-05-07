@@ -11,6 +11,7 @@ public enum Move {
     private final int reloadTime;
     private final char MeleeOrRanged;
     private int lastUse; // last turn of use
+    private Random rand = new Random();
 
     Move(int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
         this.damage = damage;
@@ -48,19 +49,17 @@ public enum Move {
         return values()[(int) (Math.random() * values().length)];
     }
 
-    // magari vanno in fight
-
     public boolean isUsable(int fightTurn) {
-        if ((lastUse + reloadTime < fightTurn)) {
+        if (lastUse + reloadTime < fightTurn) {
             this.lastUse = fightTurn;
             return true;
         } else
             return false;
     }
 
-    public boolean failCalc(int failRatio) {
-        Random rand = new Random();// random number if it's <= failRatio success, else fail
-        return (rand.nextInt(101) >= failRatio);
+    public boolean testFailure(int failRatio) {
+        // random number if it's <= failRatio success, else fail
+        return rand.nextInt(101) >= failRatio;
     }
 
     /*
