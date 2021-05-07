@@ -10,7 +10,7 @@ public class Weapon {
     private double damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
-    public Weapon(String name, String type, double damageMultiplier, List<Move> moveList) {
+    private Weapon(String name, String type, double damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
