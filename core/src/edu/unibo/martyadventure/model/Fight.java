@@ -3,7 +3,7 @@ package edu.unibo.martyadventure.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+sd
 public class Fight {
     private PlayerCharacter player;
     private EnemyCharacter enemy;
