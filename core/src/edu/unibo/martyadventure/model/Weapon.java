@@ -7,10 +7,10 @@ public class Weapon {
 
     private String name;
     private String type;
-    private double damageMultiplier;
+    private int damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
-    private Weapon(String name, String type, double damageMultiplier, List<Move> moveList) {
+    private Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
@@ -25,7 +25,7 @@ public class Weapon {
         return type;
     }
 
-    public double getDamageMultiplier() {
+    public int getDamageMultiplier() {
         return damageMultiplier;
     }
 
