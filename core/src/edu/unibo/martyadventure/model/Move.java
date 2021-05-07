@@ -4,8 +4,9 @@ import java.util.Random;
 
 public enum Move {
     // name(dmg, failRatio, reloadTime, Melee or Ranged)
-    GANCIO(50, 10, 2, 'M', 0), LANCIO(50, 10, 2, 'R', 0);
+    HOOK("Gancio", 50, 10, 2, 'M', 0), SHOOT("Lancio", 50, 10, 2, 'R', 0);
 
+    private final String name;
     private final int damage;
     private final int failRatio; // 0 success 100 fail
     private final int reloadTime;
@@ -13,7 +14,8 @@ public enum Move {
     private int lastUse; // last turn of use
     private Random rand = new Random();
 
-    Move(int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
+    Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
+        this.name = name;
         this.damage = damage;
         this.failRatio = failRatio;
         this.reloadTime = reloadTime;
@@ -39,6 +41,10 @@ public enum Move {
 
     public int getLastUse() {
         return lastUse;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setLastUse(int lastUse) {

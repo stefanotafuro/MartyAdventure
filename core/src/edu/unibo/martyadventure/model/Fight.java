@@ -7,7 +7,7 @@ import java.util.Random;
 public class Fight {
     private PlayerCharacter player;
     private EnemyCharacter enemy;
-    int turnCount;
+    private int turnCount;
 
     public void startFight(PlayerCharacter player, EnemyCharacter enemy) {
         this.player = player;
