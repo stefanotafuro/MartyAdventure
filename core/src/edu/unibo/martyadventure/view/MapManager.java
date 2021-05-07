@@ -1,8 +1,11 @@
 package edu.unibo.martyadventure.view;
 
+<<<<<<< HEAD
 import java.util.Hashtable;
 
 import com.badlogic.gdx.maps.MapLayer;
+=======
+>>>>>>> 71885e7... started TestMapManager and Map
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,6 +13,7 @@ public class MapManager {
 
     private Vector2 playerStartPosition;
     
+<<<<<<< HEAD
     //map names
     private static final String MAP1 = "map1";
     private static final String MAP2 = "map2";
@@ -62,4 +66,8 @@ public class MapManager {
     public MapLayer getPacManLayer() {
         return pacManLayer;
     }
+=======
+    private TiledMap currentMap;
+    
+>>>>>>> 71885e7... started TestMapManager and Map
 }

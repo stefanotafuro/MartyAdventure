@@ -1,5 +1,6 @@
 package test.edu.unibo.martyadventure.view;
 
+<<<<<<< HEAD
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,5 +44,16 @@ public class TestMapManager {
         TestLoadingLayers(map1);
         TestLoadingLayers(map2);
         TestLoadingLayers(map3);
+=======
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestMapManager {
+
+    string mapName1
+    
+    @Test
+    void TestLoadMap() {
+        
+>>>>>>> 71885e7... started TestMapManager and Map
     }
 }
