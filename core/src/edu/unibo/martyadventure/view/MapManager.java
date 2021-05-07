@@ -1,5 +1,7 @@
 package edu.unibo.martyadventure.view;
 
+import java.util.Hashtable;
+
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
@@ -8,17 +10,33 @@ public class MapManager {
 
     private Vector2 playerStartPosition;
     
+    //map names
+    private static final String MAP1 = "map1";
+    private static final String MAP2 = "map2";
+    private static final String MAP3 = "map3";
+    //map path
+    private static final String MAP1PATH = "Level/Map/map1.tmx";
+    private static final String MAP2PATH = "Level/Map/map2.tmx";
+    private static final String MAP3PATH = "Level/Map/map3.tmx";
+    
+    private Hashtable<String,String> mapTable;
+    
     private TiledMap currentMap;
     private String currentMapName;
     
+    //map layers
+    private MapLayer martySpawnLayer;
+    private MapLayer collisionLayer;
+    private MapLayer pacManLayer;
     
     public MapManager() {
-        
+        mapTable.put(MAP1, MAP1PATH);
+        mapTable.put(MAP2, MAP2PATH);
+        mapTable.put(MAP3, MAP3PATH);
     }
 
     public TiledMap getCurrentMap() {
-        // TODO Auto-generated method stub
-        return new TiledMap();
+        return currentMap;
     }
 
     public String getCurrentMapName() {
@@ -26,12 +44,22 @@ public class MapManager {
     }
 
     public void loadMap(String mapName) {
-        // TODO Auto-generated method stub
         
     }
 
     public MapLayer getCollisionLayer() {
-        // TODO Auto-generated method stub
-        return null;
+        return collisionLayer;
+    }
+
+    public Vector2 getPlayerStartPosition() {
+        return playerStartPosition;
+    }
+
+    public MapLayer getMartySpawnLayer() {
+        return martySpawnLayer;
+    }
+
+    public MapLayer getPacManLayer() {
+        return pacManLayer;
     }
 }

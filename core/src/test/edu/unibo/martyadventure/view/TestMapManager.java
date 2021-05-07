@@ -27,6 +27,8 @@ public class TestMapManager {
     void TestLoadingLayers(String MapName) {
         manager.loadMap(map1);
         assertNotNull(manager.getCollisionLayer());
+        assertNotNull(manager.getPacManLayer());
+        assertNotNull(manager.getMartySpawnLayer());
     }
     
     @Test
