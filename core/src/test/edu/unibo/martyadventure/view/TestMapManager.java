@@ -1,7 +1,5 @@
 package test.edu.unibo.martyadventure.view;
 
-<<<<<<< HEAD
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -30,6 +28,8 @@ public class TestMapManager {
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());
         assertNotNull(manager.getMartySpawnLayer());
+        assertNotNull(manager.getEnemySpawnLayer());
+        assertNotNull(manager.getBiffSpawnLayer());
     }
     
     @Test
@@ -44,16 +44,5 @@ public class TestMapManager {
         TestLoadingLayers(map1);
         TestLoadingLayers(map2);
         TestLoadingLayers(map3);
-=======
-import static org.junit.jupiter.api.Assertions.*;
-
-public class TestMapManager {
-
-    string mapName1
-    
-    @Test
-    void TestLoadMap() {
-        
->>>>>>> 71885e7... started TestMapManager and Map
     }
 }
