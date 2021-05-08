@@ -183,7 +183,7 @@
   <object id="66" x="1183" y="42" width="16" height="98"/>
  </objectgroup>
  <objectgroup id="5" name="MartySpawn">
-  <object id="69" x="272" y="1574.67" width="22" height="24">
+  <object id="69" name="MartySpawnObject" x="272" y="1574.67" width="22" height="24">
    <ellipse/>
   </object>
  </objectgroup>
