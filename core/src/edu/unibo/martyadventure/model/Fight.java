@@ -1,18 +1,28 @@
 package edu.unibo.martyadventure.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-sd
+
 public class Fight {
     private PlayerCharacter player;
     private EnemyCharacter enemy;
     private int turnCount;
 
-    public void startFight(PlayerCharacter player, EnemyCharacter enemy) {
+    public Fight(PlayerCharacter player, EnemyCharacter enemy) {
         this.player = player;
         this.enemy = enemy;
         this.turnCount = 1;
+    }
+
+    public PlayerCharacter getPlayer() {
+        return player;
+    }
+
+    public EnemyCharacter getEnemy() {
+        return enemy;
+    }
+
+    public int getTurnCount() {
+        return turnCount;
     }
 
     public void enemyAttack() {
@@ -21,7 +31,6 @@ public class Fight {
 
     public Move enemyMove() {
         Random rand = new Random();
-
         return enemy.getWeapon().getMoveList().get(rand.nextInt(enemy.getWeapon().getMoveList().size()));
 
     }
@@ -32,18 +41,16 @@ public class Fight {
     }
 
     public void attack(Weapon weapon, Move move, Character character) {
-        if (move.testFailure(move.getFailRatio()) && move.isUsable(turnCount)) {
+        if (move.testFailure() && move.isUsable(turnCount)) {
             int damage = weapon.getDamageMultiplier() * move.getDamage();
             if (isDead(damage, character.getHp())) {
                 character.setHp(0);
                 endFight();
 
             } else {
-                character.setHp(damage);
+                character.setHp(character.getHp() - damage);
             }
 
-        } else {
-            // ATTACCO NON HA AVUTO SUCCESSO
         }
 
         turnCount++;
