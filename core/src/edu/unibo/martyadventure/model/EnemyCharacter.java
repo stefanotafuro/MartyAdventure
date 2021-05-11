@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class EnemyCharacter extends Character {
 
-    public EnemyCharacter(String name, int hp, Weapon weapon, Vector2 position, float speed, Vector2 velocity) {
+    public EnemyCharacter(Weapon dropitem, String name, int hp, Weapon weapon, Vector2 position, float speed, Vector2 velocity) {
         super(name, hp, weapon, position, speed, velocity);
         setDropitem(weapon);
     }
