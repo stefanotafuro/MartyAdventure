@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="40" height="53" tilewidth="30" tileheight="30" infinite="0" nextlayerid="8" nextobjectid="83">
- <objectgroup id="3" name="Collison">
+ <objectgroup id="3" name="Collision">
   <object id="2" x="0.25" y="169">
    <polygon points="0,0 45.5,-0.125 67.5,-21 101.5,-20.875 101.625,0 140.625,-0.25 140.625,-9.125 299.875,-22.625 313.75,-28.375 323,-36.75 417.125,-38.125 427.625,-27 427.75,-8.5 481.5,-8.5 481.625,-169.25 -0.375,-169"/>
   </object>
