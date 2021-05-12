@@ -2,12 +2,14 @@ package test.edu.unibo.martyadventure.view;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import edu.unibo.martyadventure.view.MapManager;
 
+@RunWith(GdxTestRunner.class)
 public class TestMapManager {
 
     String map1 = "map1";
@@ -15,6 +17,20 @@ public class TestMapManager {
     String map3 = "map3";
     
     MapManager manager = new MapManager();
+    
+    @Test
+    public void TestAllMaps() {
+        TestLoadingMap(map1);
+        TestLoadingMap(map2);
+        TestLoadingMap(map3);
+    }
+    
+    @Test
+    public void TestAllLayers() {
+        TestLoadingLayers(map1);
+        TestLoadingLayers(map2);
+        TestLoadingLayers(map3);
+    }
     
     void TestLoadingMap(String mapName) {
         manager.loadMap(mapName);
@@ -32,16 +48,5 @@ public class TestMapManager {
         assertNotNull(manager.getBiffSpawnLayer());
     }
     
-    @Test
-    public void TestAllMaps() {
-        TestLoadingMap(map1);
-        TestLoadingMap(map2);
-        TestLoadingMap(map3);
-    }
     
-    public void TestAllLayers() {
-        TestLoadingLayers(map1);
-        TestLoadingLayers(map2);
-        TestLoadingLayers(map3);
-    }
 }
