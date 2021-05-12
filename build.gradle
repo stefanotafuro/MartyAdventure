@@ -1,14 +1,10 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
-    }
-    dependencies {
     }
 }
 
@@ -56,12 +52,11 @@ project(":core") {
 
         implementation 'com.flipkart.utils:javatuples:3.0'
 
-
-        dependencies {
-            implementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
-            testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
-        }
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.1"
     }
+
 
     test {
         useJUnitPlatform()

@@ -1,6 +1,9 @@
 sourceCompatibility = 1.11
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+// Include the core main project package folder 
 sourceSets.main.java.srcDirs = [ "src/" ]
+// Include the tests package folder 
+sourceSets.test.java.srcDirs = [ "tests/" ]
 
 eclipse.project.name = appName + "-core"
