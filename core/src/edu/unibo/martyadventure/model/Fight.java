@@ -32,7 +32,7 @@ public class Fight {
     }
 
     public void attack(Weapon weapon, Move move, Character character) {
-        if (move.failCalc(move.getFailRatio()) && move.isUsable(turnCount)) {
+        if (move.testFailure(move.getFailRatio()) && move.isUsable(turnCount)) {
             int damage = weapon.getDamageMultiplier() * move.getDamage();
             if (isDead(damage, character.getHp())) {
                 character.setHp(0);
