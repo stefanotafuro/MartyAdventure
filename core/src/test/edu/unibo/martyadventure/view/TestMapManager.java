@@ -11,20 +11,20 @@ import edu.unibo.martyadventure.view.MapManager;
 public class TestMapManager {
 
     String map1 = "map1";
-    String map2 = "map1";
-    String map3 = "map1";
+    String map2 = "map2";
+    String map3 = "map3";
     
     MapManager manager = new MapManager();
     
-    void TestLoadingMap(String MapName) {
-        manager.loadMap(map1);
+    void TestLoadingMap(String mapName) {
+        manager.loadMap(mapName);
         TiledMap map = manager.getCurrentMap();
         assertNotNull(map);
-        assertEquals(map1, manager.getCurrentMapName());
+        assertEquals(mapName, manager.getCurrentMapName());
     }
     
-    void TestLoadingLayers(String MapName) {
-        manager.loadMap(map1);
+    void TestLoadingLayers(String mapName) {
+        manager.loadMap(mapName);
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());
         assertNotNull(manager.getMartySpawnLayer());
@@ -33,14 +33,13 @@ public class TestMapManager {
     }
     
     @Test
-    void TestAllMaps() {
+    public void TestAllMaps() {
         TestLoadingMap(map1);
         TestLoadingMap(map2);
         TestLoadingMap(map3);
     }
     
-    @Test
-    void TestAllLayers() {
+    public void TestAllLayers() {
         TestLoadingLayers(map1);
         TestLoadingLayers(map2);
         TestLoadingLayers(map3);

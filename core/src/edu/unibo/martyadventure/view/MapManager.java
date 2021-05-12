@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 public class MapManager {
 
     private Vector2 playerStartPosition;
-    private Toolbox toolbox = new Toolbox();
 
     //map names
     private static final String MAP1 = "map1";
@@ -71,9 +70,10 @@ public class MapManager {
         }
         
         //load the map with the toolbox and check
-        toolbox.loadMap(mapPath);
-        if (toolbox.isAssetLoaded(mapPath)) {
-            currentMap = toolbox.getMap(mapPath);
+        Toolbox.loadMap(mapPath);
+
+        if (Toolbox.isAssetLoaded(mapPath)) {
+            currentMap = Toolbox.getMap(mapPath);
             currentMapName = mapName;
         } else {
             System.err.println("Map not loaded, loading error");
@@ -113,6 +113,9 @@ public class MapManager {
         
         //Setting marty spawn point
         EllipseMapObject obj = (EllipseMapObject) martySpawnLayer.getObjects().get(MARTYSPAWNOBJECTNAME);
+        if (playerStartPosition == null) {
+            playerStartPosition = new Vector2();
+        }
         playerStartPosition.x = obj.getEllipse().x;
         playerStartPosition.y = obj.getEllipse().y;
         
