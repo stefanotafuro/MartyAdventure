@@ -42,7 +42,7 @@ class TestSelectionListInputProcessor {
         // Try go lower than 0
         assertEquals(TEST_LIST_MAX_INDEX,
                 moveSelection(false, TEST_LIST_MAX_INDEX, Input.Keys.UP, TEST_LIST_LENGTH / 2));
-        // Topdown
+        // Top-down
         assertEquals(0, moveSelection(true, 0, Input.Keys.UP, TEST_LIST_LENGTH / 2));
     }
 
@@ -61,6 +61,7 @@ class TestSelectionListInputProcessor {
         try {
             TestControllableSelection<Integer> sel = new TestControllableSelection<Integer>(Optional.of(1),
                     TEST_LIST_LENGTH);
+            @SuppressWarnings("unused")
             SelectionListInputProcessor list = new SelectionListInputProcessor(sel, false);
         } catch (Exception e) {
             fail();
@@ -70,6 +71,7 @@ class TestSelectionListInputProcessor {
         try {
             TestControllableSelection<Integer> sel = new TestControllableSelection<Integer>(Optional.of(-100),
                     TEST_LIST_LENGTH);
+            @SuppressWarnings("unused")
             SelectionListInputProcessor list = new SelectionListInputProcessor(sel, false);
         } catch (IndexOutOfBoundsException e) {
             assertNotNull(e);
@@ -81,6 +83,7 @@ class TestSelectionListInputProcessor {
         try {
             TestControllableSelection<Integer> sel = new TestControllableSelection<Integer>(
                     Optional.of(TEST_LIST_LENGTH + 100), TEST_LIST_LENGTH);
+            @SuppressWarnings("unused")
             SelectionListInputProcessor list = new SelectionListInputProcessor(sel, false);
         } catch (IndexOutOfBoundsException e) {
             assertNotNull(e);

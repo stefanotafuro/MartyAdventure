@@ -8,7 +8,10 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
-import edu.unibo.martyadventure.model.*;
+import edu.unibo.martyadventure.model.EnemyCharacter;
+import edu.unibo.martyadventure.model.Move;
+import edu.unibo.martyadventure.model.Weapon;
+import test.edu.unibo.martyadventure.model.*;
 
 public class TestEnemyCharacter {
 

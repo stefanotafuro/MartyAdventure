@@ -3,7 +3,9 @@ sourceCompatibility = 1.11
 
 // Include the core main project package folder 
 sourceSets.main.java.srcDirs = [ "src/" ]
-// Include the tests package folder 
+// Include the tests package folder
 sourceSets.test.java.srcDirs = [ "tests/" ]
+
+sourceSets.test.resources.srcDirs = ["../core/assets"]
 
 eclipse.project.name = appName + "-core"

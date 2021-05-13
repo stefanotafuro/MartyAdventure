@@ -6,32 +6,50 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+
 import static org.mockito.Mockito.mock;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import com.badlogic.gdx.backends.headless.HeadlessFiles;
+//import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+//import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 /**
  * Implements a headless gdx test runner that runs the tests in a GL context.
  */
-public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, InvocationInterceptor {
+public class GdxTestRunner implements ApplicationListener, InvocationInterceptor {
 
     // FIFO enforced synchronous queue.
-    private Queue<WaitableRunnable> invokeInRenderThread = new ConcurrentLinkedQueue<WaitableRunnable>();
+    private final Queue<WaitableRunnable> invokeInRenderThread;
+    private final Application app;
 
 
     private Future<Void> dispatchToRenderThread(final Invocation<Void> invocation) {
         final WaitableRunnable wr = new WaitableRunnable(invocation);
         this.invokeInRenderThread.add(wr);
         return wr.getFuture();
+    }
+
+    public GdxTestRunner() {
+        this.invokeInRenderThread = new ConcurrentLinkedQueue<WaitableRunnable>();
+        HeadlessApplicationConfiguration conf = new HeadlessApplicationConfiguration();
+
+        this.app = new HeadlessApplication(this, conf);
+        Gdx.gl = mock(GL20.class);
+        Gdx.files = new HeadlessFiles();
+        /*
+         * Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+         * this.app = new Lwjgl3Application(this, config);
+         */
     }
 
     @Override
@@ -42,7 +60,7 @@ public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, In
 
     @Override
     public void render() {
-        for (WaitableRunnable invocation : invokeInRenderThread) {
+        for (WaitableRunnable invocation : this.invokeInRenderThread) {
             invocation.run();
         }
     }
@@ -52,20 +70,6 @@ public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, In
 
     @Override
     public void pause() {}
-
-    @Override
-    public void dispose() {}
-
-    /**
-     * Initialize the headless backend and GL context.
-     */
-    @Override
-    public void beforeAll(ExtensionContext context) throws Exception {
-        HeadlessApplicationConfiguration conf = new HeadlessApplicationConfiguration();
-
-        new HeadlessApplication(this, conf);
-        Gdx.gl = mock(GL20.class);
-    }
 
     /**
      * Intercept the @Test method calls and runs it in the render thread.
@@ -81,4 +85,7 @@ public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, In
             throw e.getCause();
         }
     }
+
+    @Override
+    public void dispose() {}
 }
