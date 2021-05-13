@@ -9,7 +9,7 @@ public class Weapon {
     private String type;
     private int damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
-    
+
     Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;

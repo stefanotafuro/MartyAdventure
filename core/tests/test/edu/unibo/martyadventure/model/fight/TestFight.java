@@ -1,6 +1,5 @@
 package test.edu.unibo.martyadventure.model.fight;
 
-import edu.unibo.martyadventure.model.*;
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.fight.Fight;
