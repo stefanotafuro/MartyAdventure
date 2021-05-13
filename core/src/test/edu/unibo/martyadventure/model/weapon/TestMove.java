@@ -1,6 +1,6 @@
-package test.edu.unibo.martyadventure.model;
+package test.edu.unibo.martyadventure.model.weapon;
 
-import edu.unibo.martyadventure.model.*;
+import edu.unibo.martyadventure.model.weapon.Move;
 
 import static org.junit.jupiter.api.Assertions.*;
 

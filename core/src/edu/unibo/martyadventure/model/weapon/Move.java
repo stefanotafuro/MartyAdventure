@@ -1,10 +1,10 @@
-package edu.unibo.martyadventure.model;
+package edu.unibo.martyadventure.model.weapon;
 
 import java.util.Random;
 
 public enum Move {
     // name(dmg, failRatio, reloadTime, Melee or Ranged)
-    HOOK("Gancio", 50, 10, 2, 'M', 0), SHOOT("Lancio", 50, 10, 2, 'R', 0), JAB("Diretto", 60, 15, 3, 'M', 0);
+    HOOK("Gancio", 5, 10, 2, 'M', 0), SHOOT("Lancio", 5, 10, 2, 'R', 0), JAB("Diretto", 60, 15, 3, 'M', 0);
 
     private final String name;
     private final int damage;
@@ -58,7 +58,7 @@ public enum Move {
     }
 
     public boolean isUsable(int fightTurn) {
-        if (lastUse + reloadTime < fightTurn) {
+        if (lastUse + reloadTime < fightTurn || lastUse == 0) {
             this.lastUse = fightTurn;
             return true;
         } else

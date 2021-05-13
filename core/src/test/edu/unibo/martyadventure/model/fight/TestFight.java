@@ -1,9 +1,12 @@
-package test.edu.unibo.martyadventure.model;
-
-import java.util.ArrayList;
-import java.util.List;
+package test.edu.unibo.martyadventure.model.fight;
 
 import edu.unibo.martyadventure.model.*;
+import edu.unibo.martyadventure.model.character.EnemyCharacter;
+import edu.unibo.martyadventure.model.character.PlayerCharacter;
+import edu.unibo.martyadventure.model.fight.Fight;
+import edu.unibo.martyadventure.model.weapon.Move;
+import test.edu.unibo.martyadventure.model.character.TestEnemyCharacter;
+import test.edu.unibo.martyadventure.model.character.TestPlayerCharacter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,8 +14,8 @@ import org.junit.jupiter.api.Test;
 
 public class TestFight {
 
-    PlayerCharacter playerCharacter = new PlayerCharacter();
-    EnemyCharacter enemyCharacter = new EnemyCharacter();
+    PlayerCharacter playerCharacter = new TestPlayerCharacter().getPlayerCharacter();
+    EnemyCharacter enemyCharacter = new TestEnemyCharacter().getEnemyCharacter();
 
     Fight testFight = new Fight(playerCharacter, enemyCharacter);
 
@@ -34,13 +37,14 @@ public class TestFight {
         int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage();
         testFight.playerAttack(Move.HOOK);
         assertEquals(enemyHp - damage, enemyCharacter.getHp());
+        assertEquals(2, testFight.getTurnCount());
         // System.err.println("testPlayerAttack ok");
     }
 
     void testAttack() {
         int enemyHp = testFight.getEnemy().getHp();
-        int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage();
-        testFight.attack(testFight.getPlayer().getWeapon(), Move.HOOK, testFight.getEnemy());
+        int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.SHOOT.getDamage();
+        testFight.attack(testFight.getPlayer().getWeapon(), Move.SHOOT, testFight.getEnemy());
         assertEquals(enemyHp - damage, enemyCharacter.getHp());
         // System.err.println("testAttack ok");
     }
@@ -48,10 +52,6 @@ public class TestFight {
     void testEnemyMove() {
         System.out.println(testFight.enemyMove());
     }
-
-    /*
-     * void testEnemyAttack() { }
-     */
 
     @Test
 
