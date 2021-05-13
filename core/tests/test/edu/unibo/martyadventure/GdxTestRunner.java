@@ -2,8 +2,9 @@ package test.edu.unibo.martyadventure;
 
 import java.lang.reflect.Method;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.SynchronousQueue;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -24,7 +25,7 @@ import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, InvocationInterceptor {
 
     // FIFO enforced synchronous queue.
-    private Queue<WaitableRunnable> invokeInRenderThread = new SynchronousQueue<WaitableRunnable>(true);
+    private Queue<WaitableRunnable> invokeInRenderThread = new ConcurrentLinkedQueue<WaitableRunnable>();
 
 
     private Future<Void> dispatchToRenderThread(final Invocation<Void> invocation) {
@@ -41,10 +42,8 @@ public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, In
 
     @Override
     public void render() {
-        synchronized (invokeInRenderThread) {
-            for (WaitableRunnable invocation : invokeInRenderThread) {
-                invocation.run();
-            }
+        for (WaitableRunnable invocation : invokeInRenderThread) {
+            invocation.run();
         }
     }
 
@@ -75,6 +74,11 @@ public class GdxTestRunner implements ApplicationListener, BeforeAllCallback, In
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
             ExtensionContext extensionContext) throws Throwable {
         Future<Void> handle = dispatchToRenderThread(invocation);
-        handle.get();
+        try {
+            handle.get();
+        } catch (ExecutionException e) {
+            // Extract the cause and re-throw-it.
+            throw e.getCause();
+        }
     }
 }
