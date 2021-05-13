@@ -1,6 +1,12 @@
-package edu.unibo.martyadventure.model;
+package edu.unibo.martyadventure.model.fight;
 
 import java.util.Random;
+
+import edu.unibo.martyadventure.model.character.Character;
+import edu.unibo.martyadventure.model.character.EnemyCharacter;
+import edu.unibo.martyadventure.model.character.PlayerCharacter;
+import edu.unibo.martyadventure.model.weapon.Move;
+import edu.unibo.martyadventure.model.weapon.Weapon;
 
 public class Fight {
     private PlayerCharacter player;
@@ -52,7 +58,6 @@ public class Fight {
             }
 
         }
-
         turnCount++;
     }
 

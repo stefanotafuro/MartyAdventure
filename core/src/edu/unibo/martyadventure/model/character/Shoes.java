@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.model;
+package edu.unibo.martyadventure.model.character;
 
 public enum Shoes {
     FAST("Running", 10), SLOW("Normal", 5);

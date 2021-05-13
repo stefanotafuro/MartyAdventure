@@ -1,4 +1,4 @@
-package test.edu.unibo.martyadventure.model;
+package test.edu.unibo.martyadventure.model.character;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -8,13 +8,14 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
-import edu.unibo.martyadventure.model.*;
+import edu.unibo.martyadventure.model.character.EnemyCharacter;
+import edu.unibo.martyadventure.model.weapon.*;
 
 public class TestEnemyCharacter {
 
     String name = "Test";
     List<Move> moveList = new ArrayList<>(List.of(Move.SHOOT, Move.HOOK, Move.SHOOT, Move.HOOK));
-    Weapon weapon = new Weapon("Gun", "Ranged", 10, moveList);
+    Weapon weapon = new WeaponFactory().newWeapon("Gun", "Ranged", 10, moveList);
     Weapon dropitem = weapon;
     int hp = 500;
     float speed = 2;
@@ -35,10 +36,14 @@ public class TestEnemyCharacter {
     }
 
     void testsetDropitem() {
-        Weapon weapon2 = new Weapon("Punch", "Melee", 10, moveList);
+        Weapon weapon2 = new WeaponFactory().newWeapon("Punch", "Melee", 10, moveList);
         characterTest.setDropitem(weapon2);
         assertEquals(weapon2, characterTest.getDropitem());
         System.err.println("testsetDropitem ok");
+    }
+    
+    public EnemyCharacter getEnemyCharacter() {
+        return characterTest;
     }
 
     @Test
