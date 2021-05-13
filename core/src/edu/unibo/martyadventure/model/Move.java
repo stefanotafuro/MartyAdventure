@@ -4,7 +4,7 @@ import java.util.Random;
 
 public enum Move {
     // name(dmg, failRatio, reloadTime, Melee or Ranged)
-    HOOK("Gancio", 50, 10, 2, 'M', 0), SHOOT("Lancio", 50, 10, 2, 'R', 0);
+    HOOK("Gancio", 50, 10, 2, 'M', 0), SHOOT("Lancio", 50, 10, 2, 'R', 0), JAB("Diretto", 60, 15, 3, 'M', 0);
 
     private final String name;
     private final int damage;
@@ -14,7 +14,7 @@ public enum Move {
     private int lastUse; // last turn of use
     private Random rand = new Random();
 
-    Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
+    private Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
         this.name = name;
         this.damage = damage;
         this.failRatio = failRatio;
@@ -23,6 +23,7 @@ public enum Move {
         setLastUse(lastUse);
     }
 
+    // Getter & Setter
     public int getDamage() {
         return damage;
     }
@@ -51,6 +52,7 @@ public enum Move {
         this.lastUse = lastUse;
     }
 
+    // Functions
     public static Move getRandomMove() {
         return values()[(int) (Math.random() * values().length)];
     }
@@ -63,7 +65,7 @@ public enum Move {
             return false;
     }
 
-    public boolean testFailure(int failRatio) {
+    public boolean testFailure() {
         // random number if it's <= failRatio success, else fail
         return rand.nextInt(101) >= failRatio;
     }
