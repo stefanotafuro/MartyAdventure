@@ -19,7 +19,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
-import com.badlogic.gdx.backends.headless.HeadlessFiles;
 
 /**
  * Implements a headless Gdx test runner that runs the tests in a GL context.
@@ -45,7 +44,6 @@ public class GdxTestRunner implements ApplicationListener, InvocationInterceptor
 
         this.app = new HeadlessApplication(this, conf);
         Gdx.gl = mock(GL20.class);
-        Gdx.files = new HeadlessFiles();
     }
 
     @Override
