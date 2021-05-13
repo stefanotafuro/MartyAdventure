@@ -20,16 +20,16 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.backends.headless.HeadlessFiles;
-//import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-//import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 /**
- * Implements a headless gdx test runner that runs the tests in a GL context.
+ * Implements a headless Gdx test runner that runs the tests in a GL context.
  */
 public class GdxTestRunner implements ApplicationListener, InvocationInterceptor {
 
     // FIFO enforced synchronous queue.
     private final Queue<WaitableRunnable> invokeInRenderThread;
+    // Prevent the application instance deallocation during the testing.
+    @SuppressWarnings("unused")
     private final Application app;
 
 
@@ -46,17 +46,7 @@ public class GdxTestRunner implements ApplicationListener, InvocationInterceptor
         this.app = new HeadlessApplication(this, conf);
         Gdx.gl = mock(GL20.class);
         Gdx.files = new HeadlessFiles();
-        /*
-         * Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-         * this.app = new Lwjgl3Application(this, config);
-         */
     }
-
-    @Override
-    public void create() {}
-
-    @Override
-    public void resume() {}
 
     @Override
     public void render() {
@@ -65,15 +55,10 @@ public class GdxTestRunner implements ApplicationListener, InvocationInterceptor
         }
     }
 
-    @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void pause() {}
-
     /**
      * Intercept the @Test method calls and runs it in the render thread.
      */
+    @SuppressWarnings("unused")
     @Override
     public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
             ExtensionContext extensionContext) throws Throwable {
@@ -85,6 +70,19 @@ public class GdxTestRunner implements ApplicationListener, InvocationInterceptor
             throw e.getCause();
         }
     }
+
+    @SuppressWarnings("unused")
+    @Override
+    public void resize(int width, int height) {}
+
+    @Override
+    public void pause() {}
+
+    @Override
+    public void create() {}
+
+    @Override
+    public void resume() {}
 
     @Override
     public void dispose() {}

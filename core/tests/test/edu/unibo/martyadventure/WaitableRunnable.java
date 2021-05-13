@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.extension.InvocationInterceptor.Invocation;
 
+/**
+ * A runnable that has a future that can be waited.
+ */
 class WaitableRunnable implements Runnable {
 
     private final Invocation<Void> invocation;
