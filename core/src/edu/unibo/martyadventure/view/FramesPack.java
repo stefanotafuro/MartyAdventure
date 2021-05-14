@@ -1,6 +1,5 @@
 package edu.unibo.martyadventure.view;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -8,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class FramesPack {
 
-    public TextureRegion upFrames;
-    public TextureRegion downFrames;
-    public TextureRegion leftFrames;
-    public TextureRegion rightFrames;
+    private TextureRegion upFrames;
+    private TextureRegion downFrames;
+    private TextureRegion leftFrames;
+    private TextureRegion rightFrames;
 
 
     public FramesPack(final TextureRegion up, final TextureRegion down, final TextureRegion left,
@@ -20,5 +19,33 @@ public class FramesPack {
         this.downFrames = down;
         this.leftFrames = left;
         this.rightFrames = right;
+    }
+
+    /**
+     * @return the up frames.
+     */
+    public TextureRegion getUpFrames() {
+        return upFrames;
+    }
+
+    /**
+     * @return the down frames.
+     */
+    public TextureRegion getDownFrames() {
+        return downFrames;
+    }
+
+    /**
+     * @return the left frames.
+     */
+    public TextureRegion getLeftFrames() {
+        return leftFrames;
+    }
+
+    /**
+     * @return the right frames.
+     */
+    public TextureRegion getRightFrames() {
+        return rightFrames;
     }
 }
