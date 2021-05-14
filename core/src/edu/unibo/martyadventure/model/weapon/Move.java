@@ -4,7 +4,7 @@ import java.util.Random;
 
 public enum Move {
     // name(dmg, failRatio, reloadTime, Melee or Ranged)
-    HOOK("Gancio", 5, 10, 2, 'M', 0), SHOOT("Lancio", 5, 10, 2, 'R', 0), JAB("Diretto", 60, 15, 3, 'M', 0);
+    HOOK("Gancio", 5, 10, 2, 'M', 0), SHOOT("Lancio", 5, 10, 2, 'R', 0), JAB("Diretto", 6, 15, 3, 'M', 0);
 
     private final String name;
     private final int damage;
