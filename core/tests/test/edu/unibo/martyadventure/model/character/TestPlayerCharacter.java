@@ -24,6 +24,7 @@ public class TestPlayerCharacter {
 
     PlayerCharacter characterTest = new PlayerCharacter(shoes, name, hp, weapon, position, speed, velocity);
 
+    @Test
     void testLoadingPlayerCharacter() {
         assertEquals(shoes, characterTest.getShoes());
         assertEquals(name, characterTest.getName());
@@ -32,23 +33,18 @@ public class TestPlayerCharacter {
         assertEquals(position, characterTest.getPosition());
         assertEquals(speed, characterTest.getSpeed());
         assertEquals(velocity, characterTest.getVelocity());
-        System.err.println("testLoadingPlayerCharacter OK");
+        // System.err.println("testLoadingPlayerCharacter OK");
     }
 
+    @Test
     void testSetShoes() {
         Shoes shoes2 = Shoes.SLOW;
         characterTest.setShoes(shoes2);
         assertEquals(shoes2, characterTest.getShoes());
-        System.err.println("testSetShoes ok");
+        // System.err.println("testSetShoes ok");
     }
 
     public PlayerCharacter getPlayerCharacter() {
         return characterTest;
-    }
-
-    @Test
-    void testPlayerCharacter() {
-        testLoadingPlayerCharacter();
-        testSetShoes();
     }
 }
