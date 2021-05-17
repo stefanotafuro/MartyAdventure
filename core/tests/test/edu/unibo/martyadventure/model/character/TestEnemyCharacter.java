@@ -24,6 +24,7 @@ public class TestEnemyCharacter {
 
     EnemyCharacter characterTest = new EnemyCharacter(dropitem, name, hp, weapon, position, speed, velocity);
 
+    @Test
     void testLoadingEnemyCharacter() {
         assertEquals(dropitem, characterTest.getDropitem());
         assertEquals(name, characterTest.getName());
@@ -32,23 +33,18 @@ public class TestEnemyCharacter {
         assertEquals(position, characterTest.getPosition());
         assertEquals(speed, characterTest.getSpeed());
         assertEquals(velocity, characterTest.getVelocity());
-        System.err.println("testLoadingEnemyCharacter OK");
+        // System.err.println("testLoadingEnemyCharacter OK");
     }
 
+    @Test
     void testsetDropitem() {
         Weapon weapon2 = new WeaponFactory().newWeapon("Punch", "Melee", 10, moveList);
         characterTest.setDropitem(weapon2);
         assertEquals(weapon2, characterTest.getDropitem());
-        System.err.println("testsetDropitem ok");
-    }
-    
-    public EnemyCharacter getEnemyCharacter() {
-        return characterTest;
+        // System.err.println("testsetDropitem ok");
     }
 
-    @Test
-    void testPlayerCharacter() {
-        testLoadingEnemyCharacter();
-        testsetDropitem();
+    public EnemyCharacter getEnemyCharacter() {
+        return characterTest;
     }
 }
