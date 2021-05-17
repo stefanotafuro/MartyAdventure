@@ -47,6 +47,7 @@ public class TestMapManager {
         assertNotNull(manager.getMartySpawnLayer());
         assertNotNull(manager.getEnemySpawnLayer());
         assertNotNull(manager.getBiffSpawnLayer());
+        assertNotNull(manager.getPlayerStartPosition());
     }
     
     
