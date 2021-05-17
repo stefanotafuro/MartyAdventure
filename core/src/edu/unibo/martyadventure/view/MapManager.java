@@ -28,6 +28,9 @@ public class MapManager {
     private static final String BIFFSPAWNLAYERNAME = "BiffSpawn";
     private static final String MARTYSPAWNOBJECTNAME = "MartySpawnObject";
     
+    //unit scale
+    public final static float UNIT_SCALE = 1/16f;
+    
     private Hashtable<String,String> mapTable;
     
     private TiledMap currentMap;
