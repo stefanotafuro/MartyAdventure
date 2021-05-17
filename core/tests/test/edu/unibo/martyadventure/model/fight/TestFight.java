@@ -1,11 +1,9 @@
 package test.edu.unibo.martyadventure.model.fight;
 
-import edu.unibo.martyadventure.model.character.EnemyCharacter;
-import edu.unibo.martyadventure.model.character.PlayerCharacter;
+import edu.unibo.martyadventure.model.character.*;
 import edu.unibo.martyadventure.model.fight.Fight;
 import edu.unibo.martyadventure.model.weapon.Move;
-import test.edu.unibo.martyadventure.model.character.TestEnemyCharacter;
-import test.edu.unibo.martyadventure.model.character.TestPlayerCharacter;
+import test.edu.unibo.martyadventure.model.character.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +16,7 @@ public class TestFight {
 
     Fight testFight = new Fight(playerCharacter, enemyCharacter);
 
+    @Test
     void testStartFight() {
         assertEquals(playerCharacter, testFight.getPlayer());
         assertEquals(enemyCharacter, testFight.getEnemy());
@@ -25,12 +24,14 @@ public class TestFight {
         // System.err.println("testStartFight ok");
     }
 
+    @Test
     void testIsDead() {
         assertFalse(testFight.isDead(10, playerCharacter.getHp()));
         assertTrue(testFight.isDead(playerCharacter.getHp(), playerCharacter.getHp()));
         // System.err.println("testIsDead ok");
     }
 
+    @Test
     void testPlayerAttack() {
         int enemyHp = testFight.getEnemy().getHp();
         int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage();
@@ -40,27 +41,13 @@ public class TestFight {
         // System.err.println("testPlayerAttack ok");
     }
 
+    @Test
     void testAttack() {
         int enemyHp = testFight.getEnemy().getHp();
         int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.SHOOT.getDamage();
         testFight.attack(testFight.getPlayer().getWeapon(), Move.SHOOT, testFight.getEnemy());
         assertEquals(enemyHp - damage, enemyCharacter.getHp());
         // System.err.println("testAttack ok");
-    }
-
-    void testEnemyMove() {
-        System.out.println(testFight.enemyMove());
-    }
-
-    @Test
-
-    void testFight() {
-        testStartFight();
-        testIsDead();
-        testPlayerAttack();
-        testAttack();
-        testEnemyMove();
-        // System.err.println("testFight ok");
     }
 
 }
