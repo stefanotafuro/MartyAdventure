@@ -13,9 +13,9 @@ import test.edu.unibo.martyadventure.GdxTestRunner;
 @ExtendWith(GdxTestRunner.class)
 public class TestMapManager {
 
-    String map1 = "map1";
-    String map2 = "map2";
-    String map3 = "map3";
+    private String map1 = "map1";
+    private String map2 = "map2";
+    private String map3 = "map3";
     
     MapManager manager = new MapManager();
     
