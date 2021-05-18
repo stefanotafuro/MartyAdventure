@@ -13,21 +13,21 @@ public class MapManager {
     private Vector2 playerStartPosition;
 
     //map names
-    private static final String MAP1 = "map1";
-    private static final String MAP2 = "map2";
-    private static final String MAP3 = "map3";
+    private static final String MAP_1 = "map1";
+    private static final String MAP_2 = "map2";
+    private static final String MAP_3 = "map3";
     //map path
-    private static final String MAP1PATH = "Level/Map/map1.tmx";
-    private static final String MAP2PATH = "Level/Map/map2.tmx";
-    private static final String MAP3PATH = "Level/Map/map3.tmx";
+    private static final String MAP_1_PATH = "Level/Map/map1.tmx";
+    private static final String MAP_2_PATH = "Level/Map/map2.tmx";
+    private static final String MAP_3_PATH = "Level/Map/map3.tmx";
     
     //layers name
-    private static final String MARTYSPAWNLAYERNAME = "MartySpawn";
-    private static final String COLLISIONLAYERNAME = "Collision";
-    private static final String PACMANLAYERNAMENAME = "PacMan";
-    private static final String ENEMYSPAWNLAYERNAME = "EnemySpawn";
-    private static final String BIFFSPAWNLAYERNAME = "BiffSpawn";
-    private static final String MARTYSPAWNOBJECTNAME = "MartySpawnObject";
+    private static final String MARTY_SPAWN_LAYER_NAME = "MartySpawn";
+    private static final String COLLISION_LAYER_NAME = "Collision";
+    private static final String PACMAN_LAYER_NAME = "PacMan";
+    private static final String ENEMY_SPAWN_LAYER_NAME = "EnemySpawn";
+    private static final String BIFF_SPAWN_LAYER_NAME = "BiffSpawn";
+    private static final String MARTY_SPAWN_OBJECT_NAME = "MartySpawnObject";
     
     //unit scale
     public final static float UNIT_SCALE = 1/16f;
@@ -48,9 +48,9 @@ public class MapManager {
     //just initialize the hashtable
     public MapManager() {
         mapTable = new Hashtable<>();
-        mapTable.put(MAP1, MAP1PATH);
-        mapTable.put(MAP2, MAP2PATH);
-        mapTable.put(MAP3, MAP3PATH);
+        mapTable.put(MAP_1, MAP_1_PATH);
+        mapTable.put(MAP_2, MAP_2_PATH);
+        mapTable.put(MAP_3, MAP_3_PATH);
     }
 
     /** @return the current loaded map**/ 
@@ -88,38 +88,38 @@ public class MapManager {
         }
         
         //getting layers
-        collisionLayer = currentMap.getLayers().get(COLLISIONLAYERNAME);
+        collisionLayer = currentMap.getLayers().get(COLLISION_LAYER_NAME);
         if (collisionLayer == null) {
             System.err.println("No collision layer loaded");
             return;
         }
         
-        martySpawnLayer = currentMap.getLayers().get(MARTYSPAWNLAYERNAME);
+        martySpawnLayer = currentMap.getLayers().get(MARTY_SPAWN_LAYER_NAME);
         if (martySpawnLayer == null) {
             System.err.println("No marty layer loaded");
             return;
         }
         
-        biffSpawnLayer = currentMap.getLayers().get(BIFFSPAWNLAYERNAME);
+        biffSpawnLayer = currentMap.getLayers().get(BIFF_SPAWN_LAYER_NAME);
         if (biffSpawnLayer == null) {
             System.err.println("No biff layer loaded");
             return;
         }
         
-        enemySpawnLayer = currentMap.getLayers().get(ENEMYSPAWNLAYERNAME);
+        enemySpawnLayer = currentMap.getLayers().get(ENEMY_SPAWN_LAYER_NAME);
         if (enemySpawnLayer == null) {
             System.err.println("No enemy layer loaded");
             return;
         }
         
-        pacManLayer = currentMap.getLayers().get(PACMANLAYERNAMENAME);
+        pacManLayer = currentMap.getLayers().get(PACMAN_LAYER_NAME);
         if (pacManLayer == null) {
             System.err.println("No pacman layer loaded");
             return;
         }
         
         //Setting marty spawn point
-        EllipseMapObject obj = (EllipseMapObject) martySpawnLayer.getObjects().get(MARTYSPAWNOBJECTNAME);
+        EllipseMapObject obj = (EllipseMapObject) martySpawnLayer.getObjects().get(MARTY_SPAWN_OBJECT_NAME);
         if (playerStartPosition == null) {
             playerStartPosition = new Vector2();
         }
