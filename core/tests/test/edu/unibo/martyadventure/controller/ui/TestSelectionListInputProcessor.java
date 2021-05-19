@@ -28,6 +28,7 @@ class TestSelectionListInputProcessor {
         return list.getCurrentSelection();
     }
 
+    
     @Test
     void testBellowBoundsArrows() {
         // Try go lower than 0
