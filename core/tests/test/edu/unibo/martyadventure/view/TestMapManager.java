@@ -17,43 +17,34 @@ import test.edu.unibo.martyadventure.GdxTestRunner;
 @ExtendWith(GdxTestRunner.class)
 public class TestMapManager {
 
-    private String map1 = "map1";
-    private String map2 = "map2";
-    private String map3 = "map3";
-
     MapManager manager = new MapManager();
 
     @Test
     public void TestAllMaps() {
-        TestLoadingMap(map1);
-        TestLoadingMap(map2);
-        TestLoadingMap(map3);
+        TestLoadingMap(MapManager.Maps.MAP1);
+        TestLoadingMap(MapManager.Maps.MAP2);
+        TestLoadingMap(MapManager.Maps.MAP3);
     }
 
     @Test
     public void TestAllLayers() {
-        TestLoadingLayers(map1);
-        TestLoadingLayers(map2);
-        TestLoadingLayers(map3);
+        TestLoadingLayers(MapManager.Maps.MAP1);
+        TestLoadingLayers(MapManager.Maps.MAP2);
+        TestLoadingLayers(MapManager.Maps.MAP3);
     }
 
-    void TestLoadingMap(String mapName) {
-        try {
-            manager.loadMap(mapName);
-        } catch (ExecutionException | InterruptedException e) {
-            fail();
-        }
+    
+    void TestLoadingMap(MapManager.Maps mapName) {
+        manager.loadMap(mapName);
         TiledMap map = manager.getCurrentMap();
         assertNotNull(map);
         assertEquals(mapName, manager.getCurrentMapName());
     }
 
-    void TestLoadingLayers(String mapName) {
-        try {
-            manager.loadMap(mapName);
-        } catch (ExecutionException | InterruptedException e) {
-            fail();
-        }
+
+    
+    void TestLoadingLayers(MapManager.Maps mapName) {
+        manager.loadMap(mapName);
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());
         assertNotNull(manager.getMartySpawnLayer());

@@ -14,11 +14,12 @@ public class MapManager {
 
     private Vector2 playerStartPosition;
 
-    // map names
-    private static final String MAP_1 = "map1";
-    private static final String MAP_2 = "map2";
-    private static final String MAP_3 = "map3";
-    // map path
+
+    //map names
+    public static enum Maps{
+        MAP1, MAP2, MAP3
+    }
+    //map path
     private static final String MAP_1_PATH = "Level/Map/map1.tmx";
     private static final String MAP_2_PATH = "Level/Map/map2.tmx";
     private static final String MAP_3_PATH = "Level/Map/map3.tmx";
@@ -31,15 +32,16 @@ public class MapManager {
     private static final String BIFF_SPAWN_LAYER_NAME = "BiffSpawn";
     private static final String MARTY_SPAWN_OBJECT_NAME = "MartySpawnObject";
 
-    // unit scale
-    public final static float UNIT_SCALE = 1 / 16f;
-
-    private Hashtable<String, Future<TiledMap>> mapTable;
-
+    
+    //unit scale
+    public final static float UNIT_SCALE = 1/16f;
+    
+    private Hashtable<Maps,String> mapTable;
+    
     private TiledMap currentMap;
-    private String currentMapName;
-
-    // map layers
+    private Maps currentMapName;
+    
+    //map layers
     private MapLayer martySpawnLayer;
     private MapLayer collisionLayer;
     private MapLayer pacManLayer;
@@ -49,9 +51,9 @@ public class MapManager {
     // initialize the hashtable
     public MapManager() {
         mapTable = new Hashtable<>();
-        mapTable.put(MAP_1, Toolbox.getMap(MAP_1_PATH));
-        mapTable.put(MAP_2, Toolbox.getMap(MAP_2_PATH));
-        mapTable.put(MAP_3, Toolbox.getMap(MAP_3_PATH));
+        mapTable.put(Maps.MAP1, MAP_1_PATH);
+        mapTable.put(Maps.MAP2, MAP_2_PATH);
+        mapTable.put(Maps.MAP3, MAP_3_PATH);
     }
 
     /** @return the current loaded map **/
@@ -60,7 +62,7 @@ public class MapManager {
     }
 
     /** @return the current loaded map name **/
-    public String getCurrentMapName() {
+    public Maps getCurrentMapName() {
         return currentMapName;
     }
 
@@ -69,18 +71,31 @@ public class MapManager {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public void loadMap(String mapName) throws InterruptedException, ExecutionException {
-
-        // get the map path from the table and check it
-        TiledMap newMap = mapTable.get(mapName).get();
-        if (newMap == null) {
+    /** @return the current loaded map name**/
+    public void loadMap(Maps mapName) {
+        
+        //get the map path from the table and check it
+        String mapPath = mapTable.get(mapName);
+        if (mapPath.isEmpty()) {
             System.err.println("Map not loaded, invalid path");
             return;
         }
-        this.currentMap = newMap;
-        this.currentMapName = mapName;
-
-        // getting layers
+        
+        //if we are using another map we dispose that and free memory
+        if (currentMap != null) {
+            currentMap.dispose();
+        }
+        
+        //load the map with the toolbox and check
+        currentMap = (TiledMap) Toolbox.getMap(mapPath);
+        currentMapName = mapName;
+        if (currentMap == null) {
+            System.err.println("Map not loaded, loading error");
+            return;
+            
+        } 
+        
+        //getting layers
         collisionLayer = currentMap.getLayers().get(COLLISION_LAYER_NAME);
         if (collisionLayer == null) {
             System.err.println("No collision layer loaded");
