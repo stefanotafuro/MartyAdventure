@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 
+import edu.unibo.martyadventure.view.toolbox.Toolbox;
+
 public class MapManager {
 
     private Vector2 playerStartPosition;

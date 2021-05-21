@@ -1,10 +1,11 @@
 package edu.unibo.martyadventure.view.toolbox;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.HashMap;
 
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
@@ -18,52 +19,71 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader.Parameters;
  */
 public class Toolbox {
 
-    /**
+    private static final String TEXTURE_EXTENSION = "png";
+    private static final String MAP_EXTENSION = "tmx";
+
+    /*
      * A static asset manager will cause issues on android: luckily we only support
      * desktop.
      */
     private static AssetManager assetManager;
+    // Tracks the handles of each asset.
     private static HashMap<String, Future> assetHandles;
+    // Asset loader.
+    private static Executor loader;
 
     static {
         Toolbox.assetManager = new AssetManager();
         Toolbox.assetManager.setLoader(TiledMap.class, new TmxMapLoader());
+
         Toolbox.assetHandles = new HashMap<String, Future>();
+
+        Toolbox.loader = Executors.newSingleThreadExecutor();
+        Toolbox.loader.execute(Toolbox::load);
     }
 
 
-    private static <T> boolean registerHandle(final String path, final AssetLoaderParameters<T> param) {
+    private static void load() {
+        while (true) {
+            Toolbox.assetManager.update();
+        }
+    }
+
+    /**
+     * @return the extension at the end of the path, if any.
+     */
+    private static String getExtension(final String path) {
+        int dotIndex = path.lastIndexOf('.');
+        if (dotIndex == -1) {
+            return "";
+        }
+        return path.substring(dotIndex + 1);
+    }
+
+    /**
+     * @return the future handle to the given asset.
+     */
+    private static <T> Future<T> getAsset(final String path, final String extension, Class<T> type,
+            final AssetLoaderParameters<T> param) {
         if (path == null || path.isEmpty()) {
             throw new IllegalArgumentException("Invalid empty asset path");
+        }
+
+        final String ext = getExtension(path);
+        if (ext.isEmpty() || !extension.equalsIgnoreCase(ext)) {
+            throw new IllegalArgumentException("Wrong extension file type");
         }
 
         synchronized (Toolbox.assetHandles) {
             if (!Toolbox.assetHandles.containsKey(path)) {
                 CompletableFuture<T> handle = new CompletableFuture<T>();
-                param.loadedCallback = (am, p, type) -> handle.complete((T) am.get(p, type));
+                param.loadedCallback = (am, p, t) -> handle.complete((T) am.get(p, t));
 
                 Toolbox.assetHandles.put(path, handle);
-                return true;
+                Toolbox.assetManager.load(path, type, param);
             }
-            return false;
+            return (Future<T>) Toolbox.assetHandles.get(path);
         }
-    }
-
-    /**
-     * Verifies that the path isn't empty
-     */
-    private static <T> void queueAsset(final String path, final AssetLoaderParameters<T> param, final Class<T> type) {
-        if (registerHandle(path, param)) {
-            Toolbox.assetManager.load(path, type, param);
-        }
-    }
-
-    /**
-     * Get the described asset. Blocks if isn't not loaded yet.
-     */
-    private static <T> Future<T> getAsset(final String path, final AssetLoaderParameters<T> param) {
-        registerHandle(path, param);
-        return (Future<T>) Toolbox.assetHandles.get(path);
     }
 
     /**
@@ -71,9 +91,10 @@ public class Toolbox {
      */
     public static void unloadAsset(String filePath) {
         synchronized (Toolbox.assetHandles) {
-            Toolbox.assetHandles.remove(filePath);
+            if (Toolbox.assetHandles.remove(filePath) != null) {
+                Toolbox.assetManager.unload(filePath);
+            }
         }
-        Toolbox.assetManager.unload(filePath);
     }
 
     /**
@@ -102,35 +123,23 @@ public class Toolbox {
     }
 
     /**
-     * Queues a map for loading.
-     */
-    public static void loadMap(final String mapPath) {
-        queueAsset(mapPath, new Parameters(), TiledMap.class);
-    }
-
-    /**
-     * Queues a texture for loading.
-     */
-    public static void loadTexture(final String texturePath) {
-        queueAsset(texturePath, new TextureParameter(), Texture.class);
-    }
-
-    /**
-     * Get the map at the path. Block if the asset hasn't been fully loaded yet.
+     * Get the future handle of the map at the path. Queue the asset for loading if
+     * it's not queued yet.
      * 
-     * @return the map asset at the given path.
+     * @return the future handle for the map.
      */
     public static Future<TiledMap> getMap(final String mapPath) {
-        return getAsset(mapPath, new Parameters());
+        return getAsset(mapPath, MAP_EXTENSION, TiledMap.class, new Parameters());
     }
 
     /**
-     * Get the texture at the path. Block if the asset hasn't been fully loaded yet.
+     * Get the future handle of the texture at the path. Queue the asset for loading
+     * if it's not queued yet.
      * 
-     * @return the texture asset at the given path.
+     * @return the future handle for the texture.
      */
     public static Future<Texture> getTexture(final String texturePath) {
-        return getAsset(texturePath, new TextureParameter());
+        return getAsset(texturePath, TEXTURE_EXTENSION, Texture.class, new TextureParameter());
     }
 
     /**
