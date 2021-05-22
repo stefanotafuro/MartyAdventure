@@ -1,4 +1,4 @@
-package test.edu.unibo.martyadventure.view.toolbox;
+package test.edu.unibo.martyadventure.view;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
-import edu.unibo.martyadventure.view.toolbox.Toolbox;
+import edu.unibo.martyadventure.view.Toolbox;
 import test.edu.unibo.martyadventure.GdxTestRunner;
 
 class TestToolbox {

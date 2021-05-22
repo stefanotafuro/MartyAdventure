@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view.toolbox;
+package edu.unibo.martyadventure.view;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
