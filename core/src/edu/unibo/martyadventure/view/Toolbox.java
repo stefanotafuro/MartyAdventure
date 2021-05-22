@@ -1,10 +1,10 @@
 package edu.unibo.martyadventure.view;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.HashMap;
 
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -42,7 +42,9 @@ public class Toolbox {
         Toolbox.loader.execute(Toolbox::load);
     }
 
-
+    /**
+     * Keep looping to load all the assets that get queued.
+     */
     private static void load() {
         while (true) {
             Toolbox.assetManager.update();
@@ -61,6 +63,13 @@ public class Toolbox {
     }
 
     /**
+     * Get the future handle of the given asset, queuing it for loading if it's not
+     * already queued.
+     * 
+     * @param path      the path to the asset file to load.
+     * @param extension the expected extension of the asset.
+     * @param type      the type of the asset to load.
+     * @param param     the appropriate AssetLoader parameters for the type.
      * @return the future handle to the given asset.
      */
     private static <T> Future<T> getAsset(final String path, final String extension, Class<T> type,
@@ -87,12 +96,15 @@ public class Toolbox {
     }
 
     /**
-     * Unloads the asset if the reference count has reached 0.
+     * Unloads the asset if the reference count has reached 0. Don't do anything if
+     * the asset isn't loaded.
+     * 
+     * @param path the path to the asset file to unload.
      */
-    public static void unloadAsset(String filePath) {
+    public static void unloadAsset(final String path) {
         synchronized (Toolbox.assetHandles) {
-            if (Toolbox.assetHandles.remove(filePath) != null) {
-                Toolbox.assetManager.unload(filePath);
+            if (Toolbox.assetHandles.remove(path) != null) {
+                Toolbox.assetManager.unload(path);
             }
         }
     }
@@ -106,18 +118,19 @@ public class Toolbox {
     }
 
     /**
-     * @return the number of assets in queue for loading.
+     * @return the number of assets queued for loading.
      */
     public static int queuedAssetCount() {
         return Toolbox.assetManager.getQueuedAssets();
     }
 
     /**
+     * @param path the path to the asset file to query for.
      * @return true if the asset at the path has been fully loaded.
      */
-    public static boolean isAssetLoaded(final String filePath) {
+    public static boolean isAssetLoaded(final String path) {
         synchronized (Toolbox.assetHandles) {
-            Future handle = Toolbox.assetHandles.get(filePath);
+            Future handle = Toolbox.assetHandles.get(path);
             return handle != null && handle.isDone();
         }
     }
@@ -126,6 +139,7 @@ public class Toolbox {
      * Get the future handle of the map at the path. Queue the asset for loading if
      * it's not queued yet.
      * 
+     * @param path the path to the map asset file to load.
      * @return the future handle for the map.
      */
     public static Future<TiledMap> getMap(final String mapPath) {
@@ -136,6 +150,7 @@ public class Toolbox {
      * Get the future handle of the texture at the path. Queue the asset for loading
      * if it's not queued yet.
      * 
+     * @param path the path to the texture asset file to load.
      * @return the future handle for the texture.
      */
     public static Future<Texture> getTexture(final String texturePath) {
@@ -145,5 +160,6 @@ public class Toolbox {
     /**
      * Prevent instantiation.
      */
-    private Toolbox() {}
+    private Toolbox() {
+    }
 }
