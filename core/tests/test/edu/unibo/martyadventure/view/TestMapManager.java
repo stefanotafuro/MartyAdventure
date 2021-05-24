@@ -20,21 +20,21 @@ public class TestMapManager {
     MapManager manager = new MapManager();
 
     @Test
-    public void TestAllMaps() {
+    public void TestAllMaps() throws InterruptedException, ExecutionException {
         TestLoadingMap(MapManager.Maps.MAP1);
         TestLoadingMap(MapManager.Maps.MAP2);
         TestLoadingMap(MapManager.Maps.MAP3);
     }
 
     @Test
-    public void TestAllLayers() {
+    public void TestAllLayers() throws InterruptedException, ExecutionException {
         TestLoadingLayers(MapManager.Maps.MAP1);
         TestLoadingLayers(MapManager.Maps.MAP2);
         TestLoadingLayers(MapManager.Maps.MAP3);
     }
 
     
-    void TestLoadingMap(MapManager.Maps mapName) {
+    void TestLoadingMap(MapManager.Maps mapName) throws InterruptedException, ExecutionException {
         manager.loadMap(mapName);
         TiledMap map = manager.getCurrentMap();
         assertNotNull(map);
@@ -43,7 +43,7 @@ public class TestMapManager {
 
 
     
-    void TestLoadingLayers(MapManager.Maps mapName) {
+    void TestLoadingLayers(MapManager.Maps mapName) throws InterruptedException, ExecutionException {
         manager.loadMap(mapName);
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());

@@ -71,8 +71,10 @@ public class MapManager {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    /** @return the current loaded map name**/
-    public void loadMap(Maps mapName) {
+    /** @return the current loaded map name
+     * @throws ExecutionException 
+     * @throws InterruptedException **/
+    public void loadMap(Maps mapName) throws InterruptedException, ExecutionException {
         
         //get the map path from the table and check it
         String mapPath = mapTable.get(mapName);
@@ -87,7 +89,7 @@ public class MapManager {
         }
         
         //load the map with the toolbox and check
-        currentMap = (TiledMap) Toolbox.getMap(mapPath);
+        currentMap = Toolbox.getMap(mapPath).get();
         currentMapName = mapName;
         if (currentMap == null) {
             System.err.println("Map not loaded, loading error");
