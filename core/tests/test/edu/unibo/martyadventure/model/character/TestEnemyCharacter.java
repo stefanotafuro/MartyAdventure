@@ -14,7 +14,7 @@ import edu.unibo.martyadventure.model.weapon.*;
 public class TestEnemyCharacter {
 
     String name = "Test";
-    List<Move> moveList = new ArrayList<>(List.of(Move.SHOOT, Move.HOOK, Move.SHOOT, Move.HOOK));
+    List<Move> moveList = new ArrayList<>(List.of(Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH));
     Weapon weapon = new WeaponFactory().newWeapon("Gun", "Ranged", 10, moveList);
     Weapon dropitem = weapon;
     int hp = 500;

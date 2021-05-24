@@ -11,12 +11,12 @@ public class TestWeapon {
     String name = "Weapon1";
     String type = "Meele";
     int damageMultiplier = 10;
-    List<Move> moveList = new ArrayList<>(List.of(Move.SHOOT, Move.HOOK, Move.SHOOT, Move.HOOK));
+    List<Move> moveList = new ArrayList<>(List.of(Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH));
     Weapon weaponTest = new WeaponFactory().newWeapon(name, type, damageMultiplier, moveList);
 
     @Test
     void testSetMoveList() {
-        List<Move> moveList2 = new ArrayList<>(List.of(Move.HOOK, Move.SHOOT, Move.HOOK, Move.HOOK));
+        List<Move> moveList2 = new ArrayList<>(List.of(Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH));
         weaponTest.setMoveList(moveList2);
         assertEquals(moveList2, weaponTest.getMoveList());
         // System.err.println("testSetMoveList ok");

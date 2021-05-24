@@ -10,6 +10,7 @@ public class Weapon {
     private int damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
+    //Protected constructor 
     Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
@@ -17,6 +18,7 @@ public class Weapon {
         setMoveList(moveList);
     }
 
+    //Getter & Setter
     public String getName() {
         return name;
     }
@@ -50,15 +52,15 @@ public class Weapon {
             this.moveList = moveList;
         else
             System.err.println("moveList ERROR");
-
     }
 
+    /*
     public void printWeapon() {
         System.out.println(getName());
         System.out.println(getType());
         System.out.println(getDamageMultiplier());
         System.out.println(getMoveList());
-
     }
+    */
 
 }
