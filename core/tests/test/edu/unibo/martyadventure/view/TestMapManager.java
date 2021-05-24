@@ -19,7 +19,15 @@ import test.edu.unibo.martyadventure.GdxTestRunner;
 public class TestMapManager {
 
     MapManager manager = new MapManager();
+    
+    @Test
+    public void TestNotPreLoadingAllMaps() throws InterruptedException, ExecutionException, IOException {
 
+        TestNotPreLoadingMap(MapManager.Maps.MAP1);
+        TestNotPreLoadingMap(MapManager.Maps.MAP2);
+        TestNotPreLoadingMap(MapManager.Maps.MAP3);
+    }
+    
     @Test
     public void TestAllMaps() throws InterruptedException, ExecutionException, IOException {
 
@@ -36,15 +44,22 @@ public class TestMapManager {
     }
 
     void TestLoadingMap(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {
-
+        manager.preLoadMap(mapName);
+        manager.loadMap(mapName);
+        TiledMap map = manager.getCurrentMap();
+        assertNotNull(map);
+        assertEquals(mapName, manager.getCurrentMapName());
+    }
+    
+    void TestNotPreLoadingMap(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {
         manager.loadMap(mapName);
         TiledMap map = manager.getCurrentMap();
         assertNotNull(map);
         assertEquals(mapName, manager.getCurrentMapName());
     }
 
-    void TestLoadingLayers(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {
-
+    void TestLoadingLayers(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {  
+        manager.preLoadMap(mapName);
         manager.loadMap(mapName);
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());

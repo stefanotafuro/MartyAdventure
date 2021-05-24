@@ -4,7 +4,7 @@ package edu.unibo.martyadventure.view;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
-
+import java.util.concurrent.Future;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -40,7 +40,9 @@ public class MapManager {
     private Hashtable<Maps,String> mapTable;
     
     private TiledMap currentMap;
+    private Future<TiledMap> preLoadedMap;
     private Maps currentMapName;
+    private Maps preLoadedMapName;
     
     //map layers
     private MapLayer martySpawnLayer;
@@ -66,8 +68,23 @@ public class MapManager {
     public Maps getCurrentMapName() {
         return currentMapName;
     }
+    
+    /** Start loading the given map from file into memory 
+     * @param the map name you want to start to load
+     * @throws IOException **/
+    public void preLoadMap(Maps mapName) throws IOException {
+      //get the map path from the table and check it
+        String mapPath = mapTable.get(mapName);
+        if (mapPath.isEmpty()) {
+            throw new IOException("Invalid map path");
+        }
+        preLoadedMap = Toolbox.getMap(mapPath);
+        preLoadedMapName = mapName;
+    }
 
-    /** @return the current loaded map name
+    /** Load the given map name from file to the local memory 
+     * @return the current loaded map name
+     * @param the map name you want to load
      * @throws ExecutionException 
      * @throws InterruptedException
      * @throws IOException **/
@@ -76,7 +93,7 @@ public class MapManager {
         //get the map path from the table and check it
         String mapPath = mapTable.get(mapName);
         if (mapPath.isEmpty()) {
-            throw new IOException("Map not loaded");
+            throw new IOException("Invalid map path");
         }
         
         //if we are using another map we dispose that and free memory
@@ -85,8 +102,19 @@ public class MapManager {
         }
         
         //load the map with the toolbox and check
-        currentMap = Toolbox.getMap(mapPath).get();
-        currentMapName = mapName;
+        if (preLoadedMap != null && preLoadedMapName.equals(mapName)) {
+            currentMap = preLoadedMap.get();
+            currentMapName = preLoadedMapName;
+            preLoadedMap = null;
+            preLoadedMapName = null;
+        }
+        else {
+            currentMap = Toolbox.getMap(mapPath).get();
+            currentMapName = mapName;
+            preLoadedMap = null;
+            preLoadedMapName = null;
+        }
+        
         if (currentMap == null) {
             throw new IOException("Map not loaded, loading error");
         } 
