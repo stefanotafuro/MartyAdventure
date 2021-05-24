@@ -70,7 +70,7 @@ public class MapManager {
     }
     
     /** Start loading the given map from file into memory 
-     * @param the map name you want to start to load
+     * @param mapName the map name you want to start to load
      * @throws IOException **/
     public void preLoadMap(Maps mapName) throws IOException {
       //get the map path from the table and check it
@@ -84,7 +84,7 @@ public class MapManager {
 
     /** Load the given map name from file to the local memory 
      * @return the current loaded map name
-     * @param the map name you want to load
+     * @param mapName the map name you want to load
      * @throws ExecutionException 
      * @throws InterruptedException
      * @throws IOException **/
