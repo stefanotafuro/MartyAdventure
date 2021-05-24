@@ -1,6 +1,7 @@
 //This class load the maps from the assets
 package edu.unibo.martyadventure.view;
 
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -66,21 +67,16 @@ public class MapManager {
         return currentMapName;
     }
 
-    /**
-     * @param the map name you want to load
-     * @throws ExecutionException
-     * @throws InterruptedException
-     */
     /** @return the current loaded map name
      * @throws ExecutionException 
-     * @throws InterruptedException **/
-    public void loadMap(Maps mapName) throws InterruptedException, ExecutionException {
-        
+     * @throws InterruptedException
+     * @throws IOException **/
+    public void loadMap(Maps mapName) throws InterruptedException, ExecutionException, IOException {
+
         //get the map path from the table and check it
         String mapPath = mapTable.get(mapName);
         if (mapPath.isEmpty()) {
-            System.err.println("Map not loaded, invalid path");
-            return;
+            throw new IOException("Map not loaded");
         }
         
         //if we are using another map we dispose that and free memory
@@ -92,40 +88,34 @@ public class MapManager {
         currentMap = Toolbox.getMap(mapPath).get();
         currentMapName = mapName;
         if (currentMap == null) {
-            System.err.println("Map not loaded, loading error");
-            return;
-            
+            throw new IOException("Map not loaded, loading error");
         } 
+
         
         //getting layers
         collisionLayer = currentMap.getLayers().get(COLLISION_LAYER_NAME);
         if (collisionLayer == null) {
-            System.err.println("No collision layer loaded");
-            return;
+            throw new IOException("No collision layer loaded");
         }
 
         martySpawnLayer = currentMap.getLayers().get(MARTY_SPAWN_LAYER_NAME);
         if (martySpawnLayer == null) {
-            System.err.println("No marty layer loaded");
-            return;
+            throw new IOException("No marty layer loaded");
         }
 
         biffSpawnLayer = currentMap.getLayers().get(BIFF_SPAWN_LAYER_NAME);
         if (biffSpawnLayer == null) {
-            System.err.println("No biff layer loaded");
-            return;
+            throw new IOException("No biff layer loaded");
         }
 
         enemySpawnLayer = currentMap.getLayers().get(ENEMY_SPAWN_LAYER_NAME);
         if (enemySpawnLayer == null) {
-            System.err.println("No enemy layer loaded");
-            return;
+            throw new IOException("No enemy layer loaded");
         }
 
         pacManLayer = currentMap.getLayers().get(PACMAN_LAYER_NAME);
         if (pacManLayer == null) {
-            System.err.println("No pacman layer loaded");
-            return;
+            throw new IOException("No pacman layer loaded");
         }
 
         // Setting Marty's spawn point
