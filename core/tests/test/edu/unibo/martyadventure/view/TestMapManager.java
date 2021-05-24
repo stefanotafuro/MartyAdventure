@@ -2,9 +2,10 @@ package test.edu.unibo.martyadventure.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.concurrent.ExecutionException;
+
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,43 +18,49 @@ import test.edu.unibo.martyadventure.GdxTestRunner;
 @ExtendWith(GdxTestRunner.class)
 public class TestMapManager {
 
-    private String map1 = "map1";
-    private String map2 = "map2";
-    private String map3 = "map3";
-
     MapManager manager = new MapManager();
-
+    
     @Test
-    public void TestAllMaps() {
-        TestLoadingMap(map1);
-        TestLoadingMap(map2);
-        TestLoadingMap(map3);
+    public void TestNotPreLoadingAllMaps() throws InterruptedException, ExecutionException, IOException {
+
+        TestNotPreLoadingMap(MapManager.Maps.MAP1);
+        TestNotPreLoadingMap(MapManager.Maps.MAP2);
+        TestNotPreLoadingMap(MapManager.Maps.MAP3);
+    }
+    
+    @Test
+    public void TestAllMaps() throws InterruptedException, ExecutionException, IOException {
+
+        TestLoadingMap(MapManager.Maps.MAP1);
+        TestLoadingMap(MapManager.Maps.MAP2);
+        TestLoadingMap(MapManager.Maps.MAP3);
     }
 
     @Test
-    public void TestAllLayers() {
-        TestLoadingLayers(map1);
-        TestLoadingLayers(map2);
-        TestLoadingLayers(map3);
+    public void TestAllLayers() throws InterruptedException, ExecutionException, IOException {
+        TestLoadingLayers(MapManager.Maps.MAP1);
+        TestLoadingLayers(MapManager.Maps.MAP2);
+        TestLoadingLayers(MapManager.Maps.MAP3);
     }
 
-    void TestLoadingMap(String mapName) {
-        try {
-            manager.loadMap(mapName);
-        } catch (ExecutionException | InterruptedException e) {
-            fail();
-        }
+    void TestLoadingMap(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {
+        manager.preLoadMap(mapName);
+        manager.loadMap(mapName);
+        TiledMap map = manager.getCurrentMap();
+        assertNotNull(map);
+        assertEquals(mapName, manager.getCurrentMapName());
+    }
+    
+    void TestNotPreLoadingMap(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {
+        manager.loadMap(mapName);
         TiledMap map = manager.getCurrentMap();
         assertNotNull(map);
         assertEquals(mapName, manager.getCurrentMapName());
     }
 
-    void TestLoadingLayers(String mapName) {
-        try {
-            manager.loadMap(mapName);
-        } catch (ExecutionException | InterruptedException e) {
-            fail();
-        }
+    void TestLoadingLayers(MapManager.Maps mapName) throws InterruptedException, ExecutionException, IOException {  
+        manager.preLoadMap(mapName);
+        manager.loadMap(mapName);
         assertNotNull(manager.getCollisionLayer());
         assertNotNull(manager.getPacManLayer());
         assertNotNull(manager.getMartySpawnLayer());
