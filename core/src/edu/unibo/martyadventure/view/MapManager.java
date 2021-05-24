@@ -4,7 +4,7 @@ package edu.unibo.martyadventure.view;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
