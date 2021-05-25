@@ -4,10 +4,9 @@ import java.util.Random;
 
 /*
  * Enum class that contains all Move included in the game
+ * moveNAME( name, damage, failRatio, reloadTime , Melee or Ranged, lastUse)
  */
-public enum Move {
-    // moveNAME(name, dmg, failRatio, reloadTime , Melee or Ranged, lastUse)
-    
+public enum Move {    
     //FIST, BRASS KNUCKLES MOVE
     HOOK("Gancio", 5, 10, 1, 'M', 0),
     JAB("Diretto", 6, 20, 1, 'M', 0),
@@ -76,7 +75,11 @@ public enum Move {
         this.lastUse = lastUse;
     }
 
-    // Check if the move can be used
+    /**
+     * Function to check if the move is usable
+     * @param fightTurn The fight turn where the move will be used    
+     * @return TRUE if isUsable, FALSE in the other case
+    */
     public boolean isUsable(int fightTurn) {
         if (lastUse + reloadTime < fightTurn || lastUse == 0) {
             this.lastUse = fightTurn;
@@ -85,7 +88,10 @@ public enum Move {
             return false;
     }
 
-    // Check if the move fail
+    /**
+     * Function to check if the move fail    
+     * @return FALSE if fail, TRUE if is usable
+    */
     public boolean testFailure() {
         // random number (0 to 100) if it's >= than failRatio success(TRUE), else
         // fail(FALSE)
@@ -94,12 +100,18 @@ public enum Move {
 
     // Random Functions
 
-    // Generic random move
+    /**
+     * Function to get a random Move    
+     * @return The Random Move
+    */
     public static Move getRandomMove() {
         return values()[(int) (Math.random() * values().length)];
     }
 
-    // Melee random move
+    /**
+     * Function to get a random MELEE Move    
+     * @return The Random MELEE Move
+    */
     public static Move getRandomMeleeMove() {
         Move MELEE;
         do {
@@ -109,7 +121,10 @@ public enum Move {
         return MELEE;
     }
 
-    // Ranged random move
+    /**
+     * Function to get a random RANGED Move    
+     * @return The Random RANGED Move
+    */
     public static Move getRandomRangedMove() {
         Move RANGED;
         do {

@@ -9,7 +9,7 @@ import edu.unibo.martyadventure.model.weapon.Move;
 import edu.unibo.martyadventure.model.weapon.Weapon;
 
 /*
- *  Main fight class (damage -> weapon.damageMoltiplier * move.getDamage)
+ *  Main fight class (damage = weapon.damageMoltiplier * move.getDamage)
  */
 
 public class Fight {
@@ -17,6 +17,11 @@ public class Fight {
     private EnemyCharacter enemy;
     private int turnCount;
 
+    /**
+     * The public constructor start a fight
+     * @param player The PlayerCharacter  
+     * @param enemy The EnemyCharacter 
+     */
     public Fight(PlayerCharacter player, EnemyCharacter enemy) {
         this.player = player;
         this.enemy = enemy;
@@ -36,24 +41,37 @@ public class Fight {
         return turnCount;
     }
 
-    //call attack function with enemy weapon, random move and player character
+    /**
+     * Call attack function with enemy weapon, random move and player character
+     */
     public void enemyAttack() {
         attack(enemy.getWeapon(), enemyMove(), player);
     }
-
-    //Random enemyMove choosen from the enemy MoveList
+    
+    /**
+     * @return The random Move choosen from the enemy MoveList
+     */
     public Move enemyMove() {
         Random rand = new Random();
         return enemy.getWeapon().getMoveList().get(rand.nextInt(enemy.getWeapon().getMoveList().size()));
 
     }
     
-    //call attack function with input Move
+    /**
+     * Call attack function with input Move
+     * @param inputMove The Move that the player wants to use
+    */
     public void playerAttack(Move inputMove) {
         attack(player.getWeapon(), inputMove, enemy);
 
     }
 
+    /**
+     *  
+     * @param weapon The striker's weapon
+     * @param move The striker's move
+     * @param character The opponent character
+     */
     public void attack(Weapon weapon, Move move, Character character) {
         
         //check if the move is usable
@@ -82,12 +100,20 @@ public class Fight {
         turnCount++;
     }
 
-    //check if the damage will kill the character (true -> the character isDead)
+    /**
+     * Check if the damage will kill the character
+     * @param damage The attack damage
+     * @param characterHP The Character HP
+     * @return TRUE if the character is Dead, FALSE in the other case
+     */
     public boolean isDead(int damage, int characterHP) {
         return damage >= characterHP;
     }
     
-    //The fight is ended return the WINNER 
+    /**
+     * The fight is ended
+     * @return The winner
+     */
     public Character endFight() {
         if (player.getHp() == 0) {
             return enemy;
