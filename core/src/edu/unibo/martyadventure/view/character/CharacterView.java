@@ -1,7 +1,9 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -33,6 +35,18 @@ public abstract class CharacterView implements ControllableEntity {
 
     // For physics collisions and such.
     private final Rectangle boundingBox;
+    
+    
+    private boolean collide(final Rectangle box) {
+        for (MapObject obj : this.collisionLayer.getObjects()) {
+            if (obj instanceof RectangleMapObject) {
+                if (box.overlaps(((RectangleMapObject)obj).getRectangle())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,

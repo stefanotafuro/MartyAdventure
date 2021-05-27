@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
