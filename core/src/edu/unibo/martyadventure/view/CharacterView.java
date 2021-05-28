@@ -43,12 +43,20 @@ public abstract class CharacterView implements ControllableEntity {
     private final MapLayer collisionLayer;
 
     /**
+     * Build a bounding box rectangle centered at the given position.
+     */
+    private Rectangle buildBoundingBoxAt(final Vector2 position) {
+        return new Rectangle(position.x + CharacterView.SPRITE_WITDTH / 2.0f,
+                position.y + CharacterView.SPRITE_HEIGHT / 2.0f, CharacterView.SPRITE_WITDTH,
+                CharacterView.SPRITE_HEIGHT);
+    }
+
+    /**
      * Test if the current box would collide with the map if centered at the given
      * position.
      */
     private boolean collision(final Vector2 position) {
-        final Rectangle testBox = new Rectangle(position.x, position.y, CharacterView.SPRITE_WITDTH,
-                CharacterView.SPRITE_HEIGHT);
+        final Rectangle testBox = buildBoundingBoxAt(position);
 
         for (MapObject obj : this.collisionLayer.getObjects()) {
             if (obj instanceof RectangleMapObject) {
@@ -79,8 +87,7 @@ public abstract class CharacterView implements ControllableEntity {
         this.animations = animations;
         this.frames = frames;
 
-        this.boundingBox = new Rectangle(initialPosition.x, initialPosition.y, CharacterView.SPRITE_WITDTH,
-                CharacterView.SPRITE_HEIGHT / 2);
+        this.boundingBox = buildBoundingBoxAt(initialPosition);
         this.collisionLayer = collisionLayer;
     }
 
