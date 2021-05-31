@@ -1,5 +1,7 @@
 package edu.unibo.martyadventure.view.character;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,10 +17,6 @@ import edu.unibo.martyadventure.view.entity.EntityState;
  */
 public abstract class CharacterView implements ControllableEntity {
 
-    // Sprite pixel sizes.
-    protected static final int SPRITE_WITDTH = 68;
-    protected static final int SPRITE_HEIGHT = 104;
-
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
@@ -32,14 +30,14 @@ public abstract class CharacterView implements ControllableEntity {
 
     private final Sprite sprite;
 
-    private final AnimationsPack animations;
-    private final FramesPack frames;
+    private final AnimationPack animations;
+    private float animationStartTime;
 
     private final Rectangle boundingBox;
 
 
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final Sprite sprite, final AnimationsPack animations, final FramesPack frames) {
+            final float maxSpeed, final Sprite sprite, final TextureRegion texture) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -53,12 +51,10 @@ public abstract class CharacterView implements ControllableEntity {
 
         this.sprite = sprite;
 
-        this.animations = animations;
-        this.frames = frames;
+        this.animations = new AnimationPack(texture, sprite.getRegionWidth(), sprite.getRegionHeight());
+        this.animationStartTime = AnimationPack.ANIMATION_START;
 
-        this.boundingBox = new Rectangle();
-        this.boundingBox.setCenter(initialPosition);
-        resetBoundingBoxSize();
+        this.boundingBox = new Rectangle(this.sprite.getBoundingRectangle());
     }
 
     /**
@@ -73,10 +69,10 @@ public abstract class CharacterView implements ControllableEntity {
     }
 
     /**
-     * Restore the character boudning box to it's original size.
+     * Restore the character bounding box to it's original size.
      */
     public void resetBoundingBoxSize() {
-        this.boundingBox.setSize(CharacterView.SPRITE_WITDTH, CharacterView.SPRITE_HEIGHT);
+        this.boundingBox.set(this.sprite.getBoundingRectangle());
     }
 
     /**
@@ -105,7 +101,8 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public void setCurrentPosition(final Vector2 position) {
         this.currentPosition = position;
-        this.boundingBox.setCenter(position);
+        this.sprite.setPosition(position.x, position.y);
+        this.boundingBox.set(this.sprite.getBoundingRectangle());
     }
 
     /**
@@ -123,10 +120,17 @@ public abstract class CharacterView implements ControllableEntity {
     }
 
     /**
-     * @return the current frame.
+     * @return calculate the current frame.
      */
     public TextureRegion getCurrentFrame() {
-        return null;
+        if (this.movementState == EntityState.WALKING) {
+            this.animationStartTime += Gdx.graphics.getDeltaTime();
+            return this.animations.getEntityDirectionAnimation(this.movementDirection)
+                    .getKeyFrame(this.animationStartTime);
+        } else {
+            this.animationStartTime = AnimationPack.ANIMATION_START;
+            return this.animations.getEntityDirectionIdle(this.movementDirection);
+        }
     }
 
     @Override
