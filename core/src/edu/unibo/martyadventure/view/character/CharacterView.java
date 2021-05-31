@@ -2,6 +2,7 @@ package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,6 +12,10 @@ import edu.unibo.martyadventure.controller.entity.ControllableEntity;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
 
+/**
+ * A character's base providing basic movement, interaction with given the map
+ * and visual representation.
+ */
 public abstract class CharacterView implements ControllableEntity {
 
     // Sprite pixel sizes.
@@ -35,12 +40,27 @@ public abstract class CharacterView implements ControllableEntity {
 
     // For physics collisions and such.
     private final Rectangle boundingBox;
-    
-    
-    private boolean collide(final Rectangle box) {
+    private final MapLayer collisionLayer;
+
+    /**
+     * Build a bounding box rectangle centered at the given position.
+     */
+    private Rectangle buildBoundingBoxAt(final Vector2 position) {
+        return new Rectangle(position.x + CharacterView.SPRITE_WITDTH / 2.0f,
+                position.y + CharacterView.SPRITE_HEIGHT / 2.0f, CharacterView.SPRITE_WITDTH,
+                CharacterView.SPRITE_HEIGHT);
+    }
+
+    /**
+     * Test if the current box would collide with the map if centered at the given
+     * position.
+     */
+    private boolean collision(final Vector2 position) {
+        final Rectangle testBox = buildBoundingBoxAt(position);
+
         for (MapObject obj : this.collisionLayer.getObjects()) {
             if (obj instanceof RectangleMapObject) {
-                if (box.overlaps(((RectangleMapObject)obj).getRectangle())) {
+                if (testBox.overlaps(((RectangleMapObject) obj).getRectangle())) {
                     return true;
                 }
             }
@@ -48,9 +68,9 @@ public abstract class CharacterView implements ControllableEntity {
         return false;
     }
 
-
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final Sprite sprite, final AnimationsPack animations, final FramesPack frames) {
+            final float maxSpeed, final Sprite sprite, final AnimationsPack animations, final FramesPack frames,
+            final MapLayer collisionLayer) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -67,8 +87,8 @@ public abstract class CharacterView implements ControllableEntity {
         this.animations = animations;
         this.frames = frames;
 
-        this.boundingBox = new Rectangle(initialPosition.x, initialPosition.y, CharacterView.SPRITE_WITDTH,
-                CharacterView.SPRITE_HEIGHT / 2);
+        this.boundingBox = buildBoundingBoxAt(initialPosition);
+        this.collisionLayer = collisionLayer;
     }
 
     @Override
@@ -76,15 +96,21 @@ public abstract class CharacterView implements ControllableEntity {
         // Increase the acceleration (clamped to it's max).
         this.velocity = Math.min(this.maxAccelleration, this.velocity + this.accellerationFactor * delta);
 
+        // Update the direction
+        this.movementDirection = direction;
+
         // Calculate the movement.
         Vector2 movement = Vector2.Zero;
         switch (direction) {
         case LEFT:
             movement.x = -1;
+            break;
         case RIGHT:
             movement.x = +1;
+            break;
         case UP:
             movement.x = -1;
+            break;
         case DOWN:
             movement.x = +1;
             break;
@@ -95,10 +121,20 @@ public abstract class CharacterView implements ControllableEntity {
         movement = movement.scl(this.velocity);
 
         // Calculate the next position from the currently next (old) one.
-        this.nextPosition = this.nextPosition.add(movement);
-        this.nextPosition = this.nextPosition.clamp(0, this.maxSpeed);
-        
-        
+        Vector2 testPosition = this.nextPosition.add(movement);
+        testPosition = testPosition.clamp(0, this.maxSpeed);
+
+        if (!collision(testPosition)) {
+            this.nextPosition = testPosition;
+            this.boundingBox.setPosition(testPosition);
+        }
+    }
+
+    /**
+     * Update the character status before rendering.
+     */
+    public void update() {
+        this.currentPosition = this.nextPosition;
     }
 
     @Override
