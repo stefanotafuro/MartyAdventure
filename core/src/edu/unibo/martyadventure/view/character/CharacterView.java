@@ -2,9 +2,6 @@ package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -38,39 +35,11 @@ public abstract class CharacterView implements ControllableEntity {
     private final AnimationsPack animations;
     private final FramesPack frames;
 
-    // For physics collisions and such.
     private final Rectangle boundingBox;
-    private final MapLayer collisionLayer;
 
-    /**
-     * Build a bounding box rectangle centered at the given position.
-     */
-    private Rectangle buildBoundingBoxAt(final Vector2 position) {
-        return new Rectangle(position.x + CharacterView.SPRITE_WITDTH / 2.0f,
-                position.y + CharacterView.SPRITE_HEIGHT / 2.0f, CharacterView.SPRITE_WITDTH,
-                CharacterView.SPRITE_HEIGHT);
-    }
-
-    /**
-     * Test if the current box would collide with the map if centered at the given
-     * position.
-     */
-    private boolean collision(final Vector2 position) {
-        final Rectangle testBox = buildBoundingBoxAt(position);
-
-        for (MapObject obj : this.collisionLayer.getObjects()) {
-            if (obj instanceof RectangleMapObject) {
-                if (testBox.overlaps(((RectangleMapObject) obj).getRectangle())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final Sprite sprite, final AnimationsPack animations, final FramesPack frames,
-            final MapLayer collisionLayer) {
+            final float maxSpeed, final Sprite sprite, final AnimationsPack animations, final FramesPack frames) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -87,8 +56,9 @@ public abstract class CharacterView implements ControllableEntity {
         this.animations = animations;
         this.frames = frames;
 
-        this.boundingBox = buildBoundingBoxAt(initialPosition);
-        this.collisionLayer = collisionLayer;
+        this.boundingBox = new Rectangle();
+        this.boundingBox.setSize(CharacterView.SPRITE_WITDTH, CharacterView.SPRITE_HEIGHT);
+        this.boundingBox.setCenter(initialPosition);
     }
 
     @Override
@@ -121,19 +91,13 @@ public abstract class CharacterView implements ControllableEntity {
         movement = movement.scl(this.velocity);
 
         // Calculate the next position from the currently next (old) one.
-        Vector2 testPosition = this.nextPosition.add(movement);
-        testPosition = testPosition.clamp(0, this.maxSpeed);
-
-        if (!collision(testPosition)) {
-            this.nextPosition = testPosition;
-            this.boundingBox.setPosition(testPosition);
-        }
+        this.nextPosition = this.nextPosition.add(movement).clamp(0, this.maxSpeed);
     }
 
     /**
-     * Update the character status before rendering.
+     * Move the character to the next position.
      */
-    public void update() {
+    public void goNextPosition() {
         this.currentPosition = this.nextPosition;
     }
 
@@ -159,6 +123,28 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public Vector2 getCurrentPosition() {
         return this.currentPosition;
+    }
+
+    /**
+     * @param position the position to set the character in.
+     */
+    public void setCurrentPosition(final Vector2 position) {
+        this.currentPosition = position;
+        this.boundingBox.setCenter(position);
+    }
+
+    /**
+     * @return the next precalculated position.
+     */
+    public Vector2 getNextPosition() {
+        return this.nextPosition;
+    }
+
+    /**
+     * @return the character collision bounding box.
+     */
+    public Rectangle getBoundingBox() {
+        return new Rectangle(this.boundingBox);
     }
 
     /**
