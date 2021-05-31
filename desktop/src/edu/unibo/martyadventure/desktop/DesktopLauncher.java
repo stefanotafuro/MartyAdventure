@@ -10,23 +10,26 @@ import edu.unibo.martyadventure.MartyAdventureGame;
 
 public class DesktopLauncher {
 
+    private static final double BASE_SCALING = 0.8;
+    private static final double SECONDARY_SCALING = 0.5625; // 9/16
+
+
     /**
      * Handle vertical and ultrawide displays by selecting the smallest dimension.
      */
-    private static int getBaseScale() {
+    private static int getHorizontalScale() {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        // Get the smallest dimension and scale it at 80%. Use doubles for better
-        // precision.
-        final double base = Math.min(screen.width, screen.width) / 5.0 * 4.0;
+        // Get the smallest dimension and scale it.
+        final double base = Math.min(screen.width, screen.width) * BASE_SCALING;
         return (int) Math.round(base);
     }
 
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("Marty's Adventure");
-        // Set the game window to the scaled ratio of 640x480.
-        final int base = getBaseScale();
-        config.setWindowedMode(base, (int) (base * 0.75));
+        // Set the game window to the scaled ratio of 3/4.
+        final int base = getHorizontalScale();
+        config.setWindowedMode(base, (int) Math.round(base * SECONDARY_SCALING));
 
         config.setForegroundFPS(60);
         new Lwjgl3Application(new MartyAdventureGame(), config);

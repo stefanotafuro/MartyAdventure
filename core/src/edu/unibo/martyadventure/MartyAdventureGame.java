@@ -13,7 +13,7 @@ public class MartyAdventureGame extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        img = new Texture("tests/badlogic.png");
     }
 
     @Override
