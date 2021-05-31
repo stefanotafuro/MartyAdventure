@@ -2,6 +2,7 @@ package edu.unibo.martyadventure.model.weapon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Factory class to create Weapon 
@@ -13,7 +14,7 @@ public class WeaponFactory {
      * Weapon public constructor 
      * @return The new weapon
      */
-    public static Weapon newWeapon(String name, String type, int damageMultiplier, List<Move> moveList) {
+    public static Weapon newWeapon(String name, Weapon.WeaponType type, int damageMultiplier, List<Move> moveList) {
         Weapon weapon = new Weapon(name, type, damageMultiplier, moveList);
         return weapon;
 
@@ -48,6 +49,7 @@ public class WeaponFactory {
             }
         } while (i < 4);
         weapon.setMoveList(moveList);
+        weapon.setType(new Random().nextBoolean() ? Weapon.WeaponType.MELEE : Weapon.WeaponType.RANGED);
         return weapon;
     }
 
@@ -68,6 +70,7 @@ public class WeaponFactory {
             }
         } while (i < 4);
         weapon.setMoveList(moveList);
+        weapon.setType(Weapon.WeaponType.MELEE);
         return weapon;
     }
     
@@ -89,6 +92,7 @@ public class WeaponFactory {
             }
         } while (i < 4);
         weapon.setMoveList(moveList);
+        weapon.setType(Weapon.WeaponType.RANGED);
         return weapon;
     }
 

@@ -6,7 +6,10 @@ import java.util.List;
 public class Weapon {
 
     private String name;
-    private String type;
+    public static enum WeaponType{
+        MELEE, RANGED;
+    }
+    WeaponType type;
     private int damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
@@ -18,7 +21,7 @@ public class Weapon {
      * @param moveList The list of possible moves of that weapon    
      * @return The new weapon
     */ 
-    public Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
+    public Weapon(String name, WeaponType type, int damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
@@ -34,11 +37,11 @@ public class Weapon {
         this.name = name;
     }
 
-    public String getType() {
+    public WeaponType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(WeaponType type) {
         this.type = type;
     }
 

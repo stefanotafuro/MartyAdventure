@@ -1,6 +1,5 @@
 package edu.unibo.martyadventure.model.character;
 
-import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.weapon.Weapon;
 
