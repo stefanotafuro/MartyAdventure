@@ -18,7 +18,7 @@ public class Weapon {
      * @param moveList The list of possible moves of that weapon    
      * @return The new weapon
     */ 
-    Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
+    public Weapon(String name, String type, int damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
