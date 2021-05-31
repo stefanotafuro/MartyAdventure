@@ -14,7 +14,7 @@ public class WeaponFactory {
      * Weapon public constructor 
      * @return The new weapon
      */
-    public static Weapon newWeapon(String name, Weapon.WeaponType type, int damageMultiplier, List<Move> moveList) {
+    public static Weapon newWeapon(String name, Weapon.WeaponType type, double damageMultiplier, List<Move> moveList) {
         Weapon weapon = new Weapon(name, type, damageMultiplier, moveList);
         return weapon;
 

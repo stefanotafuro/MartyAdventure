@@ -10,22 +10,31 @@ public class Weapon {
         MELEE, RANGED;
     }
     WeaponType type;
-    private int damageMultiplier;
+    private double damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
     /**
-     * Protected constructor
+     * Public constructor
      * @param name The name of the weapon
      * @param type The type of the weapon (Melee o Ranged)
      * @param damageMultiplier The multiplier that will be applied to the Move damage
      * @param moveList The list of possible moves of that weapon    
-     * @return The new weapon
     */ 
-    public Weapon(String name, WeaponType type, int damageMultiplier, List<Move> moveList) {
+    public Weapon(String name, WeaponType type, double damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
         setMoveList(moveList);
+    }
+    
+    /**
+     * Public constructor
+     * @param name The name of the weapon
+     * @param damageMultiplier The multiplier that will be applied to the Move damage 
+    */ 
+    public Weapon(String name, double damageMultiplier) {
+        this.name = name;
+        this.damageMultiplier = damageMultiplier;
     }
 
     //Getter & Setter
@@ -45,7 +54,7 @@ public class Weapon {
         this.type = type;
     }
 
-    public int getDamageMultiplier() {
+    public double getDamageMultiplier() {
         return damageMultiplier;
     }
 
