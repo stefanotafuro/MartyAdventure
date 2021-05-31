@@ -57,41 +57,26 @@ public abstract class CharacterView implements ControllableEntity {
         this.frames = frames;
 
         this.boundingBox = new Rectangle();
-        this.boundingBox.setSize(CharacterView.SPRITE_WITDTH, CharacterView.SPRITE_HEIGHT);
         this.boundingBox.setCenter(initialPosition);
+        resetBoundingBoxSize();
     }
 
-    @Override
-    public void calculateNextPosition(final EntityDirection direction, final float delta) {
-        // Increase the acceleration (clamped to it's max).
-        this.velocity = Math.min(this.maxAccelleration, this.velocity + this.accellerationFactor * delta);
+    /**
+     * Resize the character bounding box.
+     * 
+     * @param resizeWidth  percentage from 1.0 to 0.0 to resize the width to.
+     * @param resizeHeight percentage from 1.0 to 0.0 to resize the height to.
+     */
+    public void resizeBoundingBox(final float resizeWidth, final float resizeHeight) {
+        this.boundingBox.width *= resizeWidth;
+        this.boundingBox.height *= resizeHeight;
+    }
 
-        // Update the direction
-        this.movementDirection = direction;
-
-        // Calculate the movement.
-        Vector2 movement = Vector2.Zero;
-        switch (direction) {
-        case LEFT:
-            movement.x = -1;
-            break;
-        case RIGHT:
-            movement.x = +1;
-            break;
-        case UP:
-            movement.x = -1;
-            break;
-        case DOWN:
-            movement.x = +1;
-            break;
-        default:
-            throw new IllegalArgumentException("Illegal direction '" + direction + "'");
-        }
-
-        movement = movement.scl(this.velocity);
-
-        // Calculate the next position from the currently next (old) one.
-        this.nextPosition = this.nextPosition.add(movement).clamp(0, this.maxSpeed);
+    /**
+     * Restore the character boudning box to it's original size.
+     */
+    public void resetBoundingBoxSize() {
+        this.boundingBox.setSize(CharacterView.SPRITE_WITDTH, CharacterView.SPRITE_HEIGHT);
     }
 
     /**
@@ -99,16 +84,6 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public void goNextPosition() {
         this.currentPosition = this.nextPosition;
-    }
-
-    @Override
-    public void setState(final EntityState state) {
-        this.movementState = state;
-    }
-
-    @Override
-    public void setDirection(final EntityDirection direction) {
-        this.movementDirection = direction;
     }
 
     /**
@@ -152,5 +127,48 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public TextureRegion getCurrentFrame() {
         return null;
+    }
+
+    @Override
+    public void setState(final EntityState state) {
+        this.movementState = state;
+    }
+
+    @Override
+    public void setDirection(final EntityDirection direction) {
+        this.movementDirection = direction;
+    }
+
+    @Override
+    public void calculateNextPosition(final EntityDirection direction, final float delta) {
+        // Increase the acceleration (clamped to it's max).
+        this.velocity = Math.min(this.maxAccelleration, this.velocity + this.accellerationFactor * delta);
+
+        // Update the direction
+        this.movementDirection = direction;
+
+        // Calculate the movement.
+        Vector2 movement = Vector2.Zero;
+        switch (direction) {
+        case LEFT:
+            movement.x = -1;
+            break;
+        case RIGHT:
+            movement.x = +1;
+            break;
+        case UP:
+            movement.x = -1;
+            break;
+        case DOWN:
+            movement.x = +1;
+            break;
+        default:
+            throw new IllegalArgumentException("Illegal direction '" + direction + "'");
+        }
+
+        movement = movement.scl(this.velocity);
+
+        // Calculate the next position from the currently next (old) one.
+        this.nextPosition = this.nextPosition.add(movement).clamp(0, this.maxSpeed);
     }
 }
