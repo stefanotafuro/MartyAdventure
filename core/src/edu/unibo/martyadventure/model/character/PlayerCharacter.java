@@ -9,7 +9,7 @@ public class PlayerCharacter extends Character {
 
     public PlayerCharacter(Shoes shoes, String name, int hp, Weapon weapon, Vector2 position, float speed,
             Vector2 velocity) {
-        super(name, hp, weapon, position, speed, velocity);
+        super(name, hp, weapon);
         setShoes(shoes);
     }
 
