@@ -12,7 +12,7 @@ import edu.unibo.martyadventure.view.entity.EntityDirection;
  */
 class AnimationPack {
 
-    private static final float FRAME_DURATION = 0.3f;
+    private static final float FRAME_DURATION = 0.25f;
     private static final int DOWN_FRAMES_INDEX = 0;
     private static final int LEFT_FRAMES_INDEX = 1;
     private static final int RIGHT_FRAMES_INDEX = 2;
@@ -74,7 +74,6 @@ class AnimationPack {
      * @return the matching animation for the given entity direction.
      */
     public Animation<TextureRegion> getEntityDirectionAnimation(final EntityDirection direction) {
-        final int index;
         switch (direction) {
         case LEFT:
             return this.leftAnimations;
@@ -113,7 +112,7 @@ class AnimationPack {
     /**
      * @return the right-side idle frame.
      */
-    public TextureRegion getRightIdel() {
+    public TextureRegion getRightIdle() {
         return getRightAnimation().getKeyFrame(AnimationPack.ANIMATION_START);
     }
 

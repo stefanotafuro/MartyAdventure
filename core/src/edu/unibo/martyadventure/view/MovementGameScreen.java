@@ -77,7 +77,7 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(currentFrame, currentSprite.getX(), currentSprite.getY(), 1, 1);
+        mapRenderer.getBatch().draw(currentFrame, currentSprite.getX(), currentSprite.getY(), 3, 4);
         mapRenderer.getBatch().end();
         
     }
