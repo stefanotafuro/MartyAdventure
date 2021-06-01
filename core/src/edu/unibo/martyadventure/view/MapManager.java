@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 public class MapManager {
@@ -100,7 +101,7 @@ public class MapManager {
         if (currentMap != null) {
             currentMap.dispose();
         }
-        
+        /*
         //load the map with the toolbox and check
         if (preLoadedMap != null && preLoadedMapName.equals(mapName)) {
             currentMap = preLoadedMap.get();
@@ -113,7 +114,8 @@ public class MapManager {
             currentMapName = mapName;
             preLoadedMap = null;
             preLoadedMapName = null;
-        }
+        }*/
+        currentMap = new TmxMapLoader().load(mapPath);
         
         if (currentMap == null) {
             throw new IOException("Map not loaded, loading error");
@@ -154,6 +156,8 @@ public class MapManager {
 
         playerStartPosition.x = obj.getEllipse().x;
         playerStartPosition.y = obj.getEllipse().y;
+        playerStartPosition.x = playerStartPosition.x * UNIT_SCALE;
+        playerStartPosition.y = playerStartPosition.y * UNIT_SCALE;
     }
 
     /** @return the current loaded collision layer **/
