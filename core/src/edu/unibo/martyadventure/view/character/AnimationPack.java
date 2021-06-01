@@ -20,7 +20,10 @@ class AnimationPack {
 
     public static final float ANIMATION_START = 0.0f;
 
-    private final Animation<TextureRegion>[] animations;
+    private final Animation<TextureRegion> upAnimations;
+    private final Animation<TextureRegion> downAnimations;
+    private final Animation<TextureRegion> leftAnimations;
+    private final Animation<TextureRegion> rightAnimations;
 
 
     private Animation<TextureRegion> buildAnimation(final TextureRegion[][] textures, final int tilesIndex) {
@@ -33,39 +36,38 @@ class AnimationPack {
     public AnimationPack(final TextureRegion texture, final int tileWidth, final int tileHeight) {
         TextureRegion[][] textures = texture.split(tileWidth, tileHeight);
         // Workaround for no generic arrays in java
-        this.animations = (Animation<TextureRegion>[]) new Object[4];
-        this.animations[AnimationPack.DOWN_FRAMES_INDEX] = buildAnimation(textures, AnimationPack.DOWN_FRAMES_INDEX);
-        this.animations[AnimationPack.LEFT_FRAMES_INDEX] = buildAnimation(textures, AnimationPack.LEFT_FRAMES_INDEX);
-        this.animations[AnimationPack.RIGHT_FRAMES_INDEX] = buildAnimation(textures, AnimationPack.RIGHT_FRAMES_INDEX);
-        this.animations[AnimationPack.UP_FRAMES_INDEX] = buildAnimation(textures, AnimationPack.UP_FRAMES_INDEX);
+        this.downAnimations = buildAnimation(textures, AnimationPack.DOWN_FRAMES_INDEX);
+        this.leftAnimations= buildAnimation(textures, AnimationPack.LEFT_FRAMES_INDEX);
+        this.rightAnimations = buildAnimation(textures, AnimationPack.RIGHT_FRAMES_INDEX);
+        this.upAnimations= buildAnimation(textures, AnimationPack.UP_FRAMES_INDEX);
     }
 
     /**
      * @return the up-side walking animation
      */
     public Animation<TextureRegion> getUpAnimation() {
-        return this.animations[AnimationPack.UP_FRAMES_INDEX];
+        return this.upAnimations;
     }
 
     /**
      * @return the down-side walking animation
      */
     public Animation<TextureRegion> getDownAnimation() {
-        return this.animations[AnimationPack.DOWN_FRAMES_INDEX];
+        return this.downAnimations;
     }
 
     /**
      * @return the left-side walking animation
      */
     public Animation<TextureRegion> getLeftAnimation() {
-        return this.animations[AnimationPack.LEFT_FRAMES_INDEX];
+        return this.leftAnimations;
     }
 
     /**
      * @return the right-side walking animation.
      */
     public Animation<TextureRegion> getRightAnimation() {
-        return this.animations[AnimationPack.RIGHT_FRAMES_INDEX];
+        return this.rightAnimations;
     }
 
     /**
@@ -75,21 +77,16 @@ class AnimationPack {
         final int index;
         switch (direction) {
         case LEFT:
-            index = AnimationPack.LEFT_FRAMES_INDEX;
-            break;
+            return this.leftAnimations;
         case RIGHT:
-            index = AnimationPack.RIGHT_FRAMES_INDEX;
-            break;
+            return this.rightAnimations;
         case UP:
-            index = AnimationPack.UP_FRAMES_INDEX;
-            break;
+            return this.upAnimations;
         case DOWN:
-            index = AnimationPack.DOWN_FRAMES_INDEX;
-            break;
+            return this.downAnimations;
         default:
             throw new IllegalArgumentException("Unknow direction");
         }
-        return this.animations[index];
     }
 
     /**
