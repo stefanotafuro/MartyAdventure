@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.controller.entity.ControllableEntity;
+import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
 
@@ -24,11 +25,12 @@ public abstract class CharacterView implements ControllableEntity {
     private float velocity;
     private Vector2 currentPosition;
     private Vector2 nextPosition;
+    private final int frameWidth;
+    private final int frameHeight;
 
     private EntityState movementState;
     private EntityDirection movementDirection;
 
-    private final Sprite sprite;
 
     private final AnimationPack animations;
     private float animationStartTime;
@@ -37,7 +39,7 @@ public abstract class CharacterView implements ControllableEntity {
 
 
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final Sprite sprite, final TextureRegion texture) {
+            final float maxSpeed, final TextureRegion texture, int frameWidth, int frameHeight) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -48,13 +50,14 @@ public abstract class CharacterView implements ControllableEntity {
 
         this.movementState = EntityState.IDLE;
         this.movementDirection = EntityDirection.UP;
+        
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
 
-        this.sprite = sprite;
-
-        this.animations = new AnimationPack(texture, sprite.getRegionWidth(), sprite.getRegionHeight());
+        this.animations = new AnimationPack(texture, frameWidth, frameHeight);
         this.animationStartTime = AnimationPack.ANIMATION_START;
 
-        this.boundingBox = new Rectangle(this.sprite.getBoundingRectangle());
+        this.boundingBox = new Rectangle();
     }
 
     /**
@@ -72,7 +75,9 @@ public abstract class CharacterView implements ControllableEntity {
      * Restore the character bounding box to it's original size.
      */
     public void resetBoundingBoxSize() {
-        this.boundingBox.set(this.sprite.getBoundingRectangle());
+        this.boundingBox.set(currentPosition.x, currentPosition.y, 
+                this.frameWidth * MapManager.UNIT_SCALE, 
+                this.frameHeight * MapManager.UNIT_SCALE);
     }
 
     /**
@@ -80,13 +85,6 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public void goNextPosition() {
         setCurrentPosition(this.nextPosition);
-    }
-
-    /**
-     * @return the character sprite
-     */
-    public Sprite getSprite() {
-        return this.sprite;
     }
 
     /**
@@ -101,8 +99,7 @@ public abstract class CharacterView implements ControllableEntity {
      */
     public void setCurrentPosition(final Vector2 position) {
         this.currentPosition = position;
-        this.sprite.setPosition(position.x, position.y);
-        this.boundingBox.set(this.sprite.getBoundingRectangle());
+        resetBoundingBoxSize();
     }
 
     /**
@@ -174,6 +171,6 @@ public abstract class CharacterView implements ControllableEntity {
 
         // Calculate the next position from the currently next (old) one.
         this.nextPosition = this.nextPosition.add(movement);
-        System.err.println(direction + " "+velocity + " " + movement + " " + this.nextPosition);
+        //System.err.println(direction + " "+velocity + " " + movement + " " + this.nextPosition);
     }
 }

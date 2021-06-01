@@ -21,22 +21,13 @@ public class PlayerCharacterView extends CharacterView {
     
     
     public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, loadSprite(initialPosition), loadTexture());
+        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
     }
     
     private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
         Texture texture = new Texture(PLAYER_PATH);
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
-    }
-
-    private static Sprite loadSprite(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        Texture texture = new Texture(PLAYER_PATH);
-        TextureRegion[][] textureFrames = TextureRegion.split(texture, FRAME_WIDTH, FRAME_HEIGHT);
-        Sprite sprite = new Sprite(textureFrames[0][0].getTexture(), 0, 0, FRAME_WIDTH, FRAME_HEIGHT);
-        sprite.setPosition(initialPosition.x, initialPosition.y);
-        System.err.println(initialPosition);
-        return sprite;
     }
 
     

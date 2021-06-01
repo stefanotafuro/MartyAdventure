@@ -19,7 +19,6 @@ public class MovementGameScreen implements Screen {
     private PlayerCharacterView player;
     private PlayerInputProcessor inputProcessor;
     private TextureRegion currentFrame;
-    private Sprite currentSprite;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
     private static MapManager mapManager;
@@ -55,7 +54,6 @@ public class MovementGameScreen implements Screen {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        currentSprite = player.getSprite();
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player);
         Gdx.input.setInputProcessor(inputProcessor);
@@ -68,7 +66,7 @@ public class MovementGameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        camera.position.set(currentSprite.getX(),currentSprite.getY(),0f);
+        camera.position.set(player.getCurrentPosition().x,player.getCurrentPosition().y,0f);
         camera.update();
         currentFrame = player.getCurrentFrame();
         player.goNextPosition();
@@ -77,7 +75,7 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(currentFrame, currentSprite.getX(), currentSprite.getY(), 3, 4);
+        mapRenderer.getBatch().draw(currentFrame, player.getCurrentPosition().x,player.getCurrentPosition().y, 3, 4);
         mapRenderer.getBatch().end();
         
     }
