@@ -79,7 +79,7 @@ public abstract class CharacterView implements ControllableEntity {
      * Move the character to the next position.
      */
     public void goNextPosition() {
-        this.currentPosition = this.nextPosition;
+        setCurrentPosition(this.nextPosition);
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class CharacterView implements ControllableEntity {
     @Override
     public void calculateNextPosition(final EntityDirection direction, final float delta) {
         // Increase the acceleration (clamped to it's max).
-        this.velocity = Math.min(this.maxAccelleration, this.velocity + this.accellerationFactor * delta);
+        this.velocity = Math.min(this.maxAccelleration, this.accellerationFactor * delta);
 
         // Update the direction
         this.movementDirection = direction;
@@ -161,10 +161,10 @@ public abstract class CharacterView implements ControllableEntity {
             movement.x = +1;
             break;
         case UP:
-            movement.x = -1;
+            movement.y = +1;
             break;
         case DOWN:
-            movement.x = +1;
+            movement.y = -1;
             break;
         default:
             throw new IllegalArgumentException("Illegal direction '" + direction + "'");
@@ -173,6 +173,7 @@ public abstract class CharacterView implements ControllableEntity {
         movement = movement.scl(this.velocity);
 
         // Calculate the next position from the currently next (old) one.
-        this.nextPosition = this.nextPosition.add(movement).clamp(0, this.maxSpeed);
+        this.nextPosition = this.nextPosition.add(movement);
+        System.err.println(direction + " "+velocity + " " + movement + " " + this.nextPosition);
     }
 }
