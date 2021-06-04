@@ -1,8 +1,6 @@
 package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -45,8 +43,8 @@ public abstract class CharacterView implements ControllableEntity {
         this.maxSpeed = maxSpeed;
 
         this.velocity = 0.0f;
-        this.currentPosition = initialPosition;
-        this.nextPosition = initialPosition;
+        this.currentPosition = new Vector2(initialPosition);
+        this.nextPosition = new Vector2(initialPosition);
 
         this.movementState = EntityState.IDLE;
         this.movementDirection = EntityDirection.UP;
@@ -58,6 +56,7 @@ public abstract class CharacterView implements ControllableEntity {
         this.animationStartTime = AnimationPack.ANIMATION_START;
 
         this.boundingBox = new Rectangle();
+        calculateBoundingBoxPosition();
     }
 
     /**
@@ -74,10 +73,11 @@ public abstract class CharacterView implements ControllableEntity {
     /**
      * Restore the character bounding box to it's original size.
      */
-    public void resetBoundingBoxSize() {
-        this.boundingBox.set(currentPosition.x, currentPosition.y, 
-                this.frameWidth * MapManager.UNIT_SCALE, 
-                this.frameHeight * MapManager.UNIT_SCALE);
+    public void calculateBoundingBoxPosition() {
+        this.boundingBox.set(nextPosition.x + 1.7f ,
+                nextPosition.y, 
+                this.frameWidth * MapManager.UNIT_SCALE / 8, 
+                this.frameHeight * MapManager.UNIT_SCALE / 8);
     }
 
     /**
@@ -98,8 +98,7 @@ public abstract class CharacterView implements ControllableEntity {
      * @param position the position to set the character in.
      */
     public void setCurrentPosition(final Vector2 position) {
-        this.currentPosition = position;
-        resetBoundingBoxSize();
+        this.currentPosition = new Vector2 (position);
     }
 
     /**
@@ -170,7 +169,7 @@ public abstract class CharacterView implements ControllableEntity {
         movement = movement.scl(this.velocity);
 
         // Calculate the next position from the currently next (old) one.
-        this.nextPosition = this.nextPosition.add(movement);
-        //System.err.println(direction + " "+velocity + " " + movement + " " + this.nextPosition);
+        this.nextPosition.set(this.currentPosition.x + movement.x, this.currentPosition.y + movement.y);
+        calculateBoundingBoxPosition();
     }
 }
