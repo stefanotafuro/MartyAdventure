@@ -164,7 +164,7 @@
   </object>
  </objectgroup>
  <objectgroup id="7" name="BiffSpawn">
-  <object id="33" x="554" y="1302" width="37" height="34">
+  <object id="33" name="BiffSpawnObject" x="554" y="1302" width="37" height="34">
    <ellipse/>
   </object>
   <object id="34" x="321.5" y="1461" width="37" height="34">
