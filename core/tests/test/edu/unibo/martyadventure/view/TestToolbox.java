@@ -3,7 +3,6 @@ package test.edu.unibo.martyadventure.view;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
@@ -21,22 +20,83 @@ class TestToolbox {
     private static final String BADLOGIC_TEXTURE_PATH = "assets/tests/badlogic.png";
     private static final String TMX_MAP_PATH = "assets/Level/Map/map1.tmx";
 
-
     @Test
-    @Timeout(value = 2, unit = TimeUnit.SECONDS)
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
     @ExtendWith(GdxTestRunner.class)
-    void loadTextureBlocking() throws InterruptedException, ExecutionException {
-        Texture t = Toolbox.getTexture(BADLOGIC_TEXTURE_PATH).get();
+    void loadTextureBlocking() {
+        Texture t = Toolbox.getTexture(BADLOGIC_TEXTURE_PATH);
         assertNotNull(t);
 
         Toolbox.unloadAsset(BADLOGIC_TEXTURE_PATH);
     }
 
     @Test
-    @Timeout(value = 2, unit = TimeUnit.SECONDS)
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
     @ExtendWith(GdxTestRunner.class)
-    void loadTmxMapBlocking() throws InterruptedException, ExecutionException {
-        TiledMap m = Toolbox.getMap(TMX_MAP_PATH).get();
+    void loadTexturePreloadPartial() {
+        Toolbox.queueTexture(BADLOGIC_TEXTURE_PATH);
+        // Update only once... it shouldn't load the whole thing in one go, right?
+        Toolbox.updateAssetLoading();
+
+        Texture t = Toolbox.getTexture(BADLOGIC_TEXTURE_PATH);
+        assertNotNull(t);
+
+        Toolbox.unloadAsset(BADLOGIC_TEXTURE_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
+    void loadTexturePreloaded() {
+        Toolbox.queueTexture(BADLOGIC_TEXTURE_PATH);
+
+        // Load the whole thing
+        while (!Toolbox.isAssetLoaded(BADLOGIC_TEXTURE_PATH)) {
+            Toolbox.updateAssetLoading();
+        }
+
+        Texture t = Toolbox.getTexture(BADLOGIC_TEXTURE_PATH);
+        assertNotNull(t);
+
+        Toolbox.unloadAsset(BADLOGIC_TEXTURE_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
+    void loadTmxMapBlocking() {
+        TiledMap m = Toolbox.getMap(TMX_MAP_PATH);
+        assertNotNull(m);
+
+        Toolbox.unloadAsset(TMX_MAP_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
+    void loadTmxMapPreloadPartial() {
+        Toolbox.queueMap(TMX_MAP_PATH);
+        // Update only once... it shouldn't load the whole thing in one go, right?
+        Toolbox.updateAssetLoading();
+
+        TiledMap m = Toolbox.getMap(TMX_MAP_PATH);
+        assertNotNull(m);
+
+        Toolbox.unloadAsset(TMX_MAP_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
+    void loadTmxMapPreloaded() {
+        Toolbox.queueMap(TMX_MAP_PATH);
+
+        // Load the whole thing
+        while (!Toolbox.isAssetLoaded(TMX_MAP_PATH)) {
+            Toolbox.updateAssetLoading();
+        }
+
+        TiledMap m = Toolbox.getMap(TMX_MAP_PATH);
         assertNotNull(m);
 
         Toolbox.unloadAsset(TMX_MAP_PATH);
@@ -53,8 +113,44 @@ class TestToolbox {
     @Test
     @Timeout(value = 1, unit = TimeUnit.SECONDS)
     @ExtendWith(GdxTestRunner.class)
+    void loadPreloadedWrongTexture() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Toolbox.queueTexture(TMX_MAP_PATH);
+
+            // Load the whole thing
+            while (!Toolbox.isAssetLoaded(TMX_MAP_PATH)) {
+                Toolbox.updateAssetLoading();
+            }
+
+            @SuppressWarnings("unused")
+            Texture t = Toolbox.getTexture(TMX_MAP_PATH);
+        });
+        Toolbox.unloadAsset(TMX_MAP_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
     void loadBlockingWrongMap() {
         assertThrows(IllegalArgumentException.class, () -> Toolbox.getMap(BADLOGIC_TEXTURE_PATH));
+        Toolbox.unloadAsset(BADLOGIC_TEXTURE_PATH);
+    }
+
+    @Test
+    @Timeout(value = 1, unit = TimeUnit.SECONDS)
+    @ExtendWith(GdxTestRunner.class)
+    void loadPreloadedWrongMap() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Toolbox.queueMap(BADLOGIC_TEXTURE_PATH);
+
+            // Load the whole thing
+            while (!Toolbox.isAssetLoaded(BADLOGIC_TEXTURE_PATH)) {
+                Toolbox.updateAssetLoading();
+            }
+
+            @SuppressWarnings("unused")
+            TiledMap m = Toolbox.getMap(BADLOGIC_TEXTURE_PATH);
+        });
         Toolbox.unloadAsset(BADLOGIC_TEXTURE_PATH);
     }
 }
