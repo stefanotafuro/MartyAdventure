@@ -140,16 +140,16 @@
   <object id="241" x="592.333" y="1180.33" width="16.3333" height="15.3333"/>
   <object id="242" x="612.667" y="1197.33" width="18.6667" height="16.6667"/>
  </objectgroup>
- <objectgroup id="4" name="PacMan" visible="0">
+ <objectgroup id="4" name="PacMan">
   <object id="65" x="-1" y="215" width="20" height="94"/>
   <object id="66" x="1183" y="42" width="16" height="98"/>
  </objectgroup>
- <objectgroup id="5" name="MartySpawn" visible="0">
+ <objectgroup id="5" name="MartySpawn">
   <object id="69" name="MartySpawnObject" x="272" y="1574.67" width="22" height="24">
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup id="6" name="EnemySpawn" visible="0">
+ <objectgroup id="6" name="EnemySpawn">
   <object id="72" x="201.333" y="178.667" width="48" height="45.3333">
    <ellipse/>
   </object>
@@ -160,7 +160,7 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="BiffSpawn" visible="0">
+ <objectgroup id="7" name="BiffSpawn">
   <object id="78" name="BiffSpawnObject" x="617.333" y="755.333" width="28" height="25.3333">
    <ellipse/>
   </object>
