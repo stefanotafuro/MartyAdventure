@@ -19,7 +19,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
+import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+import edu.unibo.martyadventure.view.entity.EntityDirection;
 
 public class MovementGameScreen implements Screen {
     
@@ -34,8 +36,10 @@ public class MovementGameScreen implements Screen {
 }
     
     private PlayerCharacterView player;
+    private EnemyCharacterView biff;
     private PlayerInputProcessor inputProcessor;
-    private TextureRegion currentFrame;
+    private TextureRegion playerCurrentFrame;
+    private TextureRegion biffCurrentFrame;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
     private static MapManager mapManager;
@@ -72,6 +76,15 @@ public class MovementGameScreen implements Screen {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        
+        //player
+        try {
+            biff = new EnemyCharacterView(mapManager.getBiffStartPosition());
+            biff.setDirection(EntityDirection.DOWN);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player);
         Gdx.input.setInputProcessor(inputProcessor);
@@ -91,7 +104,8 @@ public class MovementGameScreen implements Screen {
         camera.position.set(player.getCurrentPosition().x,player.getCurrentPosition().y,0f);
         camera.update();
         //update the current player frame
-        currentFrame = player.getCurrentFrame();
+        playerCurrentFrame = player.getCurrentFrame();
+        biffCurrentFrame = biff.getCurrentFrame();
         
         //check collisions
         try {
@@ -110,7 +124,8 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(currentFrame, player.getCurrentPosition().x,player.getCurrentPosition().y, 3, 3);
+        mapRenderer.getBatch().draw(playerCurrentFrame, player.getCurrentPosition().x, player.getCurrentPosition().y, 3, 3);
+        mapRenderer.getBatch().draw(biffCurrentFrame, biff.getCurrentPosition().x, biff.getCurrentPosition().y, 3, 3);
         mapRenderer.getBatch().end();
         
     }
