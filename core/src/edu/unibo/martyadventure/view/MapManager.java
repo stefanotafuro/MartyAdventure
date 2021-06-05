@@ -9,11 +9,13 @@ import java.util.concurrent.Future;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 public class MapManager {
 
     private Vector2 playerStartPosition;
+    private Vector2 biffStartPosition;
 
 
     //map names
@@ -32,6 +34,7 @@ public class MapManager {
     private static final String ENEMY_SPAWN_LAYER_NAME = "EnemySpawn";
     private static final String BIFF_SPAWN_LAYER_NAME = "BiffSpawn";
     private static final String MARTY_SPAWN_OBJECT_NAME = "MartySpawnObject";
+    private static final String BIFF_SPAWN_OBJECT_NAME = "BiffSpawnObject";
 
     
     //unit scale
@@ -100,7 +103,7 @@ public class MapManager {
         if (currentMap != null) {
             currentMap.dispose();
         }
-        
+        /*
         //load the map with the toolbox and check
         if (preLoadedMap != null && preLoadedMapName.equals(mapName)) {
             currentMap = preLoadedMap.get();
@@ -113,7 +116,8 @@ public class MapManager {
             currentMapName = mapName;
             preLoadedMap = null;
             preLoadedMapName = null;
-        }
+        }*/
+        currentMap = new TmxMapLoader().load(mapPath);
         
         if (currentMap == null) {
             throw new IOException("Map not loaded, loading error");
@@ -154,6 +158,19 @@ public class MapManager {
 
         playerStartPosition.x = obj.getEllipse().x;
         playerStartPosition.y = obj.getEllipse().y;
+        playerStartPosition.x = playerStartPosition.x * UNIT_SCALE;
+        playerStartPosition.y = playerStartPosition.y * UNIT_SCALE;
+        
+     // Setting biff spawn point
+        obj = (EllipseMapObject) biffSpawnLayer.getObjects().get(BIFF_SPAWN_OBJECT_NAME);
+        if (biffStartPosition == null) {
+            biffStartPosition = new Vector2();
+        }
+
+        biffStartPosition.x = obj.getEllipse().x -20f;
+        biffStartPosition.y = obj.getEllipse().y;
+        biffStartPosition.x = biffStartPosition.x * UNIT_SCALE;
+        biffStartPosition.y = biffStartPosition.y * UNIT_SCALE;
     }
 
     /** @return the current loaded collision layer **/
@@ -164,6 +181,11 @@ public class MapManager {
     /** @return the player start position of the current map **/
     public Vector2 getPlayerStartPosition() {
         return playerStartPosition;
+    }
+    
+    /** @return biff start position of the current map **/
+    public Vector2 getBiffStartPosition() {
+        return biffStartPosition;
     }
 
     /** @return the current loaded marty layer **/
