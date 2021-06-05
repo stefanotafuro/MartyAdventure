@@ -10,19 +10,20 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.*;
 import edu.unibo.martyadventure.model.weapon.*;
+import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
 
 public class TestPlayerCharacter {
 
     String name = "Test";
     List<Move> moveList = new ArrayList<>(List.of(Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH));
-    Weapon weapon = new WeaponFactory().newWeapon("Gun", "Ranged", 10, moveList);
+    Weapon weapon = WeaponFactory.newWeapon("Gun", WeaponType.RANGED, 10, moveList);
     Shoes shoes = Shoes.FAST;
     int hp = 500;
     float speed = 2;
     Vector2 position = new Vector2(0, 0);
     Vector2 velocity = new Vector2(1, 1);
 
-    PlayerCharacter characterTest = new PlayerCharacter(shoes, name, hp, weapon, position, speed, velocity);
+    PlayerCharacter characterTest = new PlayerCharacter(shoes, name, hp, weapon);
 
     @Test
     void testLoadingPlayerCharacter() {
@@ -30,9 +31,6 @@ public class TestPlayerCharacter {
         assertEquals(name, characterTest.getName());
         assertEquals(hp, characterTest.getHp());
         assertEquals(weapon, characterTest.getWeapon());
-        assertEquals(position, characterTest.getPosition());
-        assertEquals(speed, characterTest.getSpeed());
-        assertEquals(velocity, characterTest.getVelocity());
         // System.err.println("testLoadingPlayerCharacter OK");
     }
 

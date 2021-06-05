@@ -10,7 +10,7 @@ import edu.unibo.martyadventure.model.character.EnemyCharacter;
 
 public class EnemyCharacterView extends CharacterView {
     
-    private static EnemyCharacter player = new EnemyCharacter(null, "Biff", 800, null, null, 0f, null );
+    private static EnemyCharacter player = new EnemyCharacter(null, "Biff", 800, null );
     private static final String PLAYER_PATH = "Characters/Biff/BiffMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;

@@ -16,7 +16,7 @@ import edu.unibo.martyadventure.model.character.Shoes;
  */
 public class PlayerCharacterView extends CharacterView {
 
-    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 100, null, null, 0f , null);
+    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 100, null);
     private static final String PLAYER_PATH = "Characters/Marty/MartyMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;

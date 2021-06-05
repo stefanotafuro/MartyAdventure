@@ -86,14 +86,14 @@ public class Fight {
         //ATTACK
         else {
             //check if the damage will kill the opponent using isDead function
-            if (isDead( weapon.getDamageMultiplier() * move.getDamage(), character.getHp())) {
+            if (isDead( (int) (weapon.getDamageMultiplier() * move.getDamage()), character.getHp())) {
                 //opponent is DEAD
                 character.setHp(0); 
                 endFight();
 
             } else {
                 //inflict attack on the opponent 
-                character.setHp(character.getHp() - (weapon.getDamageMultiplier() * move.getDamage()));
+                character.setHp((int) (character.getHp() - (weapon.getDamageMultiplier() * move.getDamage())));
             }
         }
         

@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 public class MapManager {
@@ -104,30 +103,12 @@ public class MapManager {
         if (currentMap != null) {
             currentMap.dispose();
         }
-<<<<<<< HEAD
-        /*
-        //load the map with the toolbox and check
-        if (preLoadedMap != null && preLoadedMapName.equals(mapName)) {
-            currentMap = preLoadedMap.get();
-            currentMapName = preLoadedMapName;
-            preLoadedMap = null;
-            preLoadedMapName = null;
-        }
-        else {
-            currentMap = Toolbox.getMap(mapPath).get();
-            currentMapName = mapName;
-            preLoadedMap = null;
-            preLoadedMapName = null;
-        }*/
-        currentMap = new TmxMapLoader().load(mapPath);
-        
-=======
 
         // load the map with the toolbox
+        Toolbox.queueMap(mapPath);
         currentMap = Toolbox.getMap(mapPath);
         currentMapName = mapName;
 
->>>>>>> a9b2cc432530a46f70bcc4bc89e489936ee2f479
         if (currentMap == null) {
             throw new IOException("Map not loaded, loading error");
         }
