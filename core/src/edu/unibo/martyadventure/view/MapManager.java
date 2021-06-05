@@ -4,7 +4,6 @@ package edu.unibo.martyadventure.view;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
@@ -17,12 +16,12 @@ public class MapManager {
     private Vector2 playerStartPosition;
     private Vector2 biffStartPosition;
 
-
-    //map names
-    public static enum Maps{
+    // map names
+    public static enum Maps {
         MAP1, MAP2, MAP3
     }
-    //map path
+
+    // map path
     private static final String MAP_1_PATH = "Level/Map/map1.tmx";
     private static final String MAP_2_PATH = "Level/Map/map2.tmx";
     private static final String MAP_3_PATH = "Level/Map/map3.tmx";
@@ -36,18 +35,15 @@ public class MapManager {
     private static final String MARTY_SPAWN_OBJECT_NAME = "MartySpawnObject";
     private static final String BIFF_SPAWN_OBJECT_NAME = "BiffSpawnObject";
 
-    
-    //unit scale
-    public final static float UNIT_SCALE = 1/16f;
-    
-    private Hashtable<Maps,String> mapTable;
-    
+    // unit scale
+    public final static float UNIT_SCALE = 1 / 16f;
+
+    private Hashtable<Maps, String> mapTable;
+
     private TiledMap currentMap;
-    private Future<TiledMap> preLoadedMap;
     private Maps currentMapName;
-    private Maps preLoadedMapName;
-    
-    //map layers
+
+    // map layers
     private MapLayer martySpawnLayer;
     private MapLayer collisionLayer;
     private MapLayer pacManLayer;
@@ -71,38 +67,44 @@ public class MapManager {
     public Maps getCurrentMapName() {
         return currentMapName;
     }
-    
-    /** Start loading the given map from file into memory 
+
+    /**
+     * Start loading the given map from file into memory
+     *
      * @param mapName the map name you want to start to load
-     * @throws IOException **/
+     * @throws IOException
+     **/
     public void preLoadMap(Maps mapName) throws IOException {
-      //get the map path from the table and check it
+        // get the map path from the table and check it
         String mapPath = mapTable.get(mapName);
         if (mapPath.isEmpty()) {
             throw new IOException("Invalid map path");
         }
-        preLoadedMap = Toolbox.getMap(mapPath);
-        preLoadedMapName = mapName;
+        Toolbox.queueMap(mapPath);
     }
 
-    /** Load the given map name from file to the local memory 
+    /**
+     * Load the given map name from file to the local memory
+     *
      * @return the current loaded map name
      * @param mapName the map name you want to load
-     * @throws ExecutionException 
+     * @throws ExecutionException
      * @throws InterruptedException
-     * @throws IOException **/
+     * @throws IOException
+     **/
     public void loadMap(Maps mapName) throws InterruptedException, ExecutionException, IOException {
 
-        //get the map path from the table and check it
+        // get the map path from the table and check it
         String mapPath = mapTable.get(mapName);
         if (mapPath.isEmpty()) {
             throw new IOException("Invalid map path");
         }
-        
-        //if we are using another map we dispose that and free memory
+
+        // if we are using another map we dispose that and free memory
         if (currentMap != null) {
             currentMap.dispose();
         }
+<<<<<<< HEAD
         /*
         //load the map with the toolbox and check
         if (preLoadedMap != null && preLoadedMapName.equals(mapName)) {
@@ -119,12 +121,18 @@ public class MapManager {
         }*/
         currentMap = new TmxMapLoader().load(mapPath);
         
+=======
+
+        // load the map with the toolbox
+        currentMap = Toolbox.getMap(mapPath);
+        currentMapName = mapName;
+
+>>>>>>> a9b2cc432530a46f70bcc4bc89e489936ee2f479
         if (currentMap == null) {
             throw new IOException("Map not loaded, loading error");
-        } 
+        }
 
-        
-        //getting layers
+        // getting layers
         collisionLayer = currentMap.getLayers().get(COLLISION_LAYER_NAME);
         if (collisionLayer == null) {
             throw new IOException("No collision layer loaded");
