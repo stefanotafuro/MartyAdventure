@@ -28,11 +28,11 @@ public class Weapon {
     }
     
     /**
-     * Public constructor
+     * Protected constructor
      * @param name The name of the weapon
      * @param damageMultiplier The multiplier that will be applied to the Move damage 
     */ 
-    public Weapon(String name, double damageMultiplier) {
+    protected Weapon(String name, double damageMultiplier) {
         this.name = name;
         this.damageMultiplier = damageMultiplier;
     }

@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class WeaponFactory {
 
+    private static final int RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER = 10;
+
     /**
      * Weapon public constructor 
      * @return The new weapon
@@ -26,39 +28,29 @@ public class WeaponFactory {
      * @param move1/2/3/4 The moves that compose the new moveList 
      * @return The new weapon
      */
-    public static Weapon createWeapon(Weapon weapon, Move move1, Move move2, Move move3, Move move4) {
+    public static Weapon setWeaponMove(Weapon weapon,Move move1, Move move2, Move move3, Move move4) {
         List<Move> moveList = new ArrayList<>(List.of(move1, move2, move3, move4));
         weapon.setMoveList(moveList);
         return weapon;
     }
 
     /**
-    * Set a random moveList on a specific Weapon
-    * @param weapon The weapon that will be modify
-    * @return The new weapon with random moveList
-    */
-    public static Weapon createRandomWeapon(Weapon weapon) {
-        List<Move> moveList = new ArrayList<>();
-        int i = 0;
-        Move move;
-        do {
-            move = Move.getRandomMove();
-            if (!moveList.contains(move)) {
-                moveList.add(i, move);
-                i++;
-            }
-        } while (i < 4);
-        weapon.setMoveList(moveList);
-        weapon.setType(new Random().nextBoolean() ? Weapon.WeaponType.MELEE : Weapon.WeaponType.RANGED);
-        return weapon;
+     * Create a new random weapon
+     * @param name
+     * @return
+     */
+    public static Weapon createRandomWeapon(String name) {
+        return createWeapon(name, new Random().nextBoolean() ? Weapon.WeaponType.MELEE : Weapon.WeaponType.RANGED);
     }
 
     /**
-     * Set a random MELEE moveList on a specific Weapon
-     * @param weapon The weapon that will be modify
-     * @return The new weapon with random MELEE moveList
+     * Used to create random weapon
+     * @param name
+     * @param type
+     * @return
      */
-    public static Weapon createRandomMeleeWeapon(Weapon weapon) {
+    private static Weapon createWeapon(String name, Weapon.WeaponType type) {
+        Weapon weapon = newWeapon(name, null, new Random().nextInt() % RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER , new ArrayList<>());
         List<Move> moveList = new ArrayList<>();
         int i = 0;
         Move move;
@@ -70,30 +62,28 @@ public class WeaponFactory {
             }
         } while (i < 4);
         weapon.setMoveList(moveList);
-        weapon.setType(Weapon.WeaponType.MELEE);
+        weapon.setType(type);
         return weapon;
     }
     
     /**
      * Set a random RANGED moveList on a specific Weapon
      * composed of 3 ranged move and 1 melee move
-     * @param weapon The weapon that will be modify
+     * @param name The weapon name that will be created
      * @return The new weapon with random MELEE moveList
      */
-    public static Weapon createRandomRangedWeapon(Weapon weapon) {
-        List<Move> moveList = new ArrayList<>(List.of(Move.getRandomMeleeMove()));
-        int i = 1;
-        Move move;
-        do {
-            move = Move.getRandomRangedMove();
-            if (!moveList.contains(move)) {
-                moveList.add(i, move);
-                i++;
-            }
-        } while (i < 4);
-        weapon.setMoveList(moveList);
-        weapon.setType(Weapon.WeaponType.RANGED);
-        return weapon;
+    public static Weapon createRandomRangedWeapon(String name) {
+        return createWeapon(name, Weapon.WeaponType.RANGED);
+    }
+    
+    /**
+     * Set a random MELEE moveList on a specific Weapon
+     * composed of 3 ranged move and 1 melee move
+     * @param name The weapon name that will be created
+     * @return The new weapon with random MELEE moveList
+     */
+    public static Weapon createRandomMeleeWeapon(String name) {
+        return createWeapon(name, Weapon.WeaponType.MELEE);
     }
     
     private WeaponFactory() {
