@@ -105,7 +105,6 @@ public class MapManager {
         }
 
         // load the map with the toolbox
-        Toolbox.queueMap(mapPath);
         currentMap = Toolbox.getMap(mapPath);
         currentMapName = mapName;
 
@@ -141,10 +140,7 @@ public class MapManager {
 
         // Setting Marty's spawn point
         EllipseMapObject obj = (EllipseMapObject) martySpawnLayer.getObjects().get(MARTY_SPAWN_OBJECT_NAME);
-        if (playerStartPosition == null) {
-            playerStartPosition = new Vector2();
-        }
-
+        playerStartPosition = new Vector2();
         playerStartPosition.x = obj.getEllipse().x;
         playerStartPosition.y = obj.getEllipse().y;
         playerStartPosition.x = playerStartPosition.x * UNIT_SCALE;
@@ -152,10 +148,7 @@ public class MapManager {
         
      // Setting biff spawn point
         obj = (EllipseMapObject) biffSpawnLayer.getObjects().get(BIFF_SPAWN_OBJECT_NAME);
-        if (biffStartPosition == null) {
-            biffStartPosition = new Vector2();
-        }
-
+        biffStartPosition = new Vector2();
         biffStartPosition.x = obj.getEllipse().x -20f;
         biffStartPosition.y = obj.getEllipse().y;
         biffStartPosition.x = biffStartPosition.x * UNIT_SCALE;

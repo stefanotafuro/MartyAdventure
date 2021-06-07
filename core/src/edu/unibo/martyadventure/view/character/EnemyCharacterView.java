@@ -11,7 +11,7 @@ import edu.unibo.martyadventure.model.character.EnemyCharacter;
 public class EnemyCharacterView extends CharacterView {
     
     private static EnemyCharacter player = new EnemyCharacter(null, "Biff", 800, null );
-    private static final String PLAYER_PATH = "Characters/Biff/BiffMove (1).png";
+    private static final String ENEMY_PATH = "Characters/Biff/BiffMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
 
@@ -21,7 +21,7 @@ public class EnemyCharacterView extends CharacterView {
     }
 
     private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = new Texture(PLAYER_PATH);
+        Texture texture = new Texture(ENEMY_PATH);
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
     }

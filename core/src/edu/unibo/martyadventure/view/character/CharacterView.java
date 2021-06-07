@@ -16,6 +16,7 @@ import edu.unibo.martyadventure.view.entity.EntityState;
  */
 public abstract class CharacterView implements ControllableEntity {
 
+    private static final float BOX_OFFSET = 1.7f;
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
@@ -74,7 +75,7 @@ public abstract class CharacterView implements ControllableEntity {
      * Restore the character bounding box to it's original size.
      */
     public void calculateBoundingBoxPosition() {
-        this.boundingBox.set(nextPosition.x + 1.7f ,
+        this.boundingBox.set(nextPosition.x + BOX_OFFSET ,
                 nextPosition.y, 
                 this.frameWidth * MapManager.UNIT_SCALE / 8, 
                 this.frameHeight * MapManager.UNIT_SCALE / 8);

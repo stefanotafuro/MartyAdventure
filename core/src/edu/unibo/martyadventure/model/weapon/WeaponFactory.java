@@ -95,5 +95,9 @@ public class WeaponFactory {
         weapon.setType(Weapon.WeaponType.RANGED);
         return weapon;
     }
+    
+    private WeaponFactory() {
+        
+    }
 
 }

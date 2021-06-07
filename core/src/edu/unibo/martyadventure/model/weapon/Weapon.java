@@ -14,13 +14,13 @@ public class Weapon {
     private List<Move> moveList = new ArrayList<>();
 
     /**
-     * Public constructor
+     * Protected constructor
      * @param name The name of the weapon
      * @param type The type of the weapon (Melee o Ranged)
      * @param damageMultiplier The multiplier that will be applied to the Move damage
      * @param moveList The list of possible moves of that weapon    
     */ 
-    public Weapon(String name, WeaponType type, double damageMultiplier, List<Move> moveList) {
+    protected Weapon(String name, WeaponType type, double damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
