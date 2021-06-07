@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
+
 /**
  * Factory class to create Weapon 
 */
@@ -50,12 +52,17 @@ public class WeaponFactory {
      * @return
      */
     private static Weapon createWeapon(String name, Weapon.WeaponType type) {
-        Weapon weapon = newWeapon(name, null, new Random().nextInt() % RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER , new ArrayList<>());
+        Weapon weapon = new Weapon(name,new Random().nextInt() % RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER);
         List<Move> moveList = new ArrayList<>();
         int i = 0;
         Move move;
         do {
-            move = Move.getRandomMeleeMove();
+            if (type == WeaponType.MELEE) {
+                move = Move.getRandomMeleeMove();
+            } else {
+                move = Move.getRandomRangedMove();
+            }
+            
             if (!moveList.contains(move)) {
                 moveList.add(i, move);
                 i++;

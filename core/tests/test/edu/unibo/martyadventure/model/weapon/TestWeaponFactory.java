@@ -27,8 +27,8 @@ public class TestWeaponFactory {
     }
 
     @Test
-    void testCreateWeapon() {
-        weaponTest = WeaponFactory.createWeapon(weaponTest, Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH);
+    void testSetWeaponMove() {
+        weaponTest = WeaponFactory.setWeaponMove(weaponTest, Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH);
         assertEquals(moveList, weaponTest.getMoveList());
 
         // System.err.println("testCreateWeapon ok");
@@ -36,7 +36,7 @@ public class TestWeaponFactory {
     
     @Test
     void testCreateRandomWeapon() {
-        weaponTest = WeaponFactory.createRandomWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
@@ -44,7 +44,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomMeleeWeapon() {
-        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all melee MOVE
         for (int i = 0; i < 4; i++) {
@@ -57,7 +57,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomRangedWeapon() {
-        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
