@@ -1,7 +1,6 @@
 package edu.unibo.martyadventure;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 
 import edu.unibo.martyadventure.view.MovementGameScreen;
 

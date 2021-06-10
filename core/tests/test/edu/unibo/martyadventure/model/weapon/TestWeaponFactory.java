@@ -33,10 +33,10 @@ public class TestWeaponFactory {
 
         // System.err.println("testCreateWeapon ok");
     }
-    
+
     @Test
     void testCreateRandomWeapon() {
-        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
@@ -44,7 +44,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomMeleeWeapon() {
-        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all melee MOVE
         for (int i = 0; i < 4; i++) {
@@ -57,7 +57,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomRangedWeapon() {
-        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
@@ -66,6 +66,15 @@ public class TestWeaponFactory {
 
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
+    }
+
+    @Test
+    void testRandomWeaponLevel() {
+        for (int level = 1; level < 4; level++) {
+            weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), level);
+            assertTrue(weaponTest.getDamageMultiplier() >= WeaponFactory.randomDamageMultiplier() * level
+                    || weaponTest.getDamageMultiplier() <= WeaponFactory.randomDamageMultiplier() * level);
+        }
     }
 
     // Function to check if there is a duplicate items in a moveList
