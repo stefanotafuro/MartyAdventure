@@ -6,38 +6,46 @@ import java.util.List;
 public class Weapon {
 
     private String name;
-    public static enum WeaponType{
+
+    public static enum WeaponType {
         MELEE, RANGED;
     }
+
     WeaponType type;
     private double damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
+    static final int MOVE_LIST_SIZE = 4;
+
     /**
      * Protected constructor
-     * @param name The name of the weapon
-     * @param type The type of the weapon (Melee o Ranged)
-     * @param damageMultiplier The multiplier that will be applied to the Move damage
-     * @param moveList The list of possible moves of that weapon    
-    */ 
+     * 
+     * @param name             The name of the weapon
+     * @param type             The type of the weapon (Melee o Ranged)
+     * @param damageMultiplier The multiplier that will be applied to the Move
+     *                         damage
+     * @param moveList         The list of possible moves of that weapon
+     */
     protected Weapon(String name, WeaponType type, double damageMultiplier, List<Move> moveList) {
         this.name = name;
         this.type = type;
         this.damageMultiplier = damageMultiplier;
         setMoveList(moveList);
     }
-    
+
     /**
      * Protected constructor
-     * @param name The name of the weapon
-     * @param damageMultiplier The multiplier that will be applied to the Move damage 
-    */ 
+     * 
+     * @param name             The name of the weapon
+     * @param damageMultiplier The multiplier that will be applied to the Move
+     *                         damage
+     */
     protected Weapon(String name, double damageMultiplier) {
         this.name = name;
         this.damageMultiplier = damageMultiplier;
     }
 
-    //Getter & Setter
+    // Getter & Setter
     public String getName() {
         return name;
     }
@@ -67,19 +75,16 @@ public class Weapon {
     }
 
     public void setMoveList(List<Move> moveList) {
-        if (moveList.size() == 4)
+        if (moveList.size() == MOVE_LIST_SIZE)
             this.moveList = moveList;
         else
             System.err.println("moveList ERROR");
     }
 
     /*
-    public void printWeapon() {
-        System.out.println(getName());
-        System.out.println(getType());
-        System.out.println(getDamageMultiplier());
-        System.out.println(getMoveList());
-    }
-    */
+     * public void printWeapon() { System.out.println(getName());
+     * System.out.println(getType()); System.out.println(getDamageMultiplier());
+     * System.out.println(getMoveList()); }
+     */
 
 }

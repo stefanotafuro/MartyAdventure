@@ -67,7 +67,7 @@ public class WeaponFactory {
                 moveList.add(i, move);
                 i++;
             }
-        } while (i < 4);
+        } while (i < Weapon.MOVE_LIST_SIZE);
         weapon.setMoveList(moveList);
         weapon.setType(type);
         return weapon;
