@@ -35,7 +35,7 @@ public class TestFight {
     void testPlayerAttack() {
         int turnCount = testFight.getTurnCount() + 1;
         int enemyHp = testFight.getEnemy().getHp();
-        int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage();
+        int damage = (int) (testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage());
         testFight.playerAttack(Move.HOOK);
         if (enemyHp != enemyCharacter.getHp()) {
             assertEquals(enemyHp - damage, enemyCharacter.getHp());
@@ -48,7 +48,7 @@ public class TestFight {
     @Test
     void testAttack() {
         int enemyHp = testFight.getEnemy().getHp();
-        int damage = testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.UPPERCUT.getDamage();
+        int damage = (int) (testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.UPPERCUT.getDamage());
         testFight.attack(testFight.getPlayer().getWeapon(), Move.UPPERCUT, testFight.getEnemy());
         if (enemyHp != enemyCharacter.getHp()) {
             assertEquals(enemyHp - damage, enemyCharacter.getHp());

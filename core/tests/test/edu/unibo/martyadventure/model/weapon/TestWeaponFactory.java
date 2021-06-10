@@ -3,19 +3,21 @@ package test.edu.unibo.martyadventure.model.weapon;
 import java.util.ArrayList;
 import java.util.List;
 import edu.unibo.martyadventure.model.weapon.*;
+import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class TestWeaponFactory {
     String name = "Weapon1";
-    String type = "Meele";
+    WeaponType type = WeaponType.MELEE;
     int damageMultiplier = 10;
     List<Move> moveList = new ArrayList<>(List.of(Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH));
-    Weapon weaponTest = new WeaponFactory().newWeapon(name, type, damageMultiplier, moveList);
+    Weapon weaponTest = WeaponFactory.newWeapon(name, type, damageMultiplier, moveList);
 
     @Test
     void testNewWeapon() {
-        weaponTest = new WeaponFactory().newWeapon(name, type, damageMultiplier, moveList);
+        weaponTest = WeaponFactory.newWeapon(name, type, damageMultiplier, moveList);
         assertEquals(name, weaponTest.getName());
         assertEquals(type, weaponTest.getType());
         assertEquals(damageMultiplier, weaponTest.getDamageMultiplier());
@@ -25,8 +27,8 @@ public class TestWeaponFactory {
     }
 
     @Test
-    void testCreateWeapon() {
-        weaponTest = new WeaponFactory().createWeapon(weaponTest, Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH);
+    void testSetWeaponMove() {
+        weaponTest = WeaponFactory.setWeaponMove(weaponTest, Move.UPPERCUT, Move.HOOK, Move.JAB, Move.SUPERMANPUNCH);
         assertEquals(moveList, weaponTest.getMoveList());
 
         // System.err.println("testCreateWeapon ok");
@@ -34,7 +36,7 @@ public class TestWeaponFactory {
     
     @Test
     void testCreateRandomWeapon() {
-        weaponTest = new WeaponFactory().createRandomWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
@@ -42,7 +44,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomMeleeWeapon() {
-        weaponTest = new WeaponFactory().createRandomMeleeWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all melee MOVE
         for (int i = 0; i < 4; i++) {
@@ -55,7 +57,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomRangedWeapon() {
-        weaponTest = new WeaponFactory().createRandomRangedWeapon(weaponTest);
+        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
