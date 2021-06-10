@@ -32,6 +32,7 @@ public class MovementGameScreen implements Screen {
         public static float physicalWidth;
         public static float physicalHeight;
         public static float aspectRatio;
+        public static int ZOOM = 30;
     }
 
     private PlayerCharacterView player;
@@ -53,7 +54,7 @@ public class MovementGameScreen implements Screen {
     @Override
     public void show() {
         // camera
-        setupViewport(50, 50);
+        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
 
@@ -177,7 +178,8 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        setupViewport(50, 50);
+        setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
 
     }
 
