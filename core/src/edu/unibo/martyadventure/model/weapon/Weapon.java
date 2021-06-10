@@ -10,7 +10,7 @@ public class Weapon {
     public static enum WeaponType {
         MELEE, RANGED;
     }
-
+    
     WeaponType type;
     private double damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
@@ -66,7 +66,7 @@ public class Weapon {
         return damageMultiplier;
     }
 
-    public void setDamageMultiplier(int damageMultiplier) {
+    public void setDamageMultiplier(double damageMultiplier) {
         this.damageMultiplier = damageMultiplier;
     }
 
