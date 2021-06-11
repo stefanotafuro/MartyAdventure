@@ -85,7 +85,7 @@ public class MovementGameScreen implements Screen {
         }
 
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
-        inputProcessor.setPlayer(player);
+        inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
 
     }
