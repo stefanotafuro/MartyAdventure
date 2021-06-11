@@ -1,6 +1,8 @@
 package edu.unibo.martyadventure.controller.entity;
 
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.badlogic.gdx.Input;
@@ -24,12 +26,14 @@ public class PlayerInputProcessor implements InputProcessor {
             EntityDirection.LEFT, EntityDirection.RIGHT };
     private static PlayerInputProcessor instance;
 
-    private HashMap<EntityDirection, Boolean> directionsMap;
+    private Map<EntityDirection, Boolean> directionsMap;
     private ControllableEntity playerEntity;
+
+    public static final EntityDirection DEFAULT_DIRECTION = PlayerInputProcessor.orderedDirections[0];
 
     /**
      * Get the player input processor singleton.
-     * 
+     *
      * There may be 1 and only 1 player input processor to prevent multiple
      * instances catching each's other's keycodes or sending multiple updates to the
      * same player
@@ -45,18 +49,17 @@ public class PlayerInputProcessor implements InputProcessor {
         resetState();
     }
 
-    private HashMap<EntityDirection, Boolean> getDirectionsMap() {
-        final HashMap<EntityDirection, Boolean> map = new HashMap<EntityDirection, Boolean>();
+    private Map<EntityDirection, Boolean> getDirectionsMap() {
+        final Map<EntityDirection, Boolean> map = new EnumMap<EntityDirection, Boolean>(EntityDirection.class);
         for (EntityDirection direction : EntityDirection.values()) {
             map.put(direction, false);
         }
-
         return map;
     }
 
     /**
      * Sets the given keycode to the given value
-     * 
+     *
      * @return true if the keycode was valid and the value has been set, false
      *         otherwise.
      */
@@ -89,9 +92,14 @@ public class PlayerInputProcessor implements InputProcessor {
 
     /**
      * @param player set the player entity to update.
+     * @param setDefaults if true, set the player to the default state and direction.
      */
-    public void setPlayer(final ControllableEntity player) {
+    public void setPlayer(final ControllableEntity player, final boolean setDefaults) {
         this.playerEntity = player;
+        if (setDefaults) {
+            this.playerEntity.setDirection(PlayerInputProcessor.DEFAULT_DIRECTION);
+            this.playerEntity.setState(EntityState.IDLE);
+        }
     }
 
     /**
@@ -111,7 +119,7 @@ public class PlayerInputProcessor implements InputProcessor {
 
     /**
      * Update the player entity state and set the next position.
-     * 
+     *
      * @param delta time since last update.
      */
     public void update(float delta) {
