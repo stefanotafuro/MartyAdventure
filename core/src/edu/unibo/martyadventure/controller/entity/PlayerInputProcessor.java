@@ -1,7 +1,6 @@
 package edu.unibo.martyadventure.controller.entity;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
