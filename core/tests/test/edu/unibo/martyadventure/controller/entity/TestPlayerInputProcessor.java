@@ -41,14 +41,6 @@ public class TestPlayerInputProcessor {
     private static final float DUMMY_DELTA = 0.1f;
 
 
-    private PlayerInputProcessor getInputProcessor() {
-        final PlayerInputProcessor inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
-        inputProcessor.resetState();
-        inputProcessor.setPlayer(new DummyControllableEntity(), true);
-        inputProcessor.update(DUMMY_DELTA);
-        return inputProcessor;
-    }
-
     private void assertDirection(final EntityDirection direction, final PlayerInputProcessor inputProcessor) {
         assertEquals(direction, ((DummyControllableEntity) inputProcessor.getPlayer()).direction);
     }
@@ -61,12 +53,27 @@ public class TestPlayerInputProcessor {
         assertEquals(state, ((DummyControllableEntity) inputProcessor.getPlayer()).state);
     }
 
+    /**
+     * Get a clean input processor.
+     */
+    private PlayerInputProcessor getInputProcessor() {
+        final PlayerInputProcessor inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
+        inputProcessor.resetState();
+        inputProcessor.setPlayer(new DummyControllableEntity(), true);
+        inputProcessor.update(DUMMY_DELTA);
+        return inputProcessor;
+    }
+
+    /**
+     * Tests that the direction is correctly updated after each key press and
+     * release.
+     */
     private void keyInput(final int keycode, final EntityDirection direction, final int differentKeycode) {
         final PlayerInputProcessor inputProcessor = getInputProcessor();
 
         // The direction mustn't be set before the update
         // (Unless it's the default direction).
-        inputProcessor.keyDown(keycode);
+        assertTrue(inputProcessor.keyDown(keycode));
         if (direction != PlayerInputProcessor.DEFAULT_DIRECTION) {
             assertDirectionNot(direction, inputProcessor);
         }
@@ -76,16 +83,20 @@ public class TestPlayerInputProcessor {
         assertDirection(direction, inputProcessor);
 
         // The direction must still be set after a key up.
-        inputProcessor.keyUp(keycode);
+        assertTrue(inputProcessor.keyUp(keycode));
         assertDirection(direction, inputProcessor);
 
         // Set a different direction
-        inputProcessor.keyDown(differentKeycode);
+        assertTrue(inputProcessor.keyDown(differentKeycode));
         // The direction must then be unset after the update.
         inputProcessor.update(DUMMY_DELTA);
         assertDirectionNot(direction, inputProcessor);
     }
 
+    /**
+     * Test that a precedent vertical direction key press is kept after horizontal
+     * keys are also pressed.
+     */
     private void verticalInputPriority(final int keycode, final EntityDirection direction) {
         final PlayerInputProcessor inputProcessor = getInputProcessor();
         assertTrue(inputProcessor.keyDown(keycode));
@@ -108,7 +119,7 @@ public class TestPlayerInputProcessor {
     }
 
     /**
-     * Test that vertical input is give priority to horizontal inputs.
+     * Test that vertical input is given priority to horizontal inputs.
      */
     @Test
     void testVerticalPriorityInput() {
@@ -117,7 +128,7 @@ public class TestPlayerInputProcessor {
     }
 
     /**
-     * Thes that the state is correctly set.
+     * Test that the state is correctly set.
      */
     @Test
     void testStatus() {
@@ -126,7 +137,7 @@ public class TestPlayerInputProcessor {
         assertState(EntityState.IDLE, inputProcessor);
 
         // The walking state mustn't be set before the update.
-        inputProcessor.keyDown(Keys.W);
+        assertTrue(inputProcessor.keyDown(Keys.W));
         assertState(EntityState.IDLE, inputProcessor);
 
         // The walking state must be set after the update.
@@ -134,7 +145,7 @@ public class TestPlayerInputProcessor {
         assertState(EntityState.WALKING, inputProcessor);
 
         // The walking state must still be set after a key up.
-        inputProcessor.keyUp(Keys.W);
+        assertTrue(inputProcessor.keyUp(Keys.W));
         assertState(EntityState.WALKING, inputProcessor);
 
         // The state must then be set to idle again after the update.
