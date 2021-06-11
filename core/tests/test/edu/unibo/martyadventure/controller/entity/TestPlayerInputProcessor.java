@@ -103,8 +103,8 @@ public class TestPlayerInputProcessor {
     void testKeyInput() {
         keyInput(Keys.W, EntityDirection.UP, Keys.S);
         keyInput(Keys.S, EntityDirection.DOWN, Keys.W);
-        keyInput(Keys.D, EntityDirection.LEFT, Keys.A);
-        keyInput(Keys.A, EntityDirection.RIGHT, Keys.D);
+        keyInput(Keys.A, EntityDirection.LEFT, Keys.D);
+        keyInput(Keys.D, EntityDirection.RIGHT, Keys.A);
     }
 
     /**
