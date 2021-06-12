@@ -24,17 +24,6 @@ import edu.unibo.martyadventure.view.entity.EntityDirection;
 
 public class MovementGameScreen implements Screen {
 
-    public static class VIEWPORT {
-        public static float viewportWidth;
-        public static float viewportHeight;
-        public static float virtualWidth;
-        public static float virtualHeight;
-        public static float physicalWidth;
-        public static float physicalHeight;
-        public static float aspectRatio;
-        public static int ZOOM = 30;
-    }
-
     private PlayerCharacterView player;
     private EnemyCharacterView biff;
     private PlayerInputProcessor inputProcessor;
@@ -54,9 +43,9 @@ public class MovementGameScreen implements Screen {
     @Override
     public void show() {
         // camera
-        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
+        ScreenManager.setupViewport(ScreenManager.VIEWPORT.ZOOM, ScreenManager.VIEWPORT.ZOOM);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
 
         // rederer
 
@@ -87,6 +76,10 @@ public class MovementGameScreen implements Screen {
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
+        
+        
+        
+        ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
 
     }
 
@@ -112,6 +105,11 @@ public class MovementGameScreen implements Screen {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // check collisions
+        if (player.getBoundingBox().overlaps(biff.getBoundingBox())) {
+            ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
         }
 
         // update the input processor
@@ -178,8 +176,8 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        ScreenManager.setupViewport(width / ScreenManager.VIEWPORT.ZOOM, height / ScreenManager.VIEWPORT.ZOOM);
+        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
 
     }
 
@@ -209,38 +207,6 @@ public class MovementGameScreen implements Screen {
 
     }
 
-    /**
-     * Setup the Viewport according due the screen dimensions
-     * 
-     * @param width
-     * @param height
-     */
-    private void setupViewport(int width, int height) {
-        // Make the viewport a percentage of the total display area
-        VIEWPORT.virtualWidth = width;
-        VIEWPORT.virtualHeight = height;
-
-        // Current viewport dimensions
-        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-
-        // pixel dimensions of display
-        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
-        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
-
-        // aspect ratio for current viewport
-        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
-
-        // update viewport if there could be skewing
-        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
-            // Letterbox left and right
-            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
-            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-        } else {
-            // letterbox above and below
-            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
-        }
-    }
+    
 
 }

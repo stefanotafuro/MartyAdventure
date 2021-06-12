@@ -33,4 +33,8 @@ public class PlayerCharacterView extends CharacterView {
         return textureFrames;
     }
 
+    public PlayerCharacter getPlayer() {
+        return player;
+    }
+
 }
