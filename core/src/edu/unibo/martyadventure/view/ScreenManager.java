@@ -17,14 +17,14 @@ public class ScreenManager {
         public static int ZOOM = 75;
     }
     
-    private static MovementGameScreen movementScreen = new MovementGameScreen();
-    private static Screen currentScreen = movementScreen;
+    private static MovementGameScreen movementScreen = new MovementGameScreen(MapManager.Maps.MAP1);
     
     private ScreenManager() {
         
     }
     
     public static void loadMovementScreen(){
+        System.err.println(movementScreen.hashCode());
         loadScreen(movementScreen);
     }
     
@@ -33,12 +33,8 @@ public class ScreenManager {
     }
     
     private static void loadScreen(Screen s){
-        if (currentScreen != s) {
-            currentScreen.pause();
-        }
-        currentScreen = s;
         Game game = (Game)Gdx.app.getApplicationListener();
-        game.setScreen(currentScreen);
+        game.setScreen(s);
     }
     
     /**

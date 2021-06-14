@@ -11,7 +11,7 @@ import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 
 public class EnemyCharacterView extends CharacterView {
     
-    private static EnemyCharacter enemy = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 800, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
+    private static EnemyCharacter enemy = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 1, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
     private static final String ENEMY_PATH = "Characters/Biff/BiffMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;

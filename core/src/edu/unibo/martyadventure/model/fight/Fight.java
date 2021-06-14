@@ -63,8 +63,10 @@ public class Fight {
     */
     public void playerAttack(Move inputMove) {
         attack(player.getWeapon(), inputMove, enemy);
+        enemyAttack();
 
     }
+
 
     /**
      *  
@@ -89,7 +91,7 @@ public class Fight {
             if (isDead( (int) (weapon.getDamageMultiplier() * move.getDamage()), character.getHp())) {
                 //opponent is DEAD
                 character.setHp(0); 
-                endFight();
+                fightWinner();
 
             } else {
                 //inflict attack on the opponent 
@@ -114,11 +116,14 @@ public class Fight {
      * The fight is ended
      * @return The winner
      */
-    public Character endFight() {
+    public Character fightWinner() {
         if (player.getHp() == 0) {
             return enemy;
         }
-        return player;
+        if (enemy.getHp() == 0) {
+            return player;
+        }
+        return null;
     }
 
 }

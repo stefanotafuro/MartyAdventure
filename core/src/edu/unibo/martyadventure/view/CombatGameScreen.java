@@ -6,15 +6,22 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -22,28 +29,43 @@ import edu.unibo.martyadventure.model.fight.Fight;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.entity.EntityState;
 
 public class CombatGameScreen implements Screen {
 
-    private Sprite player;
-    private Sprite enemy;
+    private static final int BASE_HEIGHT = 1080;
+    private static final int BASE_WIDTH = 1920;
+    private static final int TABLE_SCALE = 1;
+    private static final int TABLE_POSITION_Y = 135;
+    private static final int ROW_SPACE = 15;
+    private static final int BUTTON_SPACE = 220;
+    private static final Vector2 PLAYER_POSITION = new Vector2(220, 320);
+    private static final Vector2 ENEMY_POSITION = new Vector2(1360, 780);
+    private static final int SPRITE_DIMENSION = 300;
+    private static final String BG_PATH = "Level/Fight/fight_map1.png";
+
+    private Sprite playerSprite;
+    private Sprite enemySprite;
     private Fight fight;
-    private SpriteBatch batch;
     private Stage stage;
     private Viewport viewport;
-    private Skin skin;
-    private TextureAtlas atlas;
+    private Skin buttonSkin;
+    private TextureAtlas buttonAtlas;
+    private Texture background;
+    private Label playerHpLabel;
+    private Label enemyHpLabel;
+    
 
     public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
-        atlas = new TextureAtlas("skin/comic-ui.atlas");
-        skin = new Skin(Gdx.files.internal("skin/comic-ui.json"));
-        batch = new SpriteBatch();
+        background = Toolbox.getTexture(BG_PATH);
+        buttonAtlas = new TextureAtlas("skin/comic-ui.atlas");
+        buttonSkin = new Skin(Gdx.files.internal("skin/comic-ui.json"), buttonAtlas);
         setupPlayer(player);
         setupEnemy(enemy);
-        viewport = new FitViewport(ScreenManager.VIEWPORT.physicalWidth, ScreenManager.VIEWPORT.physicalHeight);
+        viewport = new FitViewport(BASE_WIDTH, BASE_HEIGHT);
         viewport.apply();
         fight = new Fight(player.getPlayer(), enemy.getEnemy());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(viewport);
     }
 
     @Override
@@ -52,61 +74,115 @@ public class CombatGameScreen implements Screen {
 
         // Create Table
         Table mainTable = new Table();
-        // Set table to fill stage
-        mainTable.setFillParent(true);
-        // Set alignment of contents in the table.
-        mainTable.top();
+        mainTable.setTransform(true);
+        mainTable.setPosition(stage.getWidth()/2, TABLE_POSITION_Y);
+        mainTable.scaleBy(TABLE_SCALE);
+        mainTable.center();
 
         // Create buttons
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton moveButton1 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(0).getName(), buttonSkin);
+        TextButton moveButton2 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(1).getName(), buttonSkin);
+        TextButton moveButton3 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(2).getName(), buttonSkin);
+        TextButton moveButton4 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(3).getName(), buttonSkin);
 
         // Add listeners to buttons
-        playButton.addListener(new ClickListener() {
+        moveButton1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(0));
             }
         });
-        exitButton.addListener(new ClickListener() {
+        
+        moveButton2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(1));
+            }
+        });
+        
+        moveButton3.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(2));
+            }
+        });
+        
+        moveButton4.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(3));
             }
         });
 
         // Add buttons to table
-        mainTable.add(playButton);
         mainTable.row();
-        mainTable.add(optionsButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(moveButton1).spaceRight(BUTTON_SPACE);
+        mainTable.add(moveButton2);
+        
+        mainTable.row().spaceTop(ROW_SPACE);
+        mainTable.add(moveButton3).spaceRight(BUTTON_SPACE);
+        mainTable.add(moveButton4);
 
         // Add table to stage
+
         stage.addActor(mainTable);
+        
+        //Create label
+        
+        playerHpLabel = new Label(String.valueOf(fight.getPlayer().getHp()), buttonSkin);
+        playerHpLabel.setFontScale(5);
+        playerHpLabel.setSize(100, 100);
+        playerHpLabel.setPosition(300, 300);
+        
+        enemyHpLabel = new Label(String.valueOf(fight.getEnemy().getHp()), buttonSkin);
+        enemyHpLabel.setFontScale(5);
+        enemyHpLabel.setSize(100, 100);
+        enemyHpLabel.setPosition(1300, 700);
+        
+        stage.addActor(playerHpLabel);
+        stage.addActor(enemyHpLabel);
 
     }
 
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        
+        enemyHpLabel.setText(fight.getEnemy().getHp());
+        playerHpLabel.setText(fight.getPlayer().getHp());
+        
+        if(fight.fightWinner() != null) {
+            if (fight.fightWinner() == fight.getPlayer()) {
+                fight.getPlayer().setWeapon(fight.getEnemy().getDropitem());
+                ScreenManager.loadMovementScreen();
+            }
+            else {
+                System.err.println("GAME OVER");
+                Gdx.app.exit();
+            }
+        }
         stage.act();
+        stage.getBatch().begin();
+        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight()); 
+        stage.getBatch().draw(playerSprite, PLAYER_POSITION.x, PLAYER_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
+        stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
+        stage.getBatch().end();
         stage.draw();
+
 
     }
 
     private void setupPlayer(PlayerCharacterView p) {
+        p.setState(EntityState.IDLE);
         p.setDirection(EntityDirection.UP);
-        this.player = new Sprite(p.getCurrentFrame());
+        this.playerSprite = new Sprite(p.getCurrentFrame());
     }
 
     private void setupEnemy(EnemyCharacterView e) {
         e.setDirection(EntityDirection.DOWN);
-        this.enemy = new Sprite(e.getCurrentFrame());
+        this.enemySprite = new Sprite(e.getCurrentFrame());
     }
 
     @Override
