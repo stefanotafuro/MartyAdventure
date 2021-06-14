@@ -11,8 +11,8 @@ import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
  */
 public class WeaponFactory {
 
+    private static final int RANDOM_WEAPON_MIN_DAMAGE = 5;
     private static final int RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER = 10;
-
 
     /**
      * Weapon public constructor
@@ -55,7 +55,7 @@ public class WeaponFactory {
      * @return
      */
     private static Weapon createWeapon(String name, Weapon.WeaponType type) {
-        Weapon weapon = new Weapon(name, new Random().nextInt() % RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER);
+        Weapon weapon = new Weapon(name, new Random().nextInt((RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER - RANDOM_WEAPON_MIN_DAMAGE) + 1) + RANDOM_WEAPON_MIN_DAMAGE);
         List<Move> moveList = new ArrayList<>();
         int i = 0;
         Move move;
@@ -98,5 +98,6 @@ public class WeaponFactory {
         return createWeapon(name, Weapon.WeaponType.MELEE);
     }
 
-    private WeaponFactory() {}
+    private WeaponFactory() {
+    }
 }
