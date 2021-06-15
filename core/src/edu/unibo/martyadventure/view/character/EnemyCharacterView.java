@@ -10,13 +10,13 @@ import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 
 public class EnemyCharacterView extends CharacterView {
-    
+
     private EnemyCharacter enemy;
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
 
-    
-    public EnemyCharacterView(Vector2 initialPosition, String enemy_path, EnemyCharacter enemy) throws InterruptedException, ExecutionException {
+    public EnemyCharacterView(Vector2 initialPosition, String enemy_path, EnemyCharacter enemy)
+            throws InterruptedException, ExecutionException {
         super(initialPosition, 20f, 5f, 70f, new TextureRegion(new Texture(enemy_path)), FRAME_WIDTH, FRAME_HEIGHT);
         this.enemy = enemy;
     }

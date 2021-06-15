@@ -8,9 +8,9 @@ import java.util.Random;
  */
 public enum Move {    
     //FIST, BRASS KNUCKLES MOVE
-    HOOK("Gancio", 5, 10, 1, 'M', 0),
-    JAB("Diretto", 6, 20, 1, 'M', 0),
-    UPPERCUT("Montate", 7, 30, 2, 'M', 0),
+    HOOK("Gancio", 5, 10, 0, 'M', 0),
+    JAB("Diretto", 6, 20, 0, 'M', 0),
+    UPPERCUT("Montante", 7, 30, 2, 'M', 0),
     SUPERMANPUNCH("SupermanPunch", 10, 40, 2, 'M', 0),
     
     //BASEBALL BAT, CROWBAR, SLEDGEHUMMER MOVE 
@@ -22,13 +22,14 @@ public enum Move {
     //KNIFE MOVE
     THRUST("Pugnalata", 7, 20, 2, 'M', 0 ),
     STAB("Coltellata", 8, 20, 2, 'M', 0 ),
-    TROW("Lancio", 15, 70, 5, 'R', 0),
+    TROW("Lancio", 15, 70, 4, 'R', 0),
     
     //REVOLVER MOVE
     GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, 'R', 0),
     BODYSHOT("Colpo al Corpo", 15, 30, 4, 'R', 0),
     HEADSHOT("Colpo alla Testa", 30, 70, 4, 'R', 0);
 
+    
     private final String name;
     private final int damage;
     private final int failRatio; // 0 success 100 fail
@@ -36,6 +37,8 @@ public enum Move {
     private final char MeleeOrRanged;
     private int lastUse; // last turn of use
     private Random rand = new Random();
+    
+    
 
     private Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
         this.name = name;
