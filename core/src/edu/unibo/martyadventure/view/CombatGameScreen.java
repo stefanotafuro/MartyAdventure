@@ -154,8 +154,7 @@ public class CombatGameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        enemyHpLabel.setText(fight.getEnemy().getHp() + " "
-                + fight.getPlayer().getWeapon().getMoveList().get(0).isUsable(fight.getTurnCount()));
+        enemyHpLabel.setText(fight.getEnemy().getHp());
         playerHpLabel.setText(fight.getPlayer().getHp());
         checkButton(moveButton1, 0);
         checkButton(moveButton2, 1);
