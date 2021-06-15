@@ -30,8 +30,8 @@ public class TestMove {
     void testIsUsable() {
         // HOOK1 reloadTime -> 1
         // HOOK1 lastUse -> 1
-        assertFalse(HOOK1.isUsable(2));
-        assertTrue(HOOK1.isUsable(3));
+        assertFalse(HOOK1.checkTurn(2));
+        assertTrue(HOOK1.checkTurn(3));
         // System.err.println("testIsUsable ok");
     }
 
