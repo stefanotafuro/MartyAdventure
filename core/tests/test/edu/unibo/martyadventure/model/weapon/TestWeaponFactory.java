@@ -71,17 +71,17 @@ public class TestWeaponFactory {
 
     @Test
     void testRandomWeaponLevel() {
-        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP1);
-        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL1)
-                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL1));
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP1);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL1)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL1));
 
-        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP2);
-        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL2)
-                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL2));
-        
-        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP3);
-        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL3)
-                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL3));
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP2);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL2)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL2));
+
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP3);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL3)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL3));
     }
 
     // Function to check if there is a duplicate items in a moveList

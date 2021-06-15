@@ -19,6 +19,8 @@ public class WeaponFactory {
     public static final float LEVEL1 = 1;
     public static final float LEVEL2 = 2;
     public static final float LEVEL3 = 3;
+    public final static double MIN_DAMAGE_MULTIPLIER = 1;
+    public final static double MAX_DAMAGE_MULTIPLIER = 3;
 
     /**
      * Weapon public constructor
@@ -113,7 +115,7 @@ public class WeaponFactory {
      * @param map  The map in which the weapon will be created
      * @return The new random weapon based on level
      */
-    public static Weapon randomWeaponLevel(String name, MapManager.Maps map) {
+    public static Weapon createRandomWeaponLevel(String name, MapManager.Maps map) {
         switch (map) {
         case MAP1:
             return createRandomWeapon(name, (double) (randomDamageMultiplier() * LEVEL1));
@@ -131,9 +133,7 @@ public class WeaponFactory {
      * @return Random double between MIN and MAX
      */
     public static double randomDamageMultiplier() {
-        double MIN = 1;
-        double MAX = 3;
-        return ThreadLocalRandom.current().nextDouble(MIN, MAX);
+        return ThreadLocalRandom.current().nextDouble(MIN_DAMAGE_MULTIPLIER, MAX_DAMAGE_MULTIPLIER);
     }
 
     private WeaponFactory() {

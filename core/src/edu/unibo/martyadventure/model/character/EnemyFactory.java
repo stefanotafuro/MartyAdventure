@@ -51,8 +51,8 @@ public class EnemyFactory {
 
     public EnemyCharacterView createBiff(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Tirapugni"), "Biff",
-                mapBiffHp.get(map), WeaponFactory.createRandomMeleeWeapon("punch"));
+        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Tirapugni", map), "Biff",
+                mapBiffHp.get(map), WeaponFactory.createRandomWeaponLevel("Pugno", map));
         EnemyCharacterView biff = new EnemyCharacterView(initialPosition, mapPath.get(map), b);
 
         return biff;
@@ -60,8 +60,8 @@ public class EnemyFactory {
 
     public EnemyCharacterView createEnemy(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Tirapugni"), "Bullo", mapBulloHp.get(map),
-                WeaponFactory.createRandomMeleeWeapon("punch"));
+        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Banana", map), "Bullo", mapBulloHp.get(map),
+                WeaponFactory.createRandomWeaponLevel("Ginocchio", map));
         EnemyCharacterView bullo = new EnemyCharacterView(initialPosition,
                 new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b);
 
