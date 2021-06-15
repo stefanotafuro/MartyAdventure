@@ -3,7 +3,6 @@ package edu.unibo.martyadventure.model.weapon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
 import edu.unibo.martyadventure.view.MapManager;
@@ -19,8 +18,8 @@ public class WeaponFactory {
     public static final float LEVEL1 = 1;
     public static final float LEVEL2 = 2;
     public static final float LEVEL3 = 3;
-    public final static double MIN_DAMAGE_MULTIPLIER = 1;
-    public final static double MAX_DAMAGE_MULTIPLIER = 3;
+    public final static int MIN_DAMAGE_MULTIPLIER = 1;
+    public final static int MAX_DAMAGE_MULTIPLIER = 3;
 
     /**
      * Weapon public constructor
@@ -122,7 +121,7 @@ public class WeaponFactory {
         case MAP2:
             return createRandomWeapon(name, (double) (randomDamageMultiplier() * LEVEL2));
         case MAP3:
-            return createRandomWeapon(name, (double) (randomDamageMultiplier() * LEVEL2));
+            return createRandomWeapon(name, (double) (randomDamageMultiplier() * LEVEL3));
         default:
             throw new IllegalArgumentException("Wrong Map");
         }
@@ -132,8 +131,8 @@ public class WeaponFactory {
      * 
      * @return Random double between MIN and MAX
      */
-    public static double randomDamageMultiplier() {
-        return ThreadLocalRandom.current().nextDouble(MIN_DAMAGE_MULTIPLIER, MAX_DAMAGE_MULTIPLIER);
+    public static float randomDamageMultiplier() {
+        return (new Random().nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER ; 
     }
 
     private WeaponFactory() {

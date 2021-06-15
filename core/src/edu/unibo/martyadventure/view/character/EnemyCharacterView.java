@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
-import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 
 public class EnemyCharacterView extends CharacterView {
 

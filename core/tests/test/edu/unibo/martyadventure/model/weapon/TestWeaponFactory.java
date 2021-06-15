@@ -68,6 +68,14 @@ public class TestWeaponFactory {
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
     }
+    
+    @Test
+    void stressTest() {
+        int n = 500;
+        for (int i=0; i<n; i++) {
+            testRandomWeaponLevel();
+        }
+    }
 
     @Test
     void testRandomWeaponLevel() {
