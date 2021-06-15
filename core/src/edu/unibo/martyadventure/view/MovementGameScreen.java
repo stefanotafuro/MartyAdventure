@@ -140,7 +140,11 @@ public class MovementGameScreen implements Screen {
                 ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
             }
         } else {
-            ScreenManager.changeMap(MapManager.Maps.MAP2);
+            if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
+                ScreenManager.changeMap(MapManager.Maps.MAP2);
+            } else {
+                ScreenManager.changeMap(MapManager.Maps.MAP3);
+            }
             ScreenManager.loadMovementScreen();
         }
 
