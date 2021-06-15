@@ -17,14 +17,17 @@ public class ScreenManager {
         public static int ZOOM = 75;
     }
     
-    private static MovementGameScreen movementScreen = new MovementGameScreen(MapManager.Maps.MAP1);
+    private static MovementGameScreen movementScreen;
     
     private ScreenManager() {
         
     }
     
+    public static void changeMap(MapManager.Maps map) {
+        movementScreen = new MovementGameScreen(map);
+    }
+    
     public static void loadMovementScreen(){
-        System.err.println(movementScreen.hashCode());
         loadScreen(movementScreen);
     }
     
