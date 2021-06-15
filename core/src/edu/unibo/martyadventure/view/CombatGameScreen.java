@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -54,7 +55,10 @@ public class CombatGameScreen implements Screen {
     private Texture background;
     private Label playerHpLabel;
     private Label enemyHpLabel;
-    
+    private TextButton moveButton1;
+    private TextButton moveButton2;
+    private TextButton moveButton3;
+    private TextButton moveButton4;
 
     public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
         background = Toolbox.getTexture(BG_PATH);
@@ -75,15 +79,15 @@ public class CombatGameScreen implements Screen {
         // Create Table
         Table mainTable = new Table();
         mainTable.setTransform(true);
-        mainTable.setPosition(stage.getWidth()/2, TABLE_POSITION_Y);
+        mainTable.setPosition(stage.getWidth() / 2, TABLE_POSITION_Y);
         mainTable.scaleBy(TABLE_SCALE);
         mainTable.center();
 
         // Create buttons
-        TextButton moveButton1 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(0).getName(), buttonSkin);
-        TextButton moveButton2 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(1).getName(), buttonSkin);
-        TextButton moveButton3 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(2).getName(), buttonSkin);
-        TextButton moveButton4 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(3).getName(), buttonSkin);
+        moveButton1 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(0).getName(), buttonSkin);
+        moveButton2 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(1).getName(), buttonSkin);
+        moveButton3 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(2).getName(), buttonSkin);
+        moveButton4 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(3).getName(), buttonSkin);
 
         // Add listeners to buttons
         moveButton1.addListener(new ClickListener() {
@@ -92,21 +96,21 @@ public class CombatGameScreen implements Screen {
                 fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(0));
             }
         });
-        
+
         moveButton2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(1));
             }
         });
-        
+
         moveButton3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(2));
             }
         });
-        
+
         moveButton4.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -118,7 +122,7 @@ public class CombatGameScreen implements Screen {
         mainTable.row();
         mainTable.add(moveButton1).spaceRight(BUTTON_SPACE);
         mainTable.add(moveButton2);
-        
+
         mainTable.row().spaceTop(ROW_SPACE);
         mainTable.add(moveButton3).spaceRight(BUTTON_SPACE);
         mainTable.add(moveButton4);
@@ -126,19 +130,19 @@ public class CombatGameScreen implements Screen {
         // Add table to stage
 
         stage.addActor(mainTable);
-        
-        //Create label
-        
+
+        // Create label
+
         playerHpLabel = new Label(String.valueOf(fight.getPlayer().getHp()), buttonSkin);
         playerHpLabel.setFontScale(5);
         playerHpLabel.setSize(100, 100);
         playerHpLabel.setPosition(300, 300);
-        
+
         enemyHpLabel = new Label(String.valueOf(fight.getEnemy().getHp()), buttonSkin);
         enemyHpLabel.setFontScale(5);
         enemyHpLabel.setSize(100, 100);
         enemyHpLabel.setPosition(1300, 700);
-        
+
         stage.addActor(playerHpLabel);
         stage.addActor(enemyHpLabel);
 
@@ -149,28 +153,42 @@ public class CombatGameScreen implements Screen {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        enemyHpLabel.setText(fight.getEnemy().getHp());
+
+        enemyHpLabel.setText(fight.getEnemy().getHp() + " "
+                + fight.getPlayer().getWeapon().getMoveList().get(0).isUsable(fight.getTurnCount()));
         playerHpLabel.setText(fight.getPlayer().getHp());
-        
-        if(fight.fightWinner() != null) {
+        checkButton(moveButton1, 0);
+        checkButton(moveButton2, 1);
+        checkButton(moveButton3, 2);
+        checkButton(moveButton4, 3);
+
+        if (fight.fightWinner() != null) {
             if (fight.fightWinner() == fight.getPlayer()) {
                 fight.getPlayer().setWeapon(fight.getEnemy().getDropitem());
                 ScreenManager.loadMovementScreen();
-            }
-            else {
+            } else {
                 System.err.println("GAME OVER");
                 Gdx.app.exit();
             }
         }
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight()); 
+        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
         stage.getBatch().draw(playerSprite, PLAYER_POSITION.x, PLAYER_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().end();
         stage.draw();
 
+    }
+
+    private void checkButton(TextButton button, int moveNumber) {
+        if (fight.getPlayer().getWeapon().getMoveList().get(moveNumber).isUsable(fight.getTurnCount())) {
+            button.setTouchable(Touchable.enabled);
+            button.setDisabled(false);
+        } else {
+            button.setTouchable(Touchable.disabled);
+            button.setDisabled(true);
+        }
 
     }
 
@@ -210,7 +228,7 @@ public class CombatGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        stage.dispose();
 
     }
 

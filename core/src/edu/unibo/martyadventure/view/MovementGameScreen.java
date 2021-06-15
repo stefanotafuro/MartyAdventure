@@ -3,8 +3,6 @@ package edu.unibo.martyadventure.view;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;

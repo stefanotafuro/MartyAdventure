@@ -80,9 +80,21 @@ public enum Move {
      * @param fightTurn The fight turn where the move will be used    
      * @return TRUE if isUsable, FALSE in the other case
     */
-    public boolean isUsable(int fightTurn) {
+    public boolean checkTurn(int fightTurn) {
         if (lastUse + reloadTime < fightTurn || lastUse == 0) {
             this.lastUse = fightTurn;
+            return true;
+        } else
+            return false;
+    }
+    
+    /**
+     * Function to check if the move is usable
+     * @param fightTurn The fight turn where the move will be used    
+     * @return TRUE if isUsable, FALSE in the other case
+    */
+    public boolean isUsable(int fightTurn) {
+        if (lastUse + reloadTime < fightTurn || lastUse == 0) {
             return true;
         } else
             return false;

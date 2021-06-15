@@ -77,7 +77,7 @@ public class Fight {
     public void attack(Weapon weapon, Move move, Character character) {
         
         //check if the move is usable
-        if (!move.isUsable(turnCount)) {
+        if (!move.checkTurn(turnCount)) {
             //System.out.println("Unusable Move");
 
         }

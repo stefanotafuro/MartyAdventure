@@ -24,7 +24,7 @@ public class EnemyFactory {
     private static final int BIFF_HP_2 = 200;
     private static final int BIFF_HP_3 = 300;
 
-    private static final int BULLO_HP_1 = 50;
+    private static final int BULLO_HP_1 = 500;
     private static final int BULLO_HP_2 = 100;
     private static final int BULLO_HP_3 = 150;
 
