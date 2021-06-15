@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.unibo.martyadventure.model.weapon.*;
 import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
+import edu.unibo.martyadventure.view.MapManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -70,11 +71,17 @@ public class TestWeaponFactory {
 
     @Test
     void testRandomWeaponLevel() {
-        for (int level = 1; level < 4; level++) {
-            weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), level);
-            assertTrue(weaponTest.getDamageMultiplier() >= WeaponFactory.randomDamageMultiplier() * level
-                    || weaponTest.getDamageMultiplier() <= WeaponFactory.randomDamageMultiplier() * level);
-        }
+        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP1);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL1)
+                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL1));
+
+        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP2);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL2)
+                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL2));
+        
+        weaponTest = WeaponFactory.randomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP3);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL3)
+                || weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.randomDamageMultiplier() * WeaponFactory.LEVEL3));
     }
 
     // Function to check if there is a duplicate items in a moveList

@@ -6,14 +6,18 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
+import edu.unibo.martyadventure.view.MapManager;
 
 /**
  * Factory class to create Weapon
  */
 
 public class WeaponFactory {
-
+    
     private static final int RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER = 10;
+    public static final float LEVEL1 = 1;
+    public static final float LEVEL2 = 2;
+    public static final float LEVEL3 = 3;
 
     /**
      * Weapon public constructor
@@ -104,11 +108,20 @@ public class WeaponFactory {
      * Create a new Weapon based on level
      * 
      * @param name  The weapon name that will be created
-     * @param level The level in which the weapon will be created
+     * @param map The map in which the weapon will be created
      * @return The new random weapon based on level
      */
-    public static Weapon randomWeaponLevel(String name, int level) {
-        return createRandomWeapon(name, randomDamageMultiplier() * level);
+    public static Weapon randomWeaponLevel(String name, MapManager.Maps map) {
+        switch (map) {
+            case MAP1:
+                return createRandomWeapon(name, (double)(randomDamageMultiplier() * LEVEL1));
+            case MAP2:
+                return createRandomWeapon(name, (double)(randomDamageMultiplier() * LEVEL2));
+            case MAP3:
+                return createRandomWeapon(name, (double)(randomDamageMultiplier() * LEVEL2));
+            default:
+                throw new IllegalArgumentException("Wrong Map");
+        }  
     }
 
     /**
