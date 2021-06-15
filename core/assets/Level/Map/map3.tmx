@@ -152,23 +152,11 @@
  <objectgroup id="6" name="EnemySpawn">
   <object id="178" x="297.455" y="817.273" width="36" height="33.7273"/>
   <object id="179" x="1098.18" y="744.727" width="35.6364" height="34.1818"/>
-  <object id="180" x="321.273" y="1461.09" width="32.1818" height="30.0909"/>
+  <object id="180" x="591.939" y="1468.42" width="32.1818" height="30.0909"/>
   <object id="181" x="555.455" y="1303.18" width="36.9091" height="34.0909"/>
  </objectgroup>
  <objectgroup id="7" name="BiffSpawn">
   <object id="33" name="BiffSpawnObject" x="554" y="1302" width="37" height="34">
-   <ellipse/>
-  </object>
-  <object id="34" x="321.5" y="1461" width="37" height="34">
-   <ellipse/>
-  </object>
-  <object id="35" x="1097.5" y="745" width="37" height="34">
-   <ellipse/>
-  </object>
-  <object id="36" x="297.5" y="817" width="37" height="34">
-   <ellipse/>
-  </object>
-  <object id="37" x="574.5" y="282" width="37" height="34">
    <ellipse/>
   </object>
  </objectgroup>
