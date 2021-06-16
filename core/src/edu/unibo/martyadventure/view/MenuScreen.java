@@ -17,13 +17,13 @@ import edu.unibo.martyadventure.view.MapManager.Maps;
 
 public class MenuScreen implements Screen {
 
-    private static final int ZOOM = 100;
+    private static final int ZOOM = 70;
     private Stage stage;
     private Viewport viewport;
     private Skin buttonSkin;
     private TextureAtlas buttonAtlas;
     private Texture background;
-    private static final String BG_PATH = "Level/Fight/fight_map1.png";
+    private static final String BG_PATH = "Level/Menu/Menu.png";
 
     public MenuScreen() {
         background = Toolbox.getTexture(BG_PATH);
@@ -40,6 +40,9 @@ public class MenuScreen implements Screen {
         TextButton exitButton = new TextButton("Esci", buttonSkin);
         stage.addActor(newGameButton);
         stage.addActor(exitButton);
+        newGameButton.setPosition(70, 550);
+        exitButton.setPosition(120, 450);
+
 
         newGameButton.addListener(new ClickListener() {
             @Override
@@ -75,8 +78,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

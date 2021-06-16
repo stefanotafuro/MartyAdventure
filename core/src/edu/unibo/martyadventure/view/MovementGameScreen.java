@@ -94,7 +94,6 @@ public class MovementGameScreen implements Screen {
                         mapManager.getCurrentMapName()));
 
             } catch (InterruptedException | ExecutionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -143,11 +142,14 @@ public class MovementGameScreen implements Screen {
         } else {
             if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
                 ScreenManager.changeMap(MapManager.Maps.MAP2);
-            } else {
+                ScreenManager.loadMovementScreen();
+            } else if (mapManager.getCurrentMapName() == MapManager.Maps.MAP2) {
                 ScreenManager.changeMap(MapManager.Maps.MAP3);
-                // TODO Win game screen
+                ScreenManager.loadMovementScreen();
+            } else if (mapManager.getCurrentMapName() == MapManager.Maps.MAP3) {
+                ScreenManager.loadMenuScreen();
             }
-            ScreenManager.loadMovementScreen();
+           
         }
 
         enemyList.forEach(enemy -> {
