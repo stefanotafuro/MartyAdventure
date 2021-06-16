@@ -78,6 +78,7 @@ public class Fight {
         Random rand = new Random();
         do {
             move = enemy.getWeapon().getMoveList().get(rand.nextInt(enemy.getWeapon().getMoveList().size()));
+
         } while (!isMoveUsable(enemy, move));
         return move;
     }
@@ -187,5 +188,4 @@ public class Fight {
         }
         return player;
     }
-
 }
