@@ -164,6 +164,12 @@ public class Fight {
         mapCharactersMove.get(character).replace(move, fightTurn);
     }
 
+    /**
+     * 
+     * @param character The character who wants to use the move
+     * @param move The Move that will be used
+     * @return If the move is usable by the character
+     */
     public boolean isMoveUsable(Character character, Move move) {
         return move.isUsable(turnCount, mapCharactersMove.get(character).get(move));
 
