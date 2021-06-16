@@ -1,5 +1,10 @@
 package edu.unibo.martyadventure.model.character;
 
+/*
+ * Enum class that contain the two different type 
+ * of shoes for change the speed of the player
+ * */
+
 public enum Shoes {
     FAST("Running", 10), SLOW("Normal", 5);
 

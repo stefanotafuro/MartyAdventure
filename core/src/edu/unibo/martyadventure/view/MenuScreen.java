@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.unibo.martyadventure.view.MapManager.Maps;
 
 public class MenuScreen implements Screen {
-    
+
     private static final int ZOOM = 100;
     private Stage stage;
     private Viewport viewport;
@@ -24,7 +24,7 @@ public class MenuScreen implements Screen {
     private TextureAtlas buttonAtlas;
     private Texture background;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
-    
+
     public MenuScreen() {
         background = Toolbox.getTexture(BG_PATH);
         buttonAtlas = new TextureAtlas("skin/comic-ui.atlas");
@@ -40,7 +40,7 @@ public class MenuScreen implements Screen {
         TextButton exitButton = new TextButton("Esci", buttonSkin);
         stage.addActor(newGameButton);
         stage.addActor(exitButton);
-        
+
         newGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -48,14 +48,14 @@ public class MenuScreen implements Screen {
                 ScreenManager.loadMovementScreen();
             }
         });
-        
+
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-        
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -63,11 +63,11 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        
+
         stage.getBatch().end();
         stage.draw();
 

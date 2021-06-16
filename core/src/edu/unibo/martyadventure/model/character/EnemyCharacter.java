@@ -9,8 +9,9 @@ public class EnemyCharacter extends Character {
         setDropitem(weapon);
     }
 
-    private Weapon dropitem;
-
+    private Weapon dropitem;//weapon drop from enemy
+    
+    // Getter & Setter
     public Weapon getDropitem() {
         return dropitem;
     }
