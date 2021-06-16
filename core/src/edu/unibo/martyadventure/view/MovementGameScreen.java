@@ -24,8 +24,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
-import edu.unibo.martyadventure.model.character.EnemyFactory;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
+import edu.unibo.martyadventure.view.character.EnemyViewFactory;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 
@@ -40,11 +40,11 @@ public class MovementGameScreen implements Screen {
     private OrthographicCamera camera;
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
-    private EnemyFactory eFactory;
+    private EnemyViewFactory eFactory;
     private Viewport viewport;
 
     public MovementGameScreen(MapManager.Maps map) {
-        eFactory = new EnemyFactory();
+        eFactory = new EnemyViewFactory();
         mapManager = new MapManager();
         try {
             mapManager.loadMap(map);

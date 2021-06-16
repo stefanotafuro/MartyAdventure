@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.model.character;
+package edu.unibo.martyadventure.view.character;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +7,11 @@ import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.math.Vector2;
 
+import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
-import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 
-public class EnemyFactory {
+public class EnemyViewFactory {
 
     private static final String BIFF_PATH_1 = "Characters/Biff/BiffMove (1).png";
     private static final String BIFF_PATH_2 = "Characters/Biff/BiffMove (2).png";
@@ -32,7 +32,7 @@ public class EnemyFactory {
     private Map<MapManager.Maps, Integer> mapBiffHp;
     private Map<MapManager.Maps, Integer> mapBulloHp;
 
-    public EnemyFactory() {
+    public EnemyViewFactory() {
         mapPath = new HashMap<>();
         mapPath.put(MapManager.Maps.MAP1, BIFF_PATH_1);
         mapPath.put(MapManager.Maps.MAP2, BIFF_PATH_2);
