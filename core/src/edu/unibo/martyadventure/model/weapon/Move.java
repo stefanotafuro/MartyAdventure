@@ -4,30 +4,30 @@ import java.util.Random;
 
 /*
  * Enum class that contains all Move included in the game
- * moveNAME( name, damage, failRatio, reloadTime , Melee or Ranged, lastUse)
+ * moveNAME( name, damage, failRatio, reloadTime , Melee or Ranged)
  */
 public enum Move {    
     //FIST, BRASS KNUCKLES MOVE
-    HOOK("Gancio", 5, 10, 0, 'M', 0),
-    JAB("Diretto", 6, 20, 0, 'M', 0),
-    UPPERCUT("Montante", 7, 30, 2, 'M', 0),
-    SUPERMANPUNCH("SupermanPunch", 10, 40, 2, 'M', 0),
+    HOOK("Gancio", 5, 10, 0, 'M'),
+    JAB("Diretto", 6, 20, 0, 'M'),
+    UPPERCUT("Montante", 7, 30, 2, 'M'),
+    SUPERMANPUNCH("SupermanPunch", 10, 40, 2, 'M'),
     
     //BASEBALL BAT, CROWBAR, SLEDGEHUMMER MOVE 
-    LOWDAMAGE("Colpo Debole", 5, 10, 0, 'M', 0),
-    HANDLESHOT("Colpo di Manico", 6, 20, 0, 'M', 0 ),
-    HIGHDAMAGE("Colpo Potente", 8, 30, 2, 'M', 0 ),
-    TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, 'M', 0),
+    LOWDAMAGE("Colpo Debole", 5, 10, 0, 'M'),
+    HANDLESHOT("Colpo di Manico", 6, 20, 0, 'M'),
+    HIGHDAMAGE("Colpo Potente", 8, 30, 2, 'M'),
+    TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, 'M'),
     
     //KNIFE MOVE
-    THRUST("Pugnalata", 7, 20, 2, 'M', 0 ),
-    STAB("Coltellata", 8, 20, 2, 'M', 0 ),
-    TROW("Lancio", 15, 70, 4, 'R', 0),
+    THRUST("Pugnalata", 7, 20, 2, 'M'),
+    STAB("Coltellata", 8, 20, 2, 'M'),
+    TROW("Lancio", 15, 70, 4, 'R'),
     
     //REVOLVER MOVE
-    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, 'R', 0),
-    BODYSHOT("Colpo al Corpo", 15, 30, 4, 'R', 0),
-    HEADSHOT("Colpo alla Testa", 30, 70, 4, 'R', 0);
+    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, 'R'),
+    BODYSHOT("Colpo al Corpo", 15, 30, 4, 'R'),
+    HEADSHOT("Colpo alla Testa", 30, 70, 4, 'R');
 
     
     private final String name;
@@ -35,18 +35,16 @@ public enum Move {
     private final int failRatio; // 0 success 100 fail
     private final int reloadTime;
     private final char MeleeOrRanged;
-    private int lastUse; // last turn of use
     private Random rand = new Random();
     
     
 
-    private Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged, int lastUse) {
+    private Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged) {
         this.name = name;
         this.damage = damage;
         this.failRatio = failRatio;
         this.reloadTime = reloadTime;
         this.MeleeOrRanged = MeleeOrRanged;
-        setLastUse(lastUse);
     }
 
     // Getter & Setter
@@ -66,29 +64,8 @@ public enum Move {
         return MeleeOrRanged;
     }
 
-    public int getLastUse() {
-        return lastUse;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setLastUse(int lastUse) {
-        this.lastUse = lastUse;
-    }
-
-    /**
-     * Function to check if the move is usable
-     * @param fightTurn The fight turn where the move will be used    
-     * @return TRUE if isUsable, FALSE in the other case
-    */
-    public boolean checkTurn(int fightTurn) {
-        if (lastUse + reloadTime < fightTurn || lastUse == 0) {
-            this.lastUse = fightTurn;
-            return true;
-        } else
-            return false;
     }
     
     /**
@@ -96,7 +73,7 @@ public enum Move {
      * @param fightTurn The fight turn where the move will be used    
      * @return TRUE if isUsable, FALSE in the other case
     */
-    public boolean isUsable(int fightTurn) {
+    public boolean isUsable(int fightTurn, int lastUse) {
         if (lastUse + reloadTime < fightTurn || lastUse == 0) {
             return true;
         } else
