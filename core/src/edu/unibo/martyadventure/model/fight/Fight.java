@@ -78,7 +78,8 @@ public class Fight {
         Random rand = new Random();
         do {
             move = enemy.getWeapon().getMoveList().get(rand.nextInt(enemy.getWeapon().getMoveList().size()));
-        } while (!move.isUsable(turnCount, mapCharactersMove.get(enemy).get(move)));
+
+        } while (!isMoveUsable(enemy, move));
         return move;
     }
 
@@ -102,7 +103,7 @@ public class Fight {
     public void attack(Weapon weapon, Move move, Character character) {
 
         // check if the move is usable
-        if (!move.isUsable(turnCount, mapCharactersMove.get(opponent(character)).get(move))) {
+        if (!isMoveUsable(opponent(character), move)) {
             // System.out.println("Unusable Move");
         }
         // check if the move fail
@@ -162,6 +163,11 @@ public class Fight {
      */
     public void setLastUse(Character character, Move move, int fightTurn) {
         mapCharactersMove.get(character).replace(move, fightTurn);
+    }
+
+    public boolean isMoveUsable(Character character, Move move) {
+        return move.isUsable(turnCount, mapCharactersMove.get(character).get(move));
+
     }
 
     /**
