@@ -3,6 +3,7 @@
  <imagelayer id="2" name="mappa2PNG">
   <image source="map2.png" width="1200" height="1600"/>
  </imagelayer>
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="40" height="53" tilewidth="30" tileheight="30" infinite="0" nextlayerid="8" nextobjectid="1385">
  <objectgroup id="3" name="Collision">
   <object id="61" x="629.333" y="1066.67" width="234.667" height="147.333"/>
   <object id="62" x="571" y="1066" width="20.5" height="148"/>
@@ -1088,6 +1089,7 @@
   <object id="1371" x="846.953" y="1217.1" width="2.77778" height="3.97778"/>
   <object id="1372" x="847.953" y="1220.8" width="2.28889" height="2.31111"/>
   <object id="1373" x="859.909" y="1211.83" width="2" height="9.42222"/>
+<<<<<<< HEAD
   <object id="1385" x="479.079" y="1251.48" width="9.375" height="2.75"/>
   <object id="1386" x="482.579" y="1252.98" width="2.375" height="3.5"/>
   <object id="1387" x="477.079" y="1231.48" width="13.375" height="18.25"/>
@@ -1188,6 +1190,8 @@
   <object id="1507" x="452.92" y="1208.98" width="2.77778" height="3.97778"/>
   <object id="1508" x="453.92" y="1212.67" width="2.28889" height="2.31111"/>
   <object id="1509" x="465.876" y="1203.71" width="2" height="9.42222"/>
+=======
+>>>>>>> dec361dacb810d70a1e24d0e1b5554bf3456f615
  </objectgroup>
  <objectgroup id="4" name="PacMan">
   <object id="65" x="-1" y="215" width="20" height="94"/>
