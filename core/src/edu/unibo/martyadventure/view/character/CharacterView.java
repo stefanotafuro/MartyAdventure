@@ -9,6 +9,7 @@ import edu.unibo.martyadventure.controller.entity.ControllableEntity;
 import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
+import edu.unibo.martyadventure.view.weapon.WeaponView;
 
 /**
  * A character's base providing basic movement, interaction with given the map
@@ -16,10 +17,12 @@ import edu.unibo.martyadventure.view.entity.EntityState;
  */
 public abstract class CharacterView implements ControllableEntity {
 
+    private static final int BOX_SCALE = 15;
     private static final float BOX_OFFSET = 1.7f;
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
+    private WeaponView weapon;
 
     private float velocity;
     private Vector2 currentPosition;
@@ -38,7 +41,7 @@ public abstract class CharacterView implements ControllableEntity {
 
 
     public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final TextureRegion texture, int frameWidth, int frameHeight) {
+            final float maxSpeed, final TextureRegion texture, int frameWidth, int frameHeight, WeaponView weapon) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -57,6 +60,7 @@ public abstract class CharacterView implements ControllableEntity {
         this.animationStartTime = AnimationPack.ANIMATION_START;
 
         this.boundingBox = new Rectangle();
+        this.weapon = weapon;
         calculateBoundingBoxPosition();
     }
 
@@ -77,8 +81,8 @@ public abstract class CharacterView implements ControllableEntity {
     public void calculateBoundingBoxPosition() {
         this.boundingBox.set(nextPosition.x + BOX_OFFSET ,
                 nextPosition.y, 
-                this.frameWidth * MapManager.UNIT_SCALE / 8, 
-                this.frameHeight * MapManager.UNIT_SCALE / 8);
+                this.frameWidth * MapManager.UNIT_SCALE / BOX_SCALE, 
+                this.frameHeight * MapManager.UNIT_SCALE / BOX_SCALE);
     }
 
     /**
@@ -172,5 +176,13 @@ public abstract class CharacterView implements ControllableEntity {
         // Calculate the next position from the currently next (old) one.
         this.nextPosition.set(this.currentPosition.x + movement.x, this.currentPosition.y + movement.y);
         calculateBoundingBoxPosition();
+    }
+
+    public WeaponView getWeaponView() {
+        return weapon;
+    }
+
+    public void setWeaponView(WeaponView weapon) {
+        this.weapon = weapon;
     }
 }

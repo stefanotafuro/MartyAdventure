@@ -26,6 +26,7 @@ import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
+import edu.unibo.martyadventure.view.weapon.WeaponView;
 
 public class CombatGameScreen implements Screen {
 
@@ -38,9 +39,15 @@ public class CombatGameScreen implements Screen {
     private static final int SPRITE_DIMENSION = 300;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
     private static final float BUTTON_SPACE = 30;
+    private static final int ENEMY_WEAPON_X = 1600;
+    private static final int PLAYER_WEAPON_X = 250;
+    private static final float PLAYER_WEAPON_Y = 700;
+    private static final float ENEMY_WEAPON_Y = 700;
 
     private Sprite playerSprite;
     private Sprite enemySprite;
+    private Texture playerWeapon;
+    private Texture enemyWeapon;
     private Fight fight;
     private Stage stage;
     private Viewport viewport;
@@ -53,6 +60,8 @@ public class CombatGameScreen implements Screen {
     private TextButton moveButton2;
     private TextButton moveButton3;
     private TextButton moveButton4;
+    private PlayerCharacterView playerView;
+    private EnemyCharacterView enemyView;
 
     public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
         background = Toolbox.getTexture(BG_PATH);
@@ -64,6 +73,10 @@ public class CombatGameScreen implements Screen {
         viewport.apply();
         fight = new Fight(player.getPlayer(), enemy.getEnemy());
         stage = new Stage(viewport);
+        playerWeapon = player.getWeaponView().getWeaponTexture();
+        enemyWeapon = enemy.getWeaponView().getWeaponTexture();
+        playerView = player;
+        enemyView = enemy;
     }
 
     @Override
@@ -185,7 +198,7 @@ public class CombatGameScreen implements Screen {
 
         if (fight.fightWinner() != null) {
             if (fight.fightWinner() == fight.getPlayer()) {
-                fight.getPlayer().setWeapon(fight.getEnemy().getDropitem());
+                playerView.setWeaponView(enemyView.getDropWeapon());
                 ScreenManager.loadMovementScreen();
             } else {
                 // TODO lose sreen
@@ -198,6 +211,8 @@ public class CombatGameScreen implements Screen {
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
         stage.getBatch().draw(playerSprite, PLAYER_POSITION.x, PLAYER_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
+        stage.getBatch().draw(playerWeapon, PLAYER_WEAPON_X, PLAYER_WEAPON_Y);
+        stage.getBatch().draw(enemyWeapon, ENEMY_WEAPON_X, ENEMY_WEAPON_Y);
         stage.getBatch().end();
         stage.draw();
 

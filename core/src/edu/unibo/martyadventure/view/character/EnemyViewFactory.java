@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
+import edu.unibo.martyadventure.view.weapon.WeaponView;
+import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
 
 public class EnemyViewFactory {
 
@@ -51,19 +53,23 @@ public class EnemyViewFactory {
 
     public EnemyCharacterView createBiff(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Tirapugni", map), "Biff",
-                mapBiffHp.get(map), WeaponFactory.createRandomWeaponLevel("Pugno", map));
-        EnemyCharacterView biff = new EnemyCharacterView(initialPosition, mapPath.get(map), b);
+        WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
+        WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
+        EnemyCharacter b = new EnemyCharacter(dropWeaponView.getWeapon(), "Biff",
+                mapBiffHp.get(map), weaponView.getWeapon());
+        EnemyCharacterView biff = new EnemyCharacterView(initialPosition, mapPath.get(map), b, weaponView, dropWeaponView);
 
         return biff;
     }
 
     public EnemyCharacterView createEnemy(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Banana", map), "Bullo", mapBulloHp.get(map),
-                WeaponFactory.createRandomWeaponLevel("Ginocchio", map));
+        WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
+        WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
+        EnemyCharacter b = new EnemyCharacter(dropWeaponView.getWeapon(), "Bullo", mapBulloHp.get(map),
+                weaponView.getWeapon());
         EnemyCharacterView bullo = new EnemyCharacterView(initialPosition,
-                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b);
+                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b, weaponView, dropWeaponView);
 
         return bullo;
     }
