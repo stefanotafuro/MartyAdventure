@@ -89,7 +89,8 @@ public class Fight {
      * @param inputMove The Move that the player wants to use
      */
     public void playerAttack(Move inputMove) {
-        attack(player.getWeapon(), inputMove, enemy);
+        if(isMoveUsable(player, inputMove))
+            attack(player.getWeapon(), inputMove, enemy);
         enemyAttack();
 
     }
@@ -101,13 +102,9 @@ public class Fight {
      * @param character The opponent character
      */
     public void attack(Weapon weapon, Move move, Character character) {
-
-        // check if the move is usable
-        if (!isMoveUsable(opponent(character), move)) {
-            // System.out.println("Unusable Move");
-        }
         // check if the move fail
-        else if (!move.testFailure()) {
+        if (!move.testFailure()) {
+            setLastUse(opponent(character), move, turnCount);
             // System.out.println("Move Fail");
         }
         // ATTACK
@@ -165,6 +162,12 @@ public class Fight {
         mapCharactersMove.get(character).replace(move, fightTurn);
     }
 
+    /**
+     * 
+     * @param character The character who wants to use the move
+     * @param move The Move that will be used
+     * @return If the move is usable by the character
+     */
     public boolean isMoveUsable(Character character, Move move) {
         return move.isUsable(turnCount, mapCharactersMove.get(character).get(move));
 
