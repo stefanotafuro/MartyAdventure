@@ -210,7 +210,7 @@ public class CombatGameScreen implements Screen {
     }
 
     private void checkButton(TextButton button, int moveNumber) {
-        if (fight.getPlayer().getWeapon().getMoveList().get(moveNumber).isUsable(fight.getTurnCount())) {
+        if (fight.isMoveUsable(fight.getPlayer(), fight.getPlayer().getWeapon().getMoveList().get(moveNumber))) {
             button.setTouchable(Touchable.enabled);
             button.setDisabled(false);
         } else {
