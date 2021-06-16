@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -29,16 +29,15 @@ import edu.unibo.martyadventure.view.entity.EntityState;
 
 public class CombatGameScreen implements Screen {
 
-    private static final int BASE_HEIGHT = 1080;
-    private static final int BASE_WIDTH = 1920;
-    private static final int TABLE_SCALE = 1;
-    private static final int TABLE_POSITION_Y = 135;
-    private static final int ROW_SPACE = 15;
-    private static final int BUTTON_SPACE = 220;
-    private static final Vector2 PLAYER_POSITION = new Vector2(220, 320);
-    private static final Vector2 ENEMY_POSITION = new Vector2(1360, 780);
+    private static final int ZOOM = 100;
+    private static final int TABLE_POSITION_Y = 190;
+    private static final int Y_TABLE_SPACE = 100;
+    private static final int X_TABLE_SPACE = 330;
+    private static final Vector2 PLAYER_POSITION = new Vector2(220, 470);
+    private static final Vector2 ENEMY_POSITION = new Vector2(1360, 1100);
     private static final int SPRITE_DIMENSION = 300;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
+    private static final float BUTTON_SPACE = 30;
 
     private Sprite playerSprite;
     private Sprite enemySprite;
@@ -61,7 +60,7 @@ public class CombatGameScreen implements Screen {
         buttonSkin = new Skin(Gdx.files.internal("skin/comic-ui.json"), buttonAtlas);
         setupPlayer(player);
         setupEnemy(enemy);
-        viewport = new FitViewport(BASE_WIDTH, BASE_HEIGHT);
+        viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
         viewport.apply();
         fight = new Fight(player.getPlayer(), enemy.getEnemy());
         stage = new Stage(viewport);
@@ -69,29 +68,52 @@ public class CombatGameScreen implements Screen {
 
     @Override
     public void show() {
-        Label move1Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(0).getReloadTime(),
-                buttonSkin, "title");
+        // Setup move labels
+        Label move1Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(0).getReloadTime()
+                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(0).getDamage(), buttonSkin, "title");
 
-        Label move2Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(1).getReloadTime(),
-                buttonSkin, "title");
+        Label move2Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(1).getReloadTime()
+                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(1).getDamage(), buttonSkin, "title");
 
-        Label move3Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(2).getReloadTime(),
-                buttonSkin, "title");
+        Label move3Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(2).getReloadTime()
+                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(2).getDamage(), buttonSkin, "title");
 
-        Label move4Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(3).getReloadTime(),
-                buttonSkin, "title");
+        Label move4Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(3).getReloadTime()
+                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(3).getDamage(), buttonSkin, "title");
 
+        // Setup info labels
         Label playerWeaponLabel;
         Label enemyWeaponLabel;
         DecimalFormat df = new DecimalFormat("###.#");
-        Gdx.input.setInputProcessor(stage);
+
+        playerWeaponLabel = new Label("Weapon: " + fight.getPlayer().getWeapon().getName() + " \nDmg: "
+                + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()), buttonSkin, "title");
+        playerWeaponLabel.setSize(100, 100);
+        playerWeaponLabel.setPosition(70, 700);
+
+        enemyWeaponLabel = new Label("Weapon: " + fight.getEnemy().getWeapon().getName() + " \nDmg: "
+                + df.format(fight.getEnemy().getWeapon().getDamageMultiplier()), buttonSkin, "title");
+        enemyWeaponLabel.setSize(100, 100);
+        enemyWeaponLabel.setPosition(1400, 700);
+
+        playerHpLabel = new Label("", buttonSkin, "title");
+        playerHpLabel.setSize(100, 100);
+        playerHpLabel.setPosition(70, 800);
+
+        enemyHpLabel = new Label("", buttonSkin, "title");
+        enemyHpLabel.setSize(100, 100);
+        enemyHpLabel.setPosition(1400, 800);
+
+        // add lables to the stage
+        stage.addActor(playerHpLabel);
+        stage.addActor(enemyHpLabel);
+        stage.addActor(enemyWeaponLabel);
+        stage.addActor(playerWeaponLabel);
 
         // Create Table
         Table mainTable = new Table();
         mainTable.setTransform(true);
         mainTable.setPosition(stage.getWidth() / 2, TABLE_POSITION_Y);
-        //mainTable.scaleBy(TABLE_SCALE);
-        mainTable.center();
 
         // Create buttons
         moveButton1 = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(0).getName(), buttonSkin);
@@ -130,45 +152,22 @@ public class CombatGameScreen implements Screen {
 
         // Add buttons to table
         mainTable.row();
-        mainTable.add(moveButton1);
-        mainTable.add(move1Label).spaceRight(BUTTON_SPACE);
-        mainTable.add(moveButton2);
-        mainTable.add(move2Label);
+        mainTable.add(moveButton1).align(Align.center).spaceRight(BUTTON_SPACE);
+        mainTable.add(move1Label).align(Align.right).spaceRight(X_TABLE_SPACE);
+        mainTable.add(moveButton2).align(Align.center).spaceRight(BUTTON_SPACE);
+        mainTable.add(move2Label).align(Align.right);
 
-        mainTable.row().spaceTop(ROW_SPACE);
-        mainTable.add(moveButton3);
-        mainTable.add(move3Label).spaceRight(BUTTON_SPACE);
-        mainTable.add(moveButton4);
-        mainTable.add(move4Label);
+        mainTable.row().spaceTop(Y_TABLE_SPACE);
+        mainTable.add(moveButton3).align(Align.center).spaceRight(BUTTON_SPACE);
+        mainTable.add(move3Label).align(Align.right).spaceRight(X_TABLE_SPACE);
+        mainTable.add(moveButton4).align(Align.center).spaceRight(BUTTON_SPACE);
+        mainTable.add(move4Label).align(Align.right);
 
         // Add table to stage
 
         stage.addActor(mainTable);
-
-        // Create label
-
-        playerHpLabel = new Label("", buttonSkin, "title");
-        playerHpLabel.setSize(100, 100);
-        playerHpLabel.setPosition(70, 700);
-
-        enemyHpLabel = new Label("", buttonSkin, "title");
-        enemyHpLabel.setSize(100, 100);
-        enemyHpLabel.setPosition(1200, 500);
-
-        playerWeaponLabel = new Label("Weapon : " + fight.getPlayer().getWeapon().getName() + " Dmg: "
-                + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()), buttonSkin, "title");
-        playerWeaponLabel.setSize(100, 100);
-        playerWeaponLabel.setPosition(70, 650);
-
-        enemyWeaponLabel = new Label("Weapon : " + fight.getEnemy().getWeapon().getName() + " Dmg: "
-                + df.format(fight.getEnemy().getWeapon().getDamageMultiplier()), buttonSkin, "title");
-        enemyWeaponLabel.setSize(100, 100);
-        enemyWeaponLabel.setPosition(1200, 450);
-
-        stage.addActor(playerHpLabel);
-        stage.addActor(enemyHpLabel);
-        stage.addActor(enemyWeaponLabel);
-        stage.addActor(playerWeaponLabel);
+        // Setup the input processor
+        Gdx.input.setInputProcessor(stage);
 
     }
 

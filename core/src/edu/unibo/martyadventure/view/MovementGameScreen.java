@@ -20,6 +20,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
 import edu.unibo.martyadventure.model.character.EnemyFactory;
@@ -39,6 +41,7 @@ public class MovementGameScreen implements Screen {
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
     private EnemyFactory eFactory;
+    private Viewport viewport;
 
     public MovementGameScreen(MapManager.Maps map) {
         eFactory = new EnemyFactory();
@@ -51,9 +54,8 @@ public class MovementGameScreen implements Screen {
         playerInitialPosition = new Vector2(mapManager.getPlayerStartPosition());
 
         // camera
-        ScreenManager.setupViewport(ScreenManager.VIEWPORT.ZOOM, ScreenManager.VIEWPORT.ZOOM);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
+        this.viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT, ScreenManager.VIEWPORT.Y_VIEWPORT, camera);
 
         // rederer
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
@@ -87,14 +89,16 @@ public class MovementGameScreen implements Screen {
         for (MapObject o : enemyLayer.getObjects()) {
             spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
             try {
-                enemyList.add(eFactory.createEnemy(new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE), mapManager.getCurrentMapName()));
-                        
+                enemyList.add(eFactory.createEnemy(
+                        new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE),
+                        mapManager.getCurrentMapName()));
+
             } catch (InterruptedException | ExecutionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        //set random direction for each enemy
+        // set random direction for each enemy
         enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(new Random().nextInt(3))));
     }
 
@@ -104,7 +108,6 @@ public class MovementGameScreen implements Screen {
     @Override
     public void show() {
 
-        resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
@@ -142,6 +145,7 @@ public class MovementGameScreen implements Screen {
                 ScreenManager.changeMap(MapManager.Maps.MAP2);
             } else {
                 ScreenManager.changeMap(MapManager.Maps.MAP3);
+                // TODO Win game screen
             }
             ScreenManager.loadMovementScreen();
         }
@@ -231,9 +235,7 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        ScreenManager.setupViewport(width / ScreenManager.VIEWPORT.ZOOM, height / ScreenManager.VIEWPORT.ZOOM);
-        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
-
+        viewport.update(width, height);
     }
 
     @Override
