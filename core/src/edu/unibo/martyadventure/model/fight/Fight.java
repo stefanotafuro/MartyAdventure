@@ -108,6 +108,7 @@ public class Fight {
         }
         // check if the move fail
         else if (!move.testFailure()) {
+            setLastUse(opponent(character), move, turnCount);
             // System.out.println("Move Fail");
         }
         // ATTACK
