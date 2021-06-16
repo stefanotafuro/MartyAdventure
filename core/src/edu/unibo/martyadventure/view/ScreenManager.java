@@ -12,6 +12,7 @@ public class ScreenManager {
     }
 
     private static MovementGameScreen movementScreen;
+    private static MenuScreen menu = new MenuScreen();
 
     private ScreenManager() {
 
@@ -23,6 +24,10 @@ public class ScreenManager {
 
     public static void loadMovementScreen() {
         loadScreen(movementScreen);
+    }
+    
+    public static void loadMenuScreen() {
+        loadScreen(menu);
     }
 
     public static void loadCombatScreen(CombatGameScreen screen) {

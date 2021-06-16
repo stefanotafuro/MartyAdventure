@@ -9,8 +9,7 @@ public class MartyAdventureGame extends Game {
 
     @Override
     public void create() {
-        ScreenManager.changeMap(MapManager.Maps.MAP1);
-        ScreenManager.loadMovementScreen();
+        ScreenManager.loadMenuScreen();
     }
 
     
