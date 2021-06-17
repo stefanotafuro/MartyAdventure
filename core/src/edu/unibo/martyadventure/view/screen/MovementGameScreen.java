@@ -43,7 +43,7 @@ public class MovementGameScreen implements Screen {
     private EnemyFactory eFactory;
 
 
-    public MovementGameScreen(MapManager.Maps map) {
+    public MovementGameScreen(Maps map) {
         eFactory = new EnemyFactory();
         mapManager = new MapManager();
         try {
@@ -138,10 +138,10 @@ public class MovementGameScreen implements Screen {
                 ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
             }
         } else {
-            if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
-                ScreenManager.changeMap(MapManager.Maps.MAP2);
+            if (mapManager.getCurrentMapName() == Maps.MAP1) {
+                ScreenManager.changeMap(Maps.MAP2);
             } else {
-                ScreenManager.changeMap(MapManager.Maps.MAP3);
+                ScreenManager.changeMap(Maps.MAP3);
             }
             ScreenManager.loadMovementScreen();
         }

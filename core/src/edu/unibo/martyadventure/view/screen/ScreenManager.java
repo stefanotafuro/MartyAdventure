@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.MapManager.Maps;
 
 public class ScreenManager {
@@ -32,7 +31,7 @@ public class ScreenManager {
         game.setScreen(s);
     }
 
-    public static void changeMap(MapManager.Maps map) {
+    public static void changeMap(Maps map) {
         movementScreen = new MovementGameScreen(map);
     }
 
