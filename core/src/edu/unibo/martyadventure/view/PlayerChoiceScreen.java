@@ -28,7 +28,7 @@ public class PlayerChoiceScreen implements Screen {
     private Skin buttonSkin;
     private TextureAtlas buttonAtlas;
     private Texture background;
-    private static final String BG_PATH = "Level/Menu/Menu.png";
+    private static final String BG_PATH = "Level/Menu/SelectCharacters.png";
     private static final float FRAME_DURATION = 0.1f;
     private float time=0;
     Animation<TextureRegion> biffAnimation;
@@ -114,7 +114,7 @@ public class PlayerChoiceScreen implements Screen {
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(biffAnimation.getKeyFrame(time), 500, 500);
+        stage.getBatch().draw(biffAnimation.getKeyFrame(time), 620, 420, 160,256);
         stage.getBatch().end();
         stage.draw();
     }
