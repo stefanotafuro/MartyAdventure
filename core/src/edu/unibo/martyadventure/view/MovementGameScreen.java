@@ -24,9 +24,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
-import edu.unibo.martyadventure.model.character.EnemyFactory;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
+import edu.unibo.martyadventure.view.character.EnemyViewFactory;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+import edu.unibo.martyadventure.view.character.PlayerViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 
 public class MovementGameScreen implements Screen {
@@ -40,12 +41,14 @@ public class MovementGameScreen implements Screen {
     private OrthographicCamera camera;
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
-    private EnemyFactory eFactory;
+    private EnemyViewFactory eFactory;
     private Viewport viewport;
 
     public MovementGameScreen(MapManager.Maps map) {
-        eFactory = new EnemyFactory();
+        eFactory = new EnemyViewFactory();
+        PlayerViewFactory pFactory = new PlayerViewFactory();
         mapManager = new MapManager();
+        
         try {
             mapManager.loadMap(map);
         } catch (InterruptedException | ExecutionException | IOException e1) {
@@ -63,7 +66,8 @@ public class MovementGameScreen implements Screen {
 
         // player
         try {
-            player = new PlayerCharacterView(playerInitialPosition);
+            playerInitialPosition = mapManager.getPlayerStartPosition();
+            player = pFactory.createPlayer(playerInitialPosition, map);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -106,7 +110,8 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-
+        
+        PlayerInputProcessor.getPlayerInputProcessor().resetState();
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);

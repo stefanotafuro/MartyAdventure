@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.model.character;
+package edu.unibo.martyadventure.view.character;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,11 +7,12 @@ import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.math.Vector2;
 
-import edu.unibo.martyadventure.model.weapon.WeaponFactory;
+import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.view.MapManager;
-import edu.unibo.martyadventure.view.character.EnemyCharacterView;
+import edu.unibo.martyadventure.view.weapon.WeaponView;
+import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
 
-public class EnemyFactory {
+public class EnemyViewFactory {
 
     private static final String BIFF_PATH_1 = "Characters/Biff/BiffMove (1).png";
     private static final String BIFF_PATH_2 = "Characters/Biff/BiffMove (2).png";
@@ -24,15 +25,15 @@ public class EnemyFactory {
     private static final int BIFF_HP_2 = 200;
     private static final int BIFF_HP_3 = 300;
 
-    private static final int BULLO_HP_1 = 500;
-    private static final int BULLO_HP_2 = 100;
-    private static final int BULLO_HP_3 = 150;
+    private static final int BULLO_HP_1 = 50;
+    private static final int BULLO_HP_2 = 10;
+    private static final int BULLO_HP_3 = 15;
 
     private Map<MapManager.Maps, String> mapPath;
     private Map<MapManager.Maps, Integer> mapBiffHp;
     private Map<MapManager.Maps, Integer> mapBulloHp;
 
-    public EnemyFactory() {
+    public EnemyViewFactory() {
         mapPath = new HashMap<>();
         mapPath.put(MapManager.Maps.MAP1, BIFF_PATH_1);
         mapPath.put(MapManager.Maps.MAP2, BIFF_PATH_2);
@@ -51,19 +52,23 @@ public class EnemyFactory {
 
     public EnemyCharacterView createBiff(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Tirapugni", map), "Biff",
-                mapBiffHp.get(map), WeaponFactory.createRandomWeaponLevel("Pugno", map));
-        EnemyCharacterView biff = new EnemyCharacterView(initialPosition, mapPath.get(map), b);
+        WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
+        WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
+        EnemyCharacter b = new EnemyCharacter(dropWeaponView.getWeapon(), "Biff",
+                mapBiffHp.get(map), weaponView.getWeapon());
+        EnemyCharacterView biff = new EnemyCharacterView(initialPosition, mapPath.get(map), b, weaponView, dropWeaponView);
 
         return biff;
     }
 
     public EnemyCharacterView createEnemy(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
-        EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Banana", map), "Bullo", mapBulloHp.get(map),
-                WeaponFactory.createRandomWeaponLevel("Ginocchio", map));
+        WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
+        WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
+        EnemyCharacter b = new EnemyCharacter(dropWeaponView.getWeapon(), "Bullo", mapBulloHp.get(map),
+                weaponView.getWeapon());
         EnemyCharacterView bullo = new EnemyCharacterView(initialPosition,
-                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b);
+                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b, weaponView, dropWeaponView);
 
         return bullo;
     }

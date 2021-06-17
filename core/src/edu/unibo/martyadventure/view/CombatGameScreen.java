@@ -38,9 +38,18 @@ public class CombatGameScreen implements Screen {
     private static final int SPRITE_DIMENSION = 300;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
     private static final float BUTTON_SPACE = 30;
+    private static final int PLAYER_WEAPON_X = 250;
+    private static final float PLAYER_WEAPON_Y = 1050;
+    private static final int ENEMY_WEAPON_X = 1270;
+    private static final float ENEMY_WEAPON_Y = 750;
+    private static final int ENEMY_LABEL_X = 1400;
+    private static final int PLAYER_LABEL_X = 150;
+
 
     private Sprite playerSprite;
     private Sprite enemySprite;
+    private Texture playerWeaponTexture;
+    private Texture enemyWeaponTexture;
     private Fight fight;
     private Stage stage;
     private Viewport viewport;
@@ -53,6 +62,8 @@ public class CombatGameScreen implements Screen {
     private TextButton moveButton2;
     private TextButton moveButton3;
     private TextButton moveButton4;
+    private PlayerCharacterView playerView;
+    private EnemyCharacterView enemyView;
 
     public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
         background = Toolbox.getTexture(BG_PATH);
@@ -64,6 +75,10 @@ public class CombatGameScreen implements Screen {
         viewport.apply();
         fight = new Fight(player.getPlayer(), enemy.getEnemy());
         stage = new Stage(viewport);
+        playerWeaponTexture = player.getWeaponView().getWeaponTexture();
+        enemyWeaponTexture = enemy.getWeaponView().getWeaponTexture();
+        playerView = player;
+        enemyView = enemy;
     }
 
     @Override
@@ -86,23 +101,24 @@ public class CombatGameScreen implements Screen {
         Label enemyWeaponLabel;
         DecimalFormat df = new DecimalFormat("###.#");
 
-        playerWeaponLabel = new Label("Weapon: " + fight.getPlayer().getWeapon().getName() + " \nDmg: "
+        playerWeaponLabel = new Label("Arma: " + fight.getPlayer().getWeapon().getName() + " \nDanno: "
                 + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()), buttonSkin, "title");
         playerWeaponLabel.setSize(100, 100);
-        playerWeaponLabel.setPosition(70, 700);
+        playerWeaponLabel.setPosition(PLAYER_LABEL_X, 900);
 
-        enemyWeaponLabel = new Label("Weapon: " + fight.getEnemy().getWeapon().getName() + " \nDmg: "
-                + df.format(fight.getEnemy().getWeapon().getDamageMultiplier()), buttonSkin, "title");
+        enemyWeaponLabel = new Label("Arma: " + fight.getEnemy().getWeapon().getName() + " \nDanno: "
+                + df.format(fight.getEnemy().getWeapon().getDamageMultiplier()) + 
+                "\nDrop: " + enemyView.getDropWeapon().getWeapon().getName(), buttonSkin, "title");
         enemyWeaponLabel.setSize(100, 100);
-        enemyWeaponLabel.setPosition(1400, 700);
+        enemyWeaponLabel.setPosition(ENEMY_LABEL_X, 670);
 
         playerHpLabel = new Label("", buttonSkin, "title");
         playerHpLabel.setSize(100, 100);
-        playerHpLabel.setPosition(70, 800);
+        playerHpLabel.setPosition(PLAYER_LABEL_X, 800);
 
         enemyHpLabel = new Label("", buttonSkin, "title");
         enemyHpLabel.setSize(100, 100);
-        enemyHpLabel.setPosition(1400, 800);
+        enemyHpLabel.setPosition(ENEMY_LABEL_X, 800);
 
         // add lables to the stage
         stage.addActor(playerHpLabel);
@@ -185,12 +201,11 @@ public class CombatGameScreen implements Screen {
 
         if (fight.fightWinner() != null) {
             if (fight.fightWinner() == fight.getPlayer()) {
-                fight.getPlayer().setWeapon(fight.getEnemy().getDropitem());
+                playerView.setWeaponView(enemyView.getDropWeapon());
                 ScreenManager.loadMovementScreen();
             } else {
-                // TODO lose sreen
-                System.err.println("GAME OVER");
-                Gdx.app.exit();
+                //TODO Lose screen
+                ScreenManager.loadMenuScreen();
             }
         }
         stage.act();
@@ -198,14 +213,16 @@ public class CombatGameScreen implements Screen {
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
         stage.getBatch().draw(playerSprite, PLAYER_POSITION.x, PLAYER_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
+        stage.getBatch().draw(playerWeaponTexture, PLAYER_WEAPON_X, PLAYER_WEAPON_Y);
+        stage.getBatch().draw(enemyWeaponTexture, ENEMY_WEAPON_X, ENEMY_WEAPON_Y);
         stage.getBatch().end();
         stage.draw();
 
     }
 
     private void updateLabel() {
-        playerHpLabel.setText(fight.getPlayer().getName() + " HP: " + fight.getPlayer().getHp());
-        enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
+        playerHpLabel.setText(fight.getPlayer().getName() + " PV: " + fight.getPlayer().getHp());
+        enemyHpLabel.setText(fight.getEnemy().getName() + " PV: " + fight.getEnemy().getHp());
 
     }
 
