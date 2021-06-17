@@ -1,6 +1,7 @@
 package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,23 +24,29 @@ public abstract class CharacterView<C extends Character> implements Controllable
     public static final int FRAME_HEIGHT = 148;
 
 
-    private float velocity;
-    private Vector2 currentPosition;
-    private Vector2 nextPosition;
+    protected float velocity;
+    protected Vector2 currentPosition;
+    protected Vector2 nextPosition;
 
-    private EntityState movementState;
-    private EntityDirection movementDirection;
+    protected EntityState movementState;
+    protected EntityDirection movementDirection;
 
-    private final Rectangle boundingBox;
+    protected final Rectangle boundingBox;
 
-    private final AnimationPack animations;
-    private float animationStartTime;
+    protected final AnimationPack animations;
+    protected float animationStartTime;
 
-    private C character;
+    protected C character;
 
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
+
+
+    /**
+     * @return the sprite for the fighting screen.
+     */
+    public abstract Sprite getFightSprite();
 
 
     public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,

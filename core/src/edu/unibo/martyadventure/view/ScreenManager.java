@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 public class ScreenManager {
 
     public static class VIEWPORT {
+
         public static float viewportWidth;
         public static float viewportHeight;
         public static float virtualWidth;
@@ -17,30 +18,32 @@ public class ScreenManager {
         public static int ZOOM = 75;
     }
 
+
     private static MovementGameScreen movementScreen;
 
+
     private ScreenManager() {}
+
+    private static void loadScreen(Screen s) {
+        final Game game = (Game) Gdx.app.getApplicationListener();
+        game.setScreen(s);
+    }
 
     public static void changeMap(MapManager.Maps map) {
         movementScreen = new MovementGameScreen(map);
     }
 
-    public static void loadMovementScreen(){
+    public static void loadMovementScreen() {
         loadScreen(movementScreen);
     }
 
-    public static void loadCombatScreen(CombatGameScreen screen){
+    public static void loadCombatScreen(CombatGameScreen screen) {
         loadScreen(screen);
-    }
-
-    private static void loadScreen(Screen s){
-        Game game = (Game)Gdx.app.getApplicationListener();
-        game.setScreen(s);
     }
 
     /**
      * Setup the Viewport according due the screen dimensions
-     * 
+     *
      * @param width
      * @param height
      */

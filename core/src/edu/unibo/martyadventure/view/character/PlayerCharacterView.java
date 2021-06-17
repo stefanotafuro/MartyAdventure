@@ -2,6 +2,7 @@ package edu.unibo.martyadventure.view.character;
 
 import java.util.concurrent.ExecutionException;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -27,5 +28,10 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     public PlayerCharacterView(final Vector2 initialPosition) throws InterruptedException, ExecutionException {
         super(player, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
                 new TextureRegion(Toolbox.getTexture(PLAYER_PATH)));
+    }
+
+    @Override
+    public Sprite getFightSprite() {
+        return new Sprite(animations.getRightIdle());
     }
 }
