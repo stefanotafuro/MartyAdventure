@@ -33,7 +33,7 @@ public class MenuScreen implements Screen {
     public MenuScreen() {
         background = Toolbox.getTexture(BG_PATH);
         buttonAtlas = new TextureAtlas("skin/comic-ui.atlas");
-        buttonSkin = new Skin(Gdx.files.internal("skin/comic-ui.json"), buttonAtlas);
+        buttonSkin = new Skin(Gdx.files.internal("skin/menuButton.json"), buttonAtlas);
         viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
         viewport.apply();
         stage = new Stage(viewport);

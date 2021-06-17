@@ -183,6 +183,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: button-pressed
 		over: button-highlighted
 		disabledFontColor: gray
+		checkedFontColor: yellow
 	}
 
 }

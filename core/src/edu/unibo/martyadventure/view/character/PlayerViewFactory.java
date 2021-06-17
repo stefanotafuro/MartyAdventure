@@ -22,8 +22,8 @@ public class PlayerViewFactory {
     private static final String BIFF_PATH_3 = "Characters/Biff/BiffMove (3).png";
     
     private static final String DOC_PATH_1 = "Characters/Doc/DocMove (1).png";
-    private static final String DOC_PATH_2 = "Characters/Doc/DocMove  (2).png";
-    private static final String DOC_PATH_3 = "Characters/Doc/DocMove  (3).png";
+    private static final String DOC_PATH_2 = "Characters/Doc/DocMove (2).png";
+    private static final String DOC_PATH_3 = "Characters/Doc/DocMove (3).png";
 
     private Map<MapManager.Maps, String> martyTextureMapPath;
     private Map<MapManager.Maps, String> docTextureMapPath;
