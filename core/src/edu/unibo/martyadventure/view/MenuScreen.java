@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.view.MapManager.Maps;
+import edu.unibo.martyadventure.view.character.Player;
 
 public class MenuScreen implements Screen {
 
@@ -24,6 +26,9 @@ public class MenuScreen implements Screen {
     private TextureAtlas buttonAtlas;
     private Texture background;
     private static final String BG_PATH = "Level/Menu/Menu.png";
+    TextButton martyButton;
+    TextButton docButton;
+    TextButton biffButton;
 
     public MenuScreen() {
         background = Toolbox.getTexture(BG_PATH);
@@ -58,6 +63,50 @@ public class MenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
+        
+        ButtonGroup<TextButton> buttonGroup = new ButtonGroup<>();
+        martyButton = new TextButton("Marty", buttonSkin);
+        docButton = new TextButton("Doc", buttonSkin);
+        biffButton = new TextButton("Biff", buttonSkin);
+        buttonGroup.add(martyButton);
+        buttonGroup.add(docButton);
+        buttonGroup.add(biffButton);
+        buttonGroup.setMaxCheckCount(1);
+        buttonGroup.setMinCheckCount(1);
+        buttonGroup.setUncheckLast(true);
+        
+        martyButton.setChecked(true);
+        ScreenManager.changePlayer(Player.MARTY);
+        
+        martyButton.setPosition(5, 350);
+        docButton.setPosition(175, 350);
+        biffButton.setPosition(330, 350);
+        
+        
+        stage.addActor(martyButton);
+        stage.addActor(docButton);
+        stage.addActor(biffButton);
+        
+        martyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.changePlayer(Player.MARTY);
+            }
+        });
+        
+        docButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.changePlayer(Player.DOC);
+            }
+        });
+        
+        biffButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.changePlayer(Player.BIFF);
+            }
+        });
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -66,15 +115,14 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-
         stage.getBatch().end();
         stage.draw();
 
     }
+
 
     @Override
     public void resize(int width, int height) {

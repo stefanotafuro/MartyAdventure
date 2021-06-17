@@ -29,6 +29,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
+	yellow: {
+		r: 1
+		g: 0.749019
+		b: 0
+		a: 1
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	cyan: {
@@ -176,8 +182,10 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: button
 		down: button-pressed
 		over: button-highlighted
-		disabledFontColor: gray		
+		disabledFontColor: gray
+		checkedFontColor: yellow
 	}
+
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {

@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.EnemyViewFactory;
+import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
@@ -33,8 +34,8 @@ import edu.unibo.martyadventure.view.entity.EntityDirection;
 public class MovementGameScreen implements Screen {
 
     private static final int SPRITE_SCALE_FACTOR = 3;
-    private PlayerCharacterView player;
-    private EnemyCharacterView biff;
+    private PlayerCharacterView playerView;
+    private EnemyCharacterView biffView;
     private PlayerInputProcessor inputProcessor;
     private List<EnemyCharacterView> enemyList;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -44,7 +45,7 @@ public class MovementGameScreen implements Screen {
     private EnemyViewFactory eFactory;
     private Viewport viewport;
 
-    public MovementGameScreen(MapManager.Maps map) {
+    public MovementGameScreen(Player player, MapManager.Maps map) {
         eFactory = new EnemyViewFactory();
         PlayerViewFactory pFactory = new PlayerViewFactory();
         mapManager = new MapManager();
@@ -67,15 +68,15 @@ public class MovementGameScreen implements Screen {
         // player
         try {
             playerInitialPosition = mapManager.getPlayerStartPosition();
-            player = pFactory.createPlayer(playerInitialPosition, map);
+            playerView = pFactory.createPlayer(player, playerInitialPosition, map);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         // biff
         try {
-            biff = eFactory.createBiff(mapManager.getBiffStartPosition(), map);
-            biff.setDirection(EntityDirection.DOWN);
+            biffView = eFactory.createBiff(mapManager.getBiffStartPosition(), map);
+            biffView.setDirection(EntityDirection.DOWN);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -113,7 +114,7 @@ public class MovementGameScreen implements Screen {
         
         PlayerInputProcessor.getPlayerInputProcessor().resetState();
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
-        inputProcessor.setPlayer(player, true);
+        inputProcessor.setPlayer(playerView, true);
         Gdx.input.setInputProcessor(inputProcessor);
 
     }
@@ -127,22 +128,22 @@ public class MovementGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // set the camera position
-        camera.position.set(player.getCurrentPosition().x, player.getCurrentPosition().y, 0f);
+        camera.position.set(playerView.getCurrentPosition().x, playerView.getCurrentPosition().y, 0f);
         camera.update();
 
         // check collisions
         try {
-            if (!collisionWithMapLayer(player.getBoundingBox())) {
-                player.goNextPosition();
+            if (!collisionWithMapLayer(playerView.getBoundingBox())) {
+                playerView.goNextPosition();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // check collisions
-        if (isAlive(biff)) {
-            if (player.getBoundingBox().overlaps(biff.getBoundingBox())) {
-                ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
+        if (isAlive(biffView)) {
+            if (playerView.getBoundingBox().overlaps(biffView.getBoundingBox())) {
+                ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, biffView));
             }
         } else {
             if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
@@ -159,8 +160,8 @@ public class MovementGameScreen implements Screen {
 
         enemyList.forEach(enemy -> {
             if (isAlive(enemy)) {
-                if (player.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-                    ScreenManager.loadCombatScreen(new CombatGameScreen(player, enemy));
+                if (playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
+                    ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, enemy));
                 }
             }
         });
@@ -172,11 +173,11 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(player.getCurrentFrame(), player.getCurrentPosition().x,
-                player.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
-        if (isAlive(biff)) {
-            mapRenderer.getBatch().draw(biff.getCurrentFrame(), biff.getCurrentPosition().x,
-                    biff.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        mapRenderer.getBatch().draw(playerView.getCurrentFrame(), playerView.getCurrentPosition().x,
+                playerView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        if (isAlive(biffView)) {
+            mapRenderer.getBatch().draw(biffView.getCurrentFrame(), biffView.getCurrentPosition().x,
+                    biffView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
         }
         enemyList.forEach(enemy -> {
             if (isAlive(enemy)) {
@@ -259,7 +260,7 @@ public class MovementGameScreen implements Screen {
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-        playerInitialPosition = new Vector2(player.getCurrentPosition());
+        playerInitialPosition = new Vector2(playerView.getCurrentPosition());
     }
 
     @Override

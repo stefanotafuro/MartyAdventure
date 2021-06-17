@@ -16,23 +16,48 @@ public class PlayerViewFactory {
     private static final String MARTY_PATH_1 = "Characters/Marty/MartyMove (1).png";
     private static final String MARTY_PATH_2 = "Characters/Marty/MartyMove (2).png";
     private static final String MARTY_PATH_3 = "Characters/Marty/MartyMove (3).png";
+    
+    private static final String BIFF_PATH_1 = "Characters/Biff/BiffMove (1).png";
+    private static final String BIFF_PATH_2 = "Characters/Biff/BiffMove (2).png";
+    private static final String BIFF_PATH_3 = "Characters/Biff/BiffMove (3).png";
+    
+    private static final String DOC_PATH_1 = "Characters/Doc/DocMove (1).png";
+    private static final String DOC_PATH_2 = "Characters/Doc/DocMove  (2).png";
+    private static final String DOC_PATH_3 = "Characters/Doc/DocMove  (3).png";
 
-
-    private Map<MapManager.Maps, String> textureMapPath;
+    private Map<MapManager.Maps, String> martyTextureMapPath;
+    private Map<MapManager.Maps, String> docTextureMapPath;
+    private Map<MapManager.Maps, String> biffTextureMapPath;
+    private Map<Player, Map<MapManager.Maps, String>> playerMap;
     
     public PlayerViewFactory() {
-        textureMapPath = new HashMap<>();
-        textureMapPath.put(Maps.MAP1, MARTY_PATH_1);
-        textureMapPath.put(Maps.MAP2, MARTY_PATH_2);
-        textureMapPath.put(Maps.MAP3, MARTY_PATH_3);
+        martyTextureMapPath = new HashMap<>();
+        martyTextureMapPath.put(Maps.MAP1, MARTY_PATH_1);
+        martyTextureMapPath.put(Maps.MAP2, MARTY_PATH_2);
+        martyTextureMapPath.put(Maps.MAP3, MARTY_PATH_3);
+        
+        biffTextureMapPath = new HashMap<>();
+        biffTextureMapPath.put(Maps.MAP1, BIFF_PATH_1);
+        biffTextureMapPath.put(Maps.MAP2, BIFF_PATH_2);
+        biffTextureMapPath.put(Maps.MAP3, BIFF_PATH_3);
+        
+        docTextureMapPath = new HashMap<>();
+        docTextureMapPath.put(Maps.MAP1, DOC_PATH_1);
+        docTextureMapPath.put(Maps.MAP2, DOC_PATH_2);
+        docTextureMapPath.put(Maps.MAP3, DOC_PATH_3);
+        
+        playerMap = new HashMap<>();
+        playerMap.put(Player.MARTY, martyTextureMapPath);
+        playerMap.put(Player.DOC, docTextureMapPath);
+        playerMap.put(Player.BIFF, biffTextureMapPath);
     }
     
-    public PlayerCharacterView createPlayer(Vector2 initialPosition, Maps map) throws InterruptedException, ExecutionException {
-        return new PlayerCharacterView(initialPosition, loadTexture(map));
+    public PlayerCharacterView createPlayer(Player player, Vector2 initialPosition, Maps map) throws InterruptedException, ExecutionException {
+        return new PlayerCharacterView(player.getName(),initialPosition, loadTexture(player,map));
     }
     
-    private TextureRegion loadTexture(Maps map) throws InterruptedException, ExecutionException {
-        Texture texture = new Texture(textureMapPath.get(map));
+    private TextureRegion loadTexture(Player player, Maps map) throws InterruptedException, ExecutionException {
+        Texture texture = new Texture(playerMap.get(player).get(map));
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
     }

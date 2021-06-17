@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import edu.unibo.martyadventure.view.character.Player;
+
 public class ScreenManager {
 
     public static class VIEWPORT {
@@ -13,13 +15,18 @@ public class ScreenManager {
 
     private static MovementGameScreen movementScreen;
     private static MenuScreen menu = new MenuScreen();
+    private static Player currentPlayer;
 
     private ScreenManager() {
 
     }
 
     public static void changeMap(MapManager.Maps map) {
-        movementScreen = new MovementGameScreen(map);
+        movementScreen = new MovementGameScreen(currentPlayer,map);
+    }
+    
+    public static void changePlayer(Player player) {
+        currentPlayer = player;
     }
 
     public static void loadMovementScreen() {

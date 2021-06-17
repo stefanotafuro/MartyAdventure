@@ -2,7 +2,6 @@ package edu.unibo.martyadventure.view.character;
 
 import java.util.concurrent.ExecutionException;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,12 +17,13 @@ import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
 public class PlayerCharacterView extends CharacterView {
     
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
-    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 9300, playerWeapon.getWeapon());
+    private static PlayerCharacter player;
     public static final int FRAME_WIDTH = 141;
     public static final int FRAME_HEIGHT = 148;
 
-    public PlayerCharacterView(Vector2 initialPosition, TextureRegion textureRegion) throws InterruptedException, ExecutionException {
+    public PlayerCharacterView(String name,Vector2 initialPosition, TextureRegion textureRegion) throws InterruptedException, ExecutionException {
         super(initialPosition, 20f, 10f, 100f, textureRegion, FRAME_WIDTH, FRAME_HEIGHT, playerWeapon);
+        player = new PlayerCharacter(Shoes.SLOW, name, 9300, playerWeapon.getWeapon());
     }
 
     public PlayerCharacter getPlayer() {
