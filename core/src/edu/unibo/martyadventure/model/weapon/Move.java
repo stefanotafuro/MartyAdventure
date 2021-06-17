@@ -1,6 +1,7 @@
 package edu.unibo.martyadventure.model.weapon;
 
-import java.util.Random;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /*
  * Enum class that contains all Move included in the game
@@ -35,7 +36,6 @@ public enum Move {
     private final int failRatio; // 0 success 100 fail
     private final int reloadTime;
     private final char MeleeOrRanged;
-    private Random rand = new Random();
     
     
 
@@ -87,7 +87,7 @@ public enum Move {
     public boolean testFailure() {
         // random number (0 to 100) if it's >= than failRatio success(TRUE), else
         // fail(FALSE)
-        return rand.nextInt(101) >= failRatio;
+        return ThreadLocalRandom.current().nextInt(101) >= failRatio;
     }
 
     // Random Functions
