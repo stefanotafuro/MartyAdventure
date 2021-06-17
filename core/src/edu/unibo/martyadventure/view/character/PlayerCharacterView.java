@@ -14,20 +14,18 @@ import edu.unibo.martyadventure.view.Toolbox;
  * A player character's base providing basic movement, interaction with given
  * the map and visual representation.
  */
-public class PlayerCharacterView extends CharacterView {
-    
-    private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
-    private static PlayerCharacter player;
-    public static final int FRAME_WIDTH = 141;
-    public static final int FRAME_HEIGHT = 148;
+public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
 
-    private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = Toolbox.getTexture(PLAYER_PATH);
-        TextureRegion textureFrames = new TextureRegion(texture);
-        return textureFrames;
-    }
+    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 9300,
+            WeaponFactory.createRandomMeleeWeapon("Pugno", 1.9));
+    private static final String PLAYER_PATH = "Characters/Marty/MartyMove (1).png";
+    private static final float MAX_ACCELLERATION = 20f;
+    private static final float ACCELLERATION_FACTOR = 10f;
+    private static final float MAX_SPEED = 100f;
 
-    public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
+
+    public PlayerCharacterView(final Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(player, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
+                new TextureRegion(Toolbox.getTexture(PLAYER_PATH)));
     }
 }

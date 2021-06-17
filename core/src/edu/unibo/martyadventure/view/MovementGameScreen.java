@@ -53,10 +53,9 @@ public class MovementGameScreen implements Screen {
     private float time = 1;
     private Batch uiBatch;
 
-    public MovementGameScreen(Player player, MapManager.Maps map) {
-        uiBatch = new SpriteBatch();
-        newWorld = true;
-        cFactory = new CharacterViewFactory();
+
+    public MovementGameScreen(MapManager.Maps map) {
+        eFactory = new EnemyFactory();
         mapManager = new MapManager();
     }
 
@@ -260,7 +259,7 @@ public class MovementGameScreen implements Screen {
     }
 
     private boolean isAlive(EnemyCharacterView enemy) {
-        return enemy.getEnemy().getHp() != 0;
+        return enemy.getCharacter().getHp() != 0;
     }
 
     /**

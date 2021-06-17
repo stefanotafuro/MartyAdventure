@@ -9,39 +9,42 @@ import edu.unibo.martyadventure.controller.entity.ControllableEntity;
 import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
-import edu.unibo.martyadventure.view.weapon.WeaponView;
+import edu.unibo.martyadventure.model.character.Character;
 
 /**
  * A character's base providing basic movement, interaction with given the map
  * and visual representation.
  */
-public abstract class CharacterView implements ControllableEntity {
+public abstract class CharacterView<C extends Character> implements ControllableEntity {
 
     private static final int BOX_SCALE = 15;
     private static final float BOX_OFFSET = 1.7f;
-    protected final float maxAccelleration;
-    protected final float accellerationFactor;
-    protected final float maxSpeed;
-    protected WeaponView weapon;
+
+    public static final int FRAME_WIDTH = 140;
+    public static final int FRAME_HEIGHT = 148;
+
 
     private float velocity;
     private Vector2 currentPosition;
     private Vector2 nextPosition;
-    private final int frameWidth;
-    private final int frameHeight;
 
     private EntityState movementState;
     private EntityDirection movementDirection;
 
+    private final Rectangle boundingBox;
 
     private final AnimationPack animations;
     private float animationStartTime;
 
-    private final Rectangle boundingBox;
+    private C character;
+
+    protected final float maxAccelleration;
+    protected final float accellerationFactor;
+    protected final float maxSpeed;
 
 
-    public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final TextureRegion texture, int frameWidth, int frameHeight, WeaponView weapon) {
+    public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
+            final float maxSpeed, final TextureRegion texture) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -52,16 +55,15 @@ public abstract class CharacterView implements ControllableEntity {
 
         this.movementState = EntityState.IDLE;
         this.movementDirection = EntityDirection.UP;
-        
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-
-        this.animations = new AnimationPack(texture, frameWidth, frameHeight);
-        this.animationStartTime = AnimationPack.ANIMATION_START;
 
         this.boundingBox = new Rectangle();
         this.weapon = weapon;
         calculateBoundingBoxPosition();
+
+        this.animations = new AnimationPack(texture, FRAME_WIDTH, FRAME_HEIGHT);
+        this.animationStartTime = AnimationPack.ANIMATION_START;
+
+        this.character = character;
     }
 
     /**
@@ -81,8 +83,8 @@ public abstract class CharacterView implements ControllableEntity {
     public void calculateBoundingBoxPosition() {
         this.boundingBox.set(nextPosition.x + BOX_OFFSET ,
                 nextPosition.y, 
-                this.frameWidth * MapManager.UNIT_SCALE / BOX_SCALE, 
-                this.frameHeight * MapManager.UNIT_SCALE / BOX_SCALE);
+                FRAME_WIDTH * MapManager.UNIT_SCALE / 8, 
+                FRAME_HEIGHT * MapManager.UNIT_SCALE / 8);
     }
 
     /**
@@ -132,6 +134,13 @@ public abstract class CharacterView implements ControllableEntity {
             this.animationStartTime = AnimationPack.ANIMATION_START;
             return this.animations.getEntityDirectionIdle(this.movementDirection);
         }
+    }
+    
+    /**
+     * @return the view's character.
+     */
+    public C getCharacter() {
+        return this.character;
     }
 
     @Override

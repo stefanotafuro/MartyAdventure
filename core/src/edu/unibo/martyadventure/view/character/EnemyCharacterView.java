@@ -10,24 +10,16 @@ import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.Toolbox;
 
-public class EnemyCharacterView extends CharacterView {
+public class EnemyCharacterView extends CharacterView<EnemyCharacter> {
 
-    private static EnemyCharacter enemy = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 800, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
-    private static final String ENEMY_PATH = "Characters/Biff/BiffMove (1).png";
-    public static final int FRAME_WIDTH = 140;
-    public static final int FRAME_HEIGHT = 148;
-    private WeaponView dropWeapon;
+    private static final float MAX_ACCELLERATION = 20f;
+    private static final float ACCELLERATION_FACTOR = 5f;
+    private static final float MAX_SPEED = 70f;
 
-    public EnemyCharacterView(Vector2 initialPosition, String enemy_path, EnemyCharacter enemy, WeaponView weapon, WeaponView dropWeapon)
+
+    public EnemyCharacterView(final Vector2 initialPosition, final String enemyPath, final EnemyCharacter enemy)
             throws InterruptedException, ExecutionException {
-        super(initialPosition, MAX_ACCELERATION, ACCELERATION_FACTOR, MAX_SPEED, new TextureRegion(new Texture(enemy_path)), FRAME_WIDTH, FRAME_HEIGHT, weapon);
-        this.enemy = enemy;
-        this.dropWeapon = dropWeapon;
-    }
-
-    private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = Toolbox.getTexture(ENEMY_PATH);
-        TextureRegion textureFrames = new TextureRegion(texture);
-        return textureFrames;
+        super(enemy, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
+                new TextureRegion(Toolbox.getTexture(enemyPath)));
     }
 }
