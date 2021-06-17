@@ -57,7 +57,7 @@ public class MovementGameScreen implements Screen {
     private Batch uiBatch;
 
 
-    public MovementGameScreen(MapManager.Maps map) {
+    public MovementGameScreen(Maps map) {
         eFactory = new EnemyFactory();
         mapManager = new MapManager();
     }
@@ -172,19 +172,10 @@ public class MovementGameScreen implements Screen {
                 ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, biffView));
             }
         } else {
-            switch (mapManager.getCurrentMapName()) {
-            case MAP1: {
-                ScreenManager.changeMap(MapManager.Maps.MAP2);
-                ScreenManager.loadMovementScreen();
-                break;
-            }
-            case MAP2: {
-                ScreenManager.changeMap(MapManager.Maps.MAP3);
-                ScreenManager.loadMovementScreen();
-                break;
-            }
-            default: {
-                ScreenManager.loadMenuScreen();
+            if (mapManager.getCurrentMapName() == Maps.MAP1) {
+                ScreenManager.changeMap(Maps.MAP2);
+            } else {
+                ScreenManager.changeMap(Maps.MAP3);
             }
             }
         }
