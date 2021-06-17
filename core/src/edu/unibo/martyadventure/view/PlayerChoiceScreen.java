@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -26,6 +29,9 @@ public class PlayerChoiceScreen implements Screen {
     private TextureAtlas buttonAtlas;
     private Texture background;
     private static final String BG_PATH = "Level/Menu/Menu.png";
+    private static final float FRAME_DURATION = 0.1f;
+    private float time=0;
+    Animation<TextureRegion> biffAnimation;
     
     public PlayerChoiceScreen() {
         background = Toolbox.getTexture(BG_PATH);
@@ -91,6 +97,9 @@ public class PlayerChoiceScreen implements Screen {
                 ScreenManager.changePlayer(Player.BIFF);
             }
         });
+        TextureRegion[][] textures = new TextureRegion(new Texture ("Characters/Biff/BiffYoYo/BiffYoYo allFrame.png")).split(85, 118);
+        biffAnimation = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
+        biffAnimation.setPlayMode(PlayMode.LOOP);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -100,9 +109,12 @@ public class PlayerChoiceScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        time += delta;
+        time = time % 10;
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
+        stage.getBatch().draw(biffAnimation.getKeyFrame(time), 500, 500);
         stage.getBatch().end();
         stage.draw();
     }
