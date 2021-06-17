@@ -1,7 +1,11 @@
 package edu.unibo.martyadventure.view;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -18,7 +22,8 @@ import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.character.Player;
 
 public class MenuScreen implements Screen {
-
+    
+    Music music;
     private static final int ZOOM = 70;
     private Stage stage;
     private Viewport viewport;
@@ -41,6 +46,9 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        music = Gdx.audio.newMusic(new FileHandle("music/theme.ogg"));
+        music.setLooping(true);
+        music.play();
         TextButton newGameButton = new TextButton("Nuova partita", buttonSkin);
         TextButton exitButton = new TextButton("Esci", buttonSkin);
         stage.addActor(newGameButton);
@@ -60,6 +68,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
+                music.dispose();
             }
         });
         
