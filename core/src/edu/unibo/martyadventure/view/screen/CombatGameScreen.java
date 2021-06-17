@@ -3,34 +3,24 @@ package edu.unibo.martyadventure.view.screen;
 import java.text.DecimalFormat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.model.fight.Fight;
-import edu.unibo.martyadventure.view.Toolbox;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.model.character.Character;
 
-public class CombatGameScreen implements Screen {
+public class CombatGameScreen extends StaticScreen {
 
     private static final int BASE_HEIGHT = 1080;
     private static final int BASE_WIDTH = 1920;
@@ -62,12 +52,6 @@ public class CombatGameScreen implements Screen {
     private Texture playerWeaponTexture;
     private Texture enemyWeaponTexture;
     private Fight fight;
-    private Stage stage;
-    private Window weaponSelection;
-    private Viewport viewport;
-    private Skin skin;
-    private TextureAtlas buttonAtlas;
-    private Texture background;
     private Label playerHpLabel;
     private Label enemyHpLabel;
     private TextButton moveButton1;
@@ -80,7 +64,7 @@ public class CombatGameScreen implements Screen {
 
     private TextButton getButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
-                buttonSkin);
+                uiSkin);
         button.addListener(new ClickListener() {
 
             @SuppressWarnings("unused")
@@ -93,7 +77,7 @@ public class CombatGameScreen implements Screen {
     }
 
     private Label getLabel(final String text, final Vector2 position) {
-        final Label label = new Label(text, buttonSkin, "title");
+        final Label label = new Label(text, uiSkin, "title");
         label.setSize(100, 100);
         label.setPosition(position.x, position.y);
         return label;
@@ -110,22 +94,12 @@ public class CombatGameScreen implements Screen {
     }
 
     public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
-        background = Toolbox.getTexture(BG_PATH);
-        buttonAtlas = new TextureAtlas("skin/comic-ui.atlas");
-        buttonSkin = new Skin(Gdx.files.internal("skin/comic-ui.json"), buttonAtlas);
+        super(BG_PATH, BASE_WIDTH, BASE_HEIGHT);
 
         this.playerSprite = player.getFightSprite();
         this.enemySprite = enemy.getFightSprite();
 
         fight = new Fight(player.getCharacter(), enemy.getCharacter());
-
-        viewport = new FitViewport(BASE_WIDTH, BASE_HEIGHT);
-        viewport.apply();
-        stage = new Stage(viewport);
-        playerWeaponTexture = player.getWeaponView().getWeaponTexture();
-        enemyWeaponTexture = enemy.getWeaponView().getWeaponTexture();
-        playerView = player;
-        enemyView = enemy;
     }
 
     @Override
@@ -234,30 +208,5 @@ public class CombatGameScreen implements Screen {
             button.setTouchable(Touchable.disabled);
             button.setDisabled(true);
         }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }
