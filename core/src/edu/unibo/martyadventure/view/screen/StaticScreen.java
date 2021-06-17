@@ -28,18 +28,18 @@ abstract class StaticScreen implements Screen {
     }
 
 
-    private Stage getStage(final int height, final int width) {
+    private Stage getStage(final int width, final int height) {
         final Viewport viewport = new FitViewport(width, height);
         viewport.apply();
         return new Stage(viewport);
     }
 
-    protected StaticScreen(final String backgroundPath, final int height, final int width) {
+    protected StaticScreen(final String backgroundPath, final int width, final int height) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
         this.uiAtlas = Toolbox.getAtlas(ATLAS_PATH);
         this.uiSkin = Toolbox.getSkin(SKIN_PATH);
-        this.stage = getStage(height, width);
+        this.stage = getStage(width, height);
     }
 
     @Override
