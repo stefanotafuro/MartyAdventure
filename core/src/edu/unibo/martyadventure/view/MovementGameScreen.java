@@ -58,8 +58,19 @@ public class MovementGameScreen implements Screen {
         newWorld = true;
         cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
-        WorldBannerFactory bFactory = new WorldBannerFactory();
+    }
 
+    /**
+     * Setup the screen elements
+     */
+    @Override
+    public void show() {
+        // camera
+        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+
+        // rederer
         try {
             mapManager.loadMap(map);
         } catch (InterruptedException | ExecutionException | IOException e1) {
@@ -132,7 +143,6 @@ public class MovementGameScreen implements Screen {
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(playerView, true);
         Gdx.input.setInputProcessor(inputProcessor);
-
     }
 
     /**
@@ -207,22 +217,6 @@ public class MovementGameScreen implements Screen {
             }
         });
         mapRenderer.getBatch().end();
-
-        uiBatch.begin();
-        if (newWorld) {
-            fadeTitle(delta);
-        }
-        uiBatch.end();
-
-    }
-
-    private void fadeTitle(float delta) {
-        if (time >= 0) {
-            worldBanner.draw(uiBatch, time -= delta / FADE_TIME);
-        } else {
-            newWorld = false;
-        }
-
     }
 
     /**
@@ -279,24 +273,23 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
     }
 
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void resume() {
-
+        // TODO Auto-generated method stub
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-        playerInitialPosition = new Vector2(playerView.getCurrentPosition());
     }
 
     @Override
@@ -304,7 +297,39 @@ public class MovementGameScreen implements Screen {
         // TODO player disposed
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
-
     }
 
+    /**
+     * Setup the Viewport according due the screen dimensions
+     * 
+     * @param width
+     * @param height
+     */
+    private void setupViewport(int width, int height) {
+        // Make the viewport a percentage of the total display area
+        VIEWPORT.virtualWidth = width;
+        VIEWPORT.virtualHeight = height;
+
+        // Current viewport dimensions
+        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+
+        // pixel dimensions of display
+        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
+        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
+
+        // aspect ratio for current viewport
+        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
+
+        // update viewport if there could be skewing
+        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
+            // Letterbox left and right
+            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
+            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+        } else {
+            // letterbox above and below
+            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
+        }
+    }
 }

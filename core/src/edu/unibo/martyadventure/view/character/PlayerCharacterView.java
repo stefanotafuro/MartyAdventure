@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.character.Shoes;
-import edu.unibo.martyadventure.view.weapon.WeaponView;
-import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
+import edu.unibo.martyadventure.model.weapon.WeaponFactory;
+import edu.unibo.martyadventure.view.Toolbox;
 
 /**
  * A player character's base providing basic movement, interaction with given
@@ -21,19 +21,13 @@ public class PlayerCharacterView extends CharacterView {
     public static final int FRAME_WIDTH = 141;
     public static final int FRAME_HEIGHT = 148;
 
-    public PlayerCharacterView(String name,Vector2 initialPosition, TextureRegion textureRegion) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 10f, 100f, textureRegion, FRAME_WIDTH, FRAME_HEIGHT, playerWeapon);
-        player = new PlayerCharacter(Shoes.SLOW, name, 9300, playerWeapon.getWeapon());
+    private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
+        Texture texture = Toolbox.getTexture(PLAYER_PATH);
+        TextureRegion textureFrames = new TextureRegion(texture);
+        return textureFrames;
     }
 
-    public PlayerCharacter getPlayer() {
-        return player;
+    public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
     }
-    
-    public void setWeaponView(WeaponView weapon) {
-        this.weapon = weapon;
-        playerWeapon = weapon;
-        PlayerCharacterView.player.setWeapon(weapon.getWeapon());
-    }
-
 }

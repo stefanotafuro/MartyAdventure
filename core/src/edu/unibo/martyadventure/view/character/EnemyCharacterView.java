@@ -7,14 +7,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
-import edu.unibo.martyadventure.view.weapon.WeaponView;
+import edu.unibo.martyadventure.model.weapon.WeaponFactory;
+import edu.unibo.martyadventure.view.Toolbox;
 
 public class EnemyCharacterView extends CharacterView {
 
-    private static final float MAX_SPEED = 70f;
-    private static final float ACCELERATION_FACTOR = 5f;
-    private static final float MAX_ACCELERATION = 20f;
-    private EnemyCharacter enemy;
+    private static EnemyCharacter enemy = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 800, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
+    private static final String ENEMY_PATH = "Characters/Biff/BiffMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
     private WeaponView dropWeapon;
@@ -26,12 +25,13 @@ public class EnemyCharacterView extends CharacterView {
         this.dropWeapon = dropWeapon;
     }
 
-    public EnemyCharacter getEnemy() {
-        return enemy;
+    private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
+        Texture texture = Toolbox.getTexture(ENEMY_PATH);
+        TextureRegion textureFrames = new TextureRegion(texture);
+        return textureFrames;
     }
 
-    public WeaponView getDropWeapon() {
-        return dropWeapon;
+    public EnemyCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
     }
-
 }
