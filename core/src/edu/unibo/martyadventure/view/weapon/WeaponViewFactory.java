@@ -1,7 +1,6 @@
 package edu.unibo.martyadventure.view.weapon;
 
 import com.badlogic.gdx.graphics.Texture;
-
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
 

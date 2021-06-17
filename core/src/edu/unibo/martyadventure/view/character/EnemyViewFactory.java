@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
-import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.weapon.WeaponView;
 import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
@@ -26,9 +25,9 @@ public class EnemyViewFactory {
     private static final int BIFF_HP_2 = 200;
     private static final int BIFF_HP_3 = 300;
 
-    private static final int BULLO_HP_1 = 500;
-    private static final int BULLO_HP_2 = 100;
-    private static final int BULLO_HP_3 = 150;
+    private static final int BULLO_HP_1 = 50;
+    private static final int BULLO_HP_2 = 10;
+    private static final int BULLO_HP_3 = 15;
 
     private Map<MapManager.Maps, String> mapPath;
     private Map<MapManager.Maps, Integer> mapBiffHp;

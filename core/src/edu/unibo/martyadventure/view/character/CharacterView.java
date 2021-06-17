@@ -22,7 +22,7 @@ public abstract class CharacterView implements ControllableEntity {
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
-    private WeaponView weapon;
+    protected WeaponView weapon;
 
     private float velocity;
     private Vector2 currentPosition;
@@ -182,7 +182,4 @@ public abstract class CharacterView implements ControllableEntity {
         return weapon;
     }
 
-    public void setWeaponView(WeaponView weapon) {
-        this.weapon = weapon;
-    }
 }
