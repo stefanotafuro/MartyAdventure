@@ -59,7 +59,6 @@ public class MovementGameScreen implements Screen {
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
 
         // rederer
-
         try {
             mapManager.loadMap(MapManager.Maps.MAP1);
         } catch (InterruptedException | ExecutionException | IOException e1) {
@@ -87,7 +86,6 @@ public class MovementGameScreen implements Screen {
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
-
     }
 
     /**
@@ -125,7 +123,6 @@ public class MovementGameScreen implements Screen {
                 3);
         mapRenderer.getBatch().draw(biffCurrentFrame, biff.getCurrentPosition().x, biff.getCurrentPosition().y, 3, 3);
         mapRenderer.getBatch().end();
-
     }
 
     /**
@@ -180,25 +177,21 @@ public class MovementGameScreen implements Screen {
     public void resize(int width, int height) {
         setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-
     }
 
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -206,7 +199,6 @@ public class MovementGameScreen implements Screen {
         // TODO player disposed
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
-
     }
 
     /**
@@ -242,5 +234,4 @@ public class MovementGameScreen implements Screen {
             VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
         }
     }
-
 }

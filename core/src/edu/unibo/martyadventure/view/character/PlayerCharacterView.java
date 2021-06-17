@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.character.Shoes;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
+import edu.unibo.martyadventure.view.Toolbox;
 
 /**
  * A player character's base providing basic movement, interaction with given the map
@@ -22,15 +23,13 @@ public class PlayerCharacterView extends CharacterView {
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
 
-    
-    public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
-    }
-
     private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = new Texture(PLAYER_PATH);
+        Texture texture = Toolbox.getTexture(PLAYER_PATH);
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
     }
 
+    public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
+    }
 }

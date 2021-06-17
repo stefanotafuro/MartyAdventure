@@ -8,23 +8,22 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
+import edu.unibo.martyadventure.view.Toolbox;
 
 public class EnemyCharacterView extends CharacterView {
-    
-    private static EnemyCharacter player = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 800, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
+
+    private static EnemyCharacter enemy = new EnemyCharacter(WeaponFactory.createRandomMeleeWeapon("Mazza"), "Biff", 800, WeaponFactory.createRandomMeleeWeapon("Schiaffo") );
     private static final String ENEMY_PATH = "Characters/Biff/BiffMove (1).png";
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
 
-    
-    public EnemyCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
-    }
-
     private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = new Texture(ENEMY_PATH);
+        Texture texture = Toolbox.getTexture(ENEMY_PATH);
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
     }
 
+    public EnemyCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
+    }
 }
