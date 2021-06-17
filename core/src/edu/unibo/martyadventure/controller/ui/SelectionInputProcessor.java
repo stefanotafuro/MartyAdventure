@@ -88,42 +88,49 @@ public abstract class SelectionInputProcessor<T> implements InputProcessor {
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean keyUp(int keycode) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean keyTyped(char character) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean touchUp(int screenX, int screenY, int pointer, int button) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean touchDragged(int screenX, int screenY, int pointer) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean mouseMoved(int screenX, int screenY) {
         // unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public final boolean scrolled(float amountX, float amountY) {
         // unused
