@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import edu.unibo.martyadventure.model.weapon.*;
 import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
+import edu.unibo.martyadventure.view.MapManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,10 @@ public class TestWeaponFactory {
 
         // System.err.println("testCreateWeapon ok");
     }
-    
+
     @Test
     void testCreateRandomWeapon() {
-        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
@@ -44,7 +45,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomMeleeWeapon() {
-        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomMeleeWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all melee MOVE
         for (int i = 0; i < 4; i++) {
@@ -57,7 +58,7 @@ public class TestWeaponFactory {
 
     @Test
     void testCreateRandomRangedWeapon() {
-        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName());
+        weaponTest = WeaponFactory.createRandomRangedWeapon(weaponTest.getName(), weaponTest.getDamageMultiplier());
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
@@ -66,6 +67,29 @@ public class TestWeaponFactory {
 
         // weaponTest.printWeapon();
         // System.err.println("testCreateRandomWeapon ok");
+    }
+    
+    @Test
+    void stressTest() {
+        int n = 500;
+        for (int i=0; i<n; i++) {
+            testRandomWeaponLevel();
+        }
+    }
+
+    @Test
+    void testRandomWeaponLevel() {
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP1);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL1)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL1));
+
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP2);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL2)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL2));
+
+        weaponTest = WeaponFactory.createRandomWeaponLevel(weaponTest.getName(), MapManager.Maps.MAP3);
+        assertTrue(weaponTest.getDamageMultiplier() >= (double) (WeaponFactory.MIN_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL3)
+                && weaponTest.getDamageMultiplier() <= (double) (WeaponFactory.MAX_DAMAGE_MULTIPLIER * WeaponFactory.LEVEL3));
     }
 
     // Function to check if there is a duplicate items in a moveList

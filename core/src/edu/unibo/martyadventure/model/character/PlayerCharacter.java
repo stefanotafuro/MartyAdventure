@@ -12,6 +12,8 @@ public class PlayerCharacter extends Character {
         setShoes(shoes);
     }
 
+    // Getter & Setter
+
     public Shoes getShoes() {
         return shoes;
     }

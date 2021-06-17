@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="40" height="53" tilewidth="30" tileheight="30" infinite="0" nextlayerid="8" nextobjectid="243">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="40" height="53" tilewidth="30" tileheight="30" infinite="0" nextlayerid="8" nextobjectid="246">
  <objectgroup id="3" name="Collision">
   <object id="61" x="629.333" y="1066.67" width="234.667" height="147.333"/>
   <object id="62" x="571" y="1066" width="20.5" height="148"/>
@@ -150,15 +150,9 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="EnemySpawn">
-  <object id="72" x="201.333" y="178.667" width="48" height="45.3333">
-   <ellipse/>
-  </object>
-  <object id="75" x="434.667" y="1126.67" width="48" height="45.3333">
-   <ellipse/>
-  </object>
-  <object id="76" x="978.667" y="1121.33" width="48" height="45.3333">
-   <ellipse/>
-  </object>
+  <object id="243" x="979.125" y="1121.75" width="49.375" height="49.75"/>
+  <object id="244" x="437.75" y="1130.13" width="40" height="36.25"/>
+  <object id="245" x="202.125" y="179.75" width="44.375" height="44.25"/>
  </objectgroup>
  <objectgroup id="7" name="BiffSpawn">
   <object id="78" name="BiffSpawnObject" x="617.333" y="755.333" width="28" height="25.3333">

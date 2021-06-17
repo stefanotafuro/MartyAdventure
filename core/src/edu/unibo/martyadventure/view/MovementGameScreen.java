@@ -1,6 +1,10 @@
 package edu.unibo.martyadventure.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.Gdx;
@@ -10,42 +14,87 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
+import edu.unibo.martyadventure.model.character.EnemyFactory;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 
 public class MovementGameScreen implements Screen {
 
-    public static class VIEWPORT {
-        public static float viewportWidth;
-        public static float viewportHeight;
-        public static float virtualWidth;
-        public static float virtualHeight;
-        public static float physicalWidth;
-        public static float physicalHeight;
-        public static float aspectRatio;
-        public static int ZOOM = 30;
-    }
-
+    private static final int SPRITE_SCALE_FACTOR = 3;
     private PlayerCharacterView player;
     private EnemyCharacterView biff;
     private PlayerInputProcessor inputProcessor;
-    private TextureRegion playerCurrentFrame;
-    private TextureRegion biffCurrentFrame;
+    private List<EnemyCharacterView> enemyList;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
     private static MapManager mapManager;
+    private static Vector2 playerInitialPosition;
+    private EnemyFactory eFactory;
 
-    public MovementGameScreen() {
+    public MovementGameScreen(MapManager.Maps map) {
+        eFactory = new EnemyFactory();
         mapManager = new MapManager();
+        try {
+            mapManager.loadMap(map);
+        } catch (InterruptedException | ExecutionException | IOException e1) {
+            e1.printStackTrace();
+        }
+        playerInitialPosition = new Vector2(mapManager.getPlayerStartPosition());
+
+        // camera
+        ScreenManager.setupViewport(ScreenManager.VIEWPORT.ZOOM, ScreenManager.VIEWPORT.ZOOM);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
+
+        // rederer
+        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
+        mapRenderer.setView(camera);
+
+        // player
+        try {
+            player = new PlayerCharacterView(playerInitialPosition);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        // biff
+        try {
+            biff = eFactory.createBiff(mapManager.getBiffStartPosition(), map);
+            biff.setDirection(EntityDirection.DOWN);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        setupList();
+    }
+
+    private void setupList() {
+        enemyList = new ArrayList<>();
+        MapLayer enemyLayer = mapManager.getEnemySpawnLayer();
+        Rectangle spawnPoint;
+
+        // iterate all the map box
+        for (MapObject o : enemyLayer.getObjects()) {
+            spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
+            try {
+                enemyList.add(eFactory.createEnemy(new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE), mapManager.getCurrentMapName()));
+                        
+            } catch (InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        //set random direction for each enemy
+        enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(new Random().nextInt(3))));
     }
 
     /**
@@ -53,36 +102,7 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-        // camera
-        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-
-        // rederer
-        try {
-            mapManager.loadMap(MapManager.Maps.MAP1);
-        } catch (InterruptedException | ExecutionException | IOException e1) {
-            e1.printStackTrace();
-        }
-
-        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
-        mapRenderer.setView(camera);
-
-        // player
-        try {
-            player = new PlayerCharacterView(mapManager.getPlayerStartPosition());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        // biff
-        try {
-            biff = new EnemyCharacterView(mapManager.getBiffStartPosition());
-            biff.setDirection(EntityDirection.DOWN);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
+        resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
@@ -99,9 +119,6 @@ public class MovementGameScreen implements Screen {
         // set the camera position
         camera.position.set(player.getCurrentPosition().x, player.getCurrentPosition().y, 0f);
         camera.update();
-        // update the current player frame
-        playerCurrentFrame = player.getCurrentFrame();
-        biffCurrentFrame = biff.getCurrentFrame();
 
         // check collisions
         try {
@@ -112,6 +129,28 @@ public class MovementGameScreen implements Screen {
             e.printStackTrace();
         }
 
+        // check collisions
+        if (isAlive(biff)) {
+            if (player.getBoundingBox().overlaps(biff.getBoundingBox())) {
+                ScreenManager.loadCombatScreen(new CombatGameScreen(player, biff));
+            }
+        } else {
+            if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
+                ScreenManager.changeMap(MapManager.Maps.MAP2);
+            } else {
+                ScreenManager.changeMap(MapManager.Maps.MAP3);
+            }
+            ScreenManager.loadMovementScreen();
+        }
+
+        enemyList.forEach(enemy -> {
+            if (isAlive(enemy)) {
+                if (player.getBoundingBox().overlaps(enemy.getBoundingBox())) {
+                    ScreenManager.loadCombatScreen(new CombatGameScreen(player, enemy));
+                }
+            }
+        });
+
         // update the input processor
         inputProcessor.update(delta);
 
@@ -119,9 +158,18 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(playerCurrentFrame, player.getCurrentPosition().x, player.getCurrentPosition().y, 3,
-                3);
-        mapRenderer.getBatch().draw(biffCurrentFrame, biff.getCurrentPosition().x, biff.getCurrentPosition().y, 3, 3);
+        mapRenderer.getBatch().draw(player.getCurrentFrame(), player.getCurrentPosition().x,
+                player.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        if (isAlive(biff)) {
+            mapRenderer.getBatch().draw(biff.getCurrentFrame(), biff.getCurrentPosition().x,
+                    biff.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        }
+        enemyList.forEach(enemy -> {
+            if (isAlive(enemy)) {
+                mapRenderer.getBatch().draw(enemy.getCurrentFrame(), enemy.getCurrentPosition().x,
+                        enemy.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+            }
+        });
         mapRenderer.getBatch().end();
     }
 
@@ -167,6 +215,10 @@ public class MovementGameScreen implements Screen {
         return false;
     }
 
+    private boolean isAlive(EnemyCharacterView enemy) {
+        return enemy.getEnemy().getHp() != 0;
+    }
+
     /**
      * Resize the view
      * 
@@ -175,8 +227,8 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        ScreenManager.setupViewport(width / ScreenManager.VIEWPORT.ZOOM, height / ScreenManager.VIEWPORT.ZOOM);
+        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
     }
 
     @Override
@@ -191,7 +243,7 @@ public class MovementGameScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
+        playerInitialPosition = new Vector2(player.getCurrentPosition());
     }
 
     @Override
@@ -199,39 +251,5 @@ public class MovementGameScreen implements Screen {
         // TODO player disposed
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
-    }
-
-    /**
-     * Setup the Viewport according due the screen dimensions
-     * 
-     * @param width
-     * @param height
-     */
-    private void setupViewport(int width, int height) {
-        // Make the viewport a percentage of the total display area
-        VIEWPORT.virtualWidth = width;
-        VIEWPORT.virtualHeight = height;
-
-        // Current viewport dimensions
-        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-
-        // pixel dimensions of display
-        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
-        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
-
-        // aspect ratio for current viewport
-        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
-
-        // update viewport if there could be skewing
-        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
-            // Letterbox left and right
-            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
-            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-        } else {
-            // letterbox above and below
-            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
-        }
     }
 }
