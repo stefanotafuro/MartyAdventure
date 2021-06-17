@@ -22,6 +22,22 @@ import edu.unibo.martyadventure.view.character.Player;
 
 public class PlayerChoiceScreen implements Screen {
     
+    private static final String DOC_PATH = "Characters/Doc/DocSelection.png";
+    private static final String MARTY_PATH = "Characters/Marty/MartySelection.png";
+    private static final String BIFF_PATH = "Characters/Biff/BiffSelection.png";
+    private static final int BIFF_BUTTON_X = 975;
+    private static final int DOC_BUTTON_X = 270;
+    private static final int MARTY_BUTTON_X = 620;
+    private static final int START_BUTTON_X = 570;
+    private static final int START_BUTTON_Y = 150;
+    private static final int BUTTON_Y = 350;
+    private static final int SPRITE_HEIGHT = 101;
+    private static final int SPRITE_WIDTH = 74;
+    private static final int SPRITE_SCALE = 2;
+    private static final int MARTY_X = 625;
+    private static final int DOC_X = 275;
+    private static final int SPRITE_Y = 450;
+    private static final int BIFF_X = 975;
     private static final int ZOOM = 70;
     private Stage stage;
     private Viewport viewport;
@@ -29,9 +45,11 @@ public class PlayerChoiceScreen implements Screen {
     private TextureAtlas buttonAtlas;
     private Texture background;
     private static final String BG_PATH = "Level/Menu/SelectCharacters.png";
-    private static final float FRAME_DURATION = 0.1f;
+    private static final float FRAME_DURATION = 0.25f;
     private float time=0;
     Animation<TextureRegion> biffAnimation;
+    Animation<TextureRegion> martyAnimation;
+    Animation<TextureRegion> docAnimation;
     
     public PlayerChoiceScreen() {
         background = Toolbox.getTexture(BG_PATH);
@@ -60,9 +78,10 @@ public class PlayerChoiceScreen implements Screen {
         martyButton.setChecked(true);
         ScreenManager.changePlayer(Player.MARTY);
         
-        martyButton.setPosition(5, 350);
-        docButton.setPosition(175, 350);
-        biffButton.setPosition(330, 350);
+        martyButton.setPosition(MARTY_BUTTON_X, BUTTON_Y);
+        docButton.setPosition(DOC_BUTTON_X, BUTTON_Y);
+        biffButton.setPosition(BIFF_BUTTON_X, BUTTON_Y);
+        newGameButton.setPosition(START_BUTTON_X, START_BUTTON_Y);
         
         stage.addActor(newGameButton);
         stage.addActor(martyButton);
@@ -97,12 +116,19 @@ public class PlayerChoiceScreen implements Screen {
                 ScreenManager.changePlayer(Player.BIFF);
             }
         });
-        TextureRegion[][] textures = new TextureRegion(new Texture ("Characters/Biff/BiffYoYo/BiffYoYo allFrame.png")).split(85, 118);
-        biffAnimation = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
-        biffAnimation.setPlayMode(PlayMode.LOOP);
+        biffAnimation = loadAnimation(BIFF_PATH);
+        martyAnimation  = loadAnimation(MARTY_PATH);
+        docAnimation = loadAnimation(DOC_PATH);
 
         Gdx.input.setInputProcessor(stage);
 
+    }
+
+    private Animation<TextureRegion> loadAnimation(String path) {
+        TextureRegion[][] textures = new TextureRegion(new Texture (path)).split(SPRITE_WIDTH, SPRITE_HEIGHT);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
+        a.setPlayMode(PlayMode.LOOP);
+        return a;
     }
 
     @Override
@@ -114,7 +140,9 @@ public class PlayerChoiceScreen implements Screen {
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().draw(biffAnimation.getKeyFrame(time), 620, 420, 160,256);
+        stage.getBatch().draw(biffAnimation.getKeyFrame(time), BIFF_X, SPRITE_Y, SPRITE_WIDTH *  SPRITE_SCALE ,SPRITE_HEIGHT * SPRITE_SCALE);
+        stage.getBatch().draw(docAnimation.getKeyFrame(time), DOC_X, SPRITE_Y, SPRITE_WIDTH *  SPRITE_SCALE ,SPRITE_HEIGHT * SPRITE_SCALE);
+        stage.getBatch().draw(martyAnimation.getKeyFrame(time), MARTY_X, SPRITE_Y, SPRITE_WIDTH *  SPRITE_SCALE ,SPRITE_HEIGHT * SPRITE_SCALE);
         stage.getBatch().end();
         stage.draw();
     }
