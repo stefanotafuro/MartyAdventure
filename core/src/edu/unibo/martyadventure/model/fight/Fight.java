@@ -1,6 +1,6 @@
 package edu.unibo.martyadventure.model.fight;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,9 +75,10 @@ public class Fight {
 
     public Move enemyMove() {
         Move move;
-        Random rand = new Random();
         do {
-            move = enemy.getWeapon().getMoveList().get(rand.nextInt(enemy.getWeapon().getMoveList().size()));
+            move = enemy.getWeapon().getMoveList().
+                    get(ThreadLocalRandom.current().
+                            nextInt(enemy.getWeapon().getMoveList().size()));
 
         } while (!isMoveUsable(enemy, move));
         return move;
@@ -89,7 +90,7 @@ public class Fight {
      * @param inputMove The Move that the player wants to use
      */
     public void playerAttack(Move inputMove) {
-        if(isMoveUsable(player, inputMove))
+        if (isMoveUsable(player, inputMove))
             attack(player.getWeapon(), inputMove, enemy);
         enemyAttack();
 
@@ -165,7 +166,7 @@ public class Fight {
     /**
      * 
      * @param character The character who wants to use the move
-     * @param move The Move that will be used
+     * @param move      The Move that will be used
      * @return If the move is usable by the character
      */
     public boolean isMoveUsable(Character character, Move move) {

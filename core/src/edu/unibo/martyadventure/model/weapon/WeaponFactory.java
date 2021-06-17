@@ -2,7 +2,7 @@ package edu.unibo.martyadventure.model.weapon;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import edu.unibo.martyadventure.model.weapon.Weapon.WeaponType;
 import edu.unibo.martyadventure.view.MapManager;
@@ -52,7 +52,8 @@ public class WeaponFactory {
      */
     public static Weapon createRandomWeapon(String name, double damageMultiplier) {
         return createWeapon(name, damageMultiplier,
-                new Random().nextBoolean() ? Weapon.WeaponType.MELEE : Weapon.WeaponType.RANGED);
+                ThreadLocalRandom.current().nextBoolean() ? Weapon.WeaponType.MELEE : Weapon.WeaponType.RANGED);
+
     }
 
     /**
@@ -64,7 +65,7 @@ public class WeaponFactory {
      */
     private static Weapon createWeapon(String name, double damageMultiplier, Weapon.WeaponType type) {
         Weapon weapon = new Weapon(name,
-                new Random().nextInt((RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER - RANDOM_WEAPON_MIN_DAMAGE) + 1)
+                ThreadLocalRandom.current().nextInt((RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER - RANDOM_WEAPON_MIN_DAMAGE) + 1)
                         + RANDOM_WEAPON_MIN_DAMAGE);
         List<Move> moveList = new ArrayList<>();
         int i = 0;
@@ -132,7 +133,7 @@ public class WeaponFactory {
      * @return Random double between MIN and MAX
      */
     public static float randomDamageMultiplier() {
-        return (new Random().nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER ; 
+        return (ThreadLocalRandom.current() .nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER;
     }
 
     private WeaponFactory() {
