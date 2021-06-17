@@ -8,20 +8,16 @@ import com.badlogic.gdx.math.Vector2;
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
 import edu.unibo.martyadventure.view.Toolbox;
 
-public class EnemyCharacterView extends CharacterView {
+public class EnemyCharacterView extends CharacterView<EnemyCharacter> {
 
-    public static final int FRAME_WIDTH = 140;
-    public static final int FRAME_HEIGHT = 148;
+    private static final float MAX_ACCELLERATION = 20f;
+    private static final float ACCELLERATION_FACTOR = 5f;
+    private static final float MAX_SPEED = 70f;
 
-    private EnemyCharacter enemy;
 
-    public EnemyCharacterView(Vector2 initialPosition, String enemy_path, EnemyCharacter enemy)
+    public EnemyCharacterView(final Vector2 initialPosition, final String enemyPath, final EnemyCharacter enemy)
             throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, new TextureRegion(Toolbox.getTexture(enemy_path)), FRAME_WIDTH, FRAME_HEIGHT);
-        this.enemy = enemy;
-    }
-
-    public EnemyCharacter getEnemy() {
-        return enemy;
+        super(enemy, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
+                new TextureRegion(Toolbox.getTexture(enemyPath)));
     }
 }

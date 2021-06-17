@@ -62,7 +62,7 @@ public class CombatGameScreen implements Screen {
         setupEnemy(enemy);
         viewport = new FitViewport(BASE_WIDTH, BASE_HEIGHT);
         viewport.apply();
-        fight = new Fight(player.getPlayer(), enemy.getEnemy());
+        fight = new Fight(player.getCharacter(), enemy.getCharacter());
         stage = new Stage(viewport);
     }
 

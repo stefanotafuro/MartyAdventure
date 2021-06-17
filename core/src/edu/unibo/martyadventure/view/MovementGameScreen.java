@@ -40,6 +40,7 @@ public class MovementGameScreen implements Screen {
     private static Vector2 playerInitialPosition;
     private EnemyFactory eFactory;
 
+
     public MovementGameScreen(MapManager.Maps map) {
         eFactory = new EnemyFactory();
         mapManager = new MapManager();
@@ -216,7 +217,7 @@ public class MovementGameScreen implements Screen {
     }
 
     private boolean isAlive(EnemyCharacterView enemy) {
-        return enemy.getEnemy().getHp() != 0;
+        return enemy.getCharacter().getHp() != 0;
     }
 
     /**

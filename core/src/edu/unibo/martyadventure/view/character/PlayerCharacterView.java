@@ -2,7 +2,6 @@ package edu.unibo.martyadventure.view.character;
 
 import java.util.concurrent.ExecutionException;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,26 +14,18 @@ import edu.unibo.martyadventure.view.Toolbox;
  * A player character's base providing basic movement, interaction with given
  * the map and visual representation.
  */
-public class PlayerCharacterView extends CharacterView {
+public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
 
     private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 9300,
             WeaponFactory.createRandomMeleeWeapon("Pugno", 1.9));
     private static final String PLAYER_PATH = "Characters/Marty/MartyMove (1).png";
-    public static final int FRAME_WIDTH = 140;
-    public static final int FRAME_HEIGHT = 148;
+    private static final float MAX_ACCELLERATION = 20f;
+    private static final float ACCELLERATION_FACTOR = 10f;
+    private static final float MAX_SPEED = 100f;
 
 
-    private static TextureRegion loadTexture() throws InterruptedException, ExecutionException {
-        Texture texture = Toolbox.getTexture(PLAYER_PATH);
-        TextureRegion textureFrames = new TextureRegion(texture);
-        return textureFrames;
-    }
-
-    public PlayerCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 10f, 100f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
-    }
-
-    public PlayerCharacter getPlayer() {
-        return player;
+    public PlayerCharacterView(final Vector2 initialPosition) throws InterruptedException, ExecutionException {
+        super(player, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
+                new TextureRegion(Toolbox.getTexture(PLAYER_PATH)));
     }
 }
