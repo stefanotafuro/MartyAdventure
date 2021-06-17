@@ -2,8 +2,8 @@ package edu.unibo.martyadventure.model.character;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -17,8 +17,8 @@ public class EnemyFactory {
     private static final String BIFF_PATH_2 = "Characters/Biff/BiffMove (2).png";
     private static final String BIFF_PATH_3 = "Characters/Biff/BiffMove (3).png";
 
-    private static final String ENEMY_PATH_1 = "Characters/Bulli/Bullo (1).png";
-    private static final String ENEMY_PATH_2 = "Characters/Bulli/Bullo (2).png";
+    private static final String ENEMY_PATH_1 = "Characters/Bully/Bully (1).png";
+    private static final String ENEMY_PATH_2 = "Characters/Bully/Bully (2).png";
 
     private static final int BIFF_HP_1 = 100;
     private static final int BIFF_HP_2 = 200;
@@ -62,10 +62,10 @@ public class EnemyFactory {
             throws InterruptedException, ExecutionException {
         EnemyCharacter b = new EnemyCharacter(WeaponFactory.createRandomWeaponLevel("Banana", map), "Bullo", mapBulloHp.get(map),
                 WeaponFactory.createRandomWeaponLevel("Ginocchio", map));
-        EnemyCharacterView bullo = new EnemyCharacterView(initialPosition,
-                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b);
+        EnemyCharacterView bully = new EnemyCharacterView(initialPosition,
+                ThreadLocalRandom.current().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b);
 
-        return bullo;
+        return bully;
     }
 
 }
