@@ -64,22 +64,18 @@ public class Fight {
     public void playerAttack(Move inputMove) {
         attack(player.getWeapon(), inputMove, enemy);
         enemyAttack();
-
     }
 
 
     /**
-     *  
      * @param weapon The striker's weapon
      * @param move The striker's move
      * @param character The opponent character
      */
     public void attack(Weapon weapon, Move move, Character character) {
-        
         //check if the move is usable
         if (!move.checkTurn(turnCount)) {
             //System.out.println("Unusable Move");
-
         }
         //check if the move fail
         else if (!move.testFailure()) {
@@ -98,7 +94,7 @@ public class Fight {
                 character.setHp((int) (character.getHp() - (weapon.getDamageMultiplier() * move.getDamage())));
             }
         }
-        
+
         turnCount++;
     }
 
@@ -111,7 +107,7 @@ public class Fight {
     public boolean isDead(int damage, int characterHP) {
         return damage >= characterHP;
     }
-    
+
     /**
      * The fight is ended
      * @return The winner
@@ -125,5 +121,4 @@ public class Fight {
         }
         return null;
     }
-
 }

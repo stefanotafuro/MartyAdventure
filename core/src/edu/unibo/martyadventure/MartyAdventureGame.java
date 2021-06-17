@@ -3,7 +3,7 @@ package edu.unibo.martyadventure;
 import com.badlogic.gdx.Game;
 
 import edu.unibo.martyadventure.view.MapManager;
-import edu.unibo.martyadventure.view.ScreenManager;
+import edu.unibo.martyadventure.view.screen.ScreenManager;
 
 public class MartyAdventureGame extends Game {
 
@@ -13,10 +13,8 @@ public class MartyAdventureGame extends Game {
         ScreenManager.loadMovementScreen();
     }
 
-    
-
     @Override
     public void dispose() {
-        
+
     }
 }

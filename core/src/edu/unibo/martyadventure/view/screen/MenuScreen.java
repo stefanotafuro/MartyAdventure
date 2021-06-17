@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.screen;
 
 import com.badlogic.gdx.math.Vector2;
 

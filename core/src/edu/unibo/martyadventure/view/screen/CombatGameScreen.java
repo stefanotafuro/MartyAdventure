@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.screen;
 
 import java.text.DecimalFormat;
 
@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.model.fight.Fight;
+import edu.unibo.martyadventure.view.Toolbox;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.model.character.Character;
@@ -65,6 +66,7 @@ public class CombatGameScreen implements Screen {
                 buttonSkin);
         button.addListener(new ClickListener() {
 
+            @SuppressWarnings("unused")
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 fight.playerAttack(fight.getPlayer().getWeapon().getMoveList().get(index));
