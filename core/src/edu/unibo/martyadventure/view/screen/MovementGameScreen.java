@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.screen;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +27,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
+import edu.unibo.martyadventure.model.character.EnemyFactory;
+import edu.unibo.martyadventure.view.MapManager;
+import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;

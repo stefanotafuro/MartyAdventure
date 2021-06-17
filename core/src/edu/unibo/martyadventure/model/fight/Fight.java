@@ -93,20 +93,17 @@ public class Fight {
         if (isMoveUsable(player, inputMove))
             attack(player.getWeapon(), inputMove, enemy);
         enemyAttack();
-
     }
 
     /**
-     * 
-     * @param weapon    The striker's weapon
-     * @param move      The striker's move
+     * @param weapon The striker's weapon
+     * @param move The striker's move
      * @param character The opponent character
      */
     public void attack(Weapon weapon, Move move, Character character) {
-        // check if the move fail
-        if (!move.testFailure()) {
-            setLastUse(opponent(character), move, turnCount);
-            // System.out.println("Move Fail");
+        //check if the move is usable
+        if (!move.checkTurn(turnCount)) {
+            //System.out.println("Unusable Move");
         }
         // ATTACK
         else {
@@ -150,40 +147,5 @@ public class Fight {
             return player;
         }
         return null;
-    }
-
-    /**
-     * Function to set the lastUse of a specific Move
-     * 
-     * @param character The character who attack
-     * @param move      The Move choosen by the character
-     * @param fightTurn The current fightTurn
-     */
-    public void setLastUse(Character character, Move move, int fightTurn) {
-        mapCharactersMove.get(character).replace(move, fightTurn);
-    }
-
-    /**
-     * 
-     * @param character The character who wants to use the move
-     * @param move      The Move that will be used
-     * @return If the move is usable by the character
-     */
-    public boolean isMoveUsable(Character character, Move move) {
-        return move.isUsable(turnCount, mapCharactersMove.get(character).get(move));
-
-    }
-
-    /**
-     * Function to return the opponent of the attack
-     * 
-     * @param character The character that will be attacked
-     * @return The character who attack
-     */
-    private Character opponent(Character character) {
-        if (character == player) {
-            return enemy;
-        }
-        return player;
     }
 }

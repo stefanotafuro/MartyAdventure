@@ -1,10 +1,11 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import edu.unibo.martyadventure.view.character.Player;
+import edu.unibo.martyadventure.view.MapManager;
+import edu.unibo.martyadventure.view.MapManager.Maps;
 
 public class ScreenManager {
 

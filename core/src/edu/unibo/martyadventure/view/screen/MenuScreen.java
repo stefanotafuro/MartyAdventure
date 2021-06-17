@@ -1,4 +1,4 @@
-package edu.unibo.martyadventure.view;
+package edu.unibo.martyadventure.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
