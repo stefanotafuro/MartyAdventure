@@ -35,5 +35,4 @@ public class PlayerCharacterView extends CharacterView {
     public PlayerCharacter getPlayer() {
         return player;
     }
-
 }

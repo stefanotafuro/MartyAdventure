@@ -23,5 +23,4 @@ public class EnemyCharacterView extends CharacterView {
     public EnemyCharacter getEnemy() {
         return enemy;
     }
-
 }

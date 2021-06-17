@@ -75,7 +75,6 @@ public class MovementGameScreen implements Screen {
         }
 
         setupList();
-
     }
 
     private void setupList() {
@@ -103,12 +102,10 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-
         resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(player, true);
         Gdx.input.setInputProcessor(inputProcessor);
-
     }
 
     /**
@@ -174,7 +171,6 @@ public class MovementGameScreen implements Screen {
             }
         });
         mapRenderer.getBatch().end();
-
     }
 
     /**
@@ -233,13 +229,11 @@ public class MovementGameScreen implements Screen {
     public void resize(int width, int height) {
         ScreenManager.setupViewport(width / ScreenManager.VIEWPORT.ZOOM, height / ScreenManager.VIEWPORT.ZOOM);
         camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
-
     }
 
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -258,7 +252,5 @@ public class MovementGameScreen implements Screen {
         // TODO player disposed
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
-
     }
-
 }

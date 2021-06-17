@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -142,11 +141,9 @@ public class CombatGameScreen implements Screen {
         mainTable.add(move4Label);
 
         // Add table to stage
-
         stage.addActor(mainTable);
 
         // Create label
-
         playerHpLabel = new Label("", buttonSkin, "title");
         playerHpLabel.setSize(100, 100);
         playerHpLabel.setPosition(70, 700);
@@ -169,7 +166,6 @@ public class CombatGameScreen implements Screen {
         stage.addActor(enemyHpLabel);
         stage.addActor(enemyWeaponLabel);
         stage.addActor(playerWeaponLabel);
-
     }
 
     @Override
@@ -201,13 +197,11 @@ public class CombatGameScreen implements Screen {
         stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().end();
         stage.draw();
-
     }
 
     private void updateLabel() {
         playerHpLabel.setText(fight.getPlayer().getName() + " HP: " + fight.getPlayer().getHp());
         enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
-
     }
 
     private void checkButton(TextButton button, int moveNumber) {
@@ -218,7 +212,6 @@ public class CombatGameScreen implements Screen {
             button.setTouchable(Touchable.disabled);
             button.setDisabled(true);
         }
-
     }
 
     private void setupPlayer(PlayerCharacterView p) {
@@ -240,25 +233,20 @@ public class CombatGameScreen implements Screen {
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-
     }
-
 }
