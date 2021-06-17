@@ -30,8 +30,4 @@ public class EnemyCharacterView extends CharacterView {
         TextureRegion textureFrames = new TextureRegion(texture);
         return textureFrames;
     }
-
-    public EnemyCharacterView(Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, loadTexture(), FRAME_WIDTH, FRAME_HEIGHT);
-    }
 }

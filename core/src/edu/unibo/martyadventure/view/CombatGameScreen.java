@@ -186,58 +186,28 @@ public class CombatGameScreen implements Screen {
         mainTable.add(move4Label).align(Align.right);
 
         // Add table to stage
-
         stage.addActor(mainTable);
 
-        weaponSelection = new Window("", skin);
-        weaponSelection.setBackground(new TextureRegionDrawable(Toolbox.getTexture(weaponSelectionPath)));
-        weaponSelection.setSize(stage.getWidth() / 2, stage.getHeight() / 4);
-        weaponSelection.setPosition(stage.getWidth() / 4, stage.getHeight() / 3);
-        weaponSelection.setVisible(false);
+        // Create label
+        playerHpLabel = new Label("", buttonSkin, "title");
+        playerHpLabel.setSize(100, 100);
+        playerHpLabel.setPosition(70, 700);
 
-        TextButton weapon1Button = new TextButton(fight.getPlayer().getWeapon().getName(), skin);
-        TextButton weapon2Button = new TextButton(fight.getEnemy().getDropitem().getName(), skin);
-        weapon1Button.setPosition(weaponSelection.getWidth()/4 - weapon1Button.getWidth()/2, 35);
-        weapon2Button.setPosition((weaponSelection.getWidth()/4)*3 - weapon2Button.getWidth()/2, 35);
-        
-        Image weapon1Image = new Image(playerWeaponTexture);
-        Image weapon2Image = new Image(enemyView.getDropWeapon().getWeaponTexture());
-        
-        Label titleLabel = new Label("Scegli che arma equipaggiare", skin, "title");
-        Label playerDropLabel = new Label("La tua arma " + ":\n" + "Danno: " + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()) , skin, "title");
-        Label enemyDropLabel = new Label("Drop di " + fight.getEnemy().getName() + ":\n" + "Danno: " + df.format(fight.getEnemy().getDropitem().getDamageMultiplier()) , skin, "title");
+        enemyHpLabel = new Label("", buttonSkin, "title");
+        enemyHpLabel.setSize(100, 100);
+        enemyHpLabel.setPosition(1200, 500);
 
-        titleLabel.setPosition(weaponSelection.getWidth()/2 - titleLabel.getWidth()/2, TITLE_Y);
-        weaponSelection.addActor(weapon1Button);
-        weaponSelection.addActor(weapon2Button);
-        weaponSelection.addActor(titleLabel);
-        weaponSelection.row();
-        weaponSelection.add(weapon1Image).spaceRight(WEAPON_SELECTION_WEAPON_SPACE).center();
-        weaponSelection.add(weapon2Image);
-        weaponSelection.row();
-        weaponSelection.add(playerDropLabel).left();
-        weaponSelection.add(enemyDropLabel);
-        
-        weapon1Button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ScreenManager.loadMovementScreen();
-            }
-        });
-        
-        weapon2Button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                playerView.setWeaponView(enemyView.getDropWeapon());
-                ScreenManager.loadMovementScreen();
-            }
-        });
+        playerWeaponLabel = new Label("Weapon : " + fight.getPlayer().getWeapon().getName() + " Dmg: "
+                + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()), buttonSkin, "title");
+        playerWeaponLabel.setSize(100, 100);
+        playerWeaponLabel.setPosition(70, 650);
 
         stage.addActor(weaponSelection);
 
-        // Setup the input processor
-        Gdx.input.setInputProcessor(stage);
-
+        stage.addActor(playerHpLabel);
+        stage.addActor(enemyHpLabel);
+        stage.addActor(enemyWeaponLabel);
+        stage.addActor(playerWeaponLabel);
     }
 
     @Override
@@ -269,7 +239,6 @@ public class CombatGameScreen implements Screen {
         stage.getBatch().draw(enemyWeaponTexture, ENEMY_WEAPON_X, ENEMY_WEAPON_Y, enemyWeaponTexture.getWidth() * WEAPON_TEXTURE_SCALE,enemyWeaponTexture.getHeight() * WEAPON_TEXTURE_SCALE );
         stage.getBatch().end();
         stage.draw();
-
     }
 
     private void weaponSelection() {
@@ -291,20 +260,18 @@ public class CombatGameScreen implements Screen {
     }
 
     private void updateLabel() {
-        playerHpLabel.setText(fight.getPlayer().getName() + " PV: " + fight.getPlayer().getHp());
-        enemyHpLabel.setText(fight.getEnemy().getName() + " PV: " + fight.getEnemy().getHp());
-
+        playerHpLabel.setText(fight.getPlayer().getName() + " HP: " + fight.getPlayer().getHp());
+        enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
     }
 
     private void checkButton(TextButton button, int moveNumber) {
-            if (fight.isMoveUsable(fight.getPlayer(), fight.getPlayer().getWeapon().getMoveList().get(moveNumber))) {
-                button.setTouchable(Touchable.enabled);
-                button.setDisabled(false);
-            } else {
-                button.setTouchable(Touchable.disabled);
-                button.setDisabled(true);
-            }
-
+        if (fight.getPlayer().getWeapon().getMoveList().get(moveNumber).isUsable(fight.getTurnCount())) {
+            button.setTouchable(Touchable.enabled);
+            button.setDisabled(false);
+        } else {
+            button.setTouchable(Touchable.disabled);
+            button.setDisabled(true);
+        }
     }
 
     private void setupPlayer(PlayerCharacterView p) {
@@ -326,25 +293,20 @@ public class CombatGameScreen implements Screen {
     @Override
     public void pause() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void resume() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-
     }
-
 }

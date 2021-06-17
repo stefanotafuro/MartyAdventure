@@ -14,25 +14,36 @@ public class ScreenManager {
     }
 
     private static MovementGameScreen movementScreen;
-    private static MenuScreen menu = new MenuScreen();
-    private static PlayerChoiceScreen choice = new PlayerChoiceScreen();
-    private static Player currentPlayer;
 
-    private ScreenManager() {
-
-    }
+    private ScreenManager() {}
 
     public static void changeMap(MapManager.Maps map) {
-        movementScreen = new MovementGameScreen(currentPlayer, map);
+        movementScreen = new MovementGameScreen(map);
     }
 
-    public static void changePlayer(Player player) {
-        currentPlayer = player;
-    }
-
-    public static void loadMovementScreen() {
+    public static void loadMovementScreen(){
         loadScreen(movementScreen);
     }
+
+    public static void loadCombatScreen(CombatGameScreen screen){
+        loadScreen(screen);
+    }
+
+    private static void loadScreen(Screen s){
+        Game game = (Game)Gdx.app.getApplicationListener();
+        game.setScreen(s);
+    }
+
+    /**
+     * Setup the Viewport according due the screen dimensions
+     * 
+     * @param width
+     * @param height
+     */
+    public static void setupViewport(int width, int height) {
+        // Make the viewport a percentage of the total display area
+        VIEWPORT.virtualWidth = width;
+        VIEWPORT.virtualHeight = height;
 
     public static void loadMenuScreen() {
         loadScreen(menu);
@@ -50,5 +61,4 @@ public class ScreenManager {
         Game game = (Game) Gdx.app.getApplicationListener();
         game.setScreen(s);
     }
-
 }
