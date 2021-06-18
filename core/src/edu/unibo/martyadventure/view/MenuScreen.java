@@ -30,6 +30,9 @@ public class MenuScreen implements Screen {
     TextButton biffButton;
 
     public MenuScreen() {
+        music = Gdx.audio.newMusic(new FileHandle("music/theme.ogg"));
+        music.setLooping(true);
+        music.play();
         background = Toolbox.getTexture(BG_PATH);
         buttonAtlas = new TextureAtlas("skin/comic-ui.atlas");
         buttonSkin = new Skin(Gdx.files.internal("skin/comic-ui.json"), buttonAtlas);
@@ -40,9 +43,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        music = Gdx.audio.newMusic(new FileHandle("music/theme.ogg"));
-        music.setLooping(true);
-        music.play();
         TextButton newGameButton = new TextButton("Nuova partita", buttonSkin);
         TextButton exitButton = new TextButton("Esci", buttonSkin);
         stage.addActor(newGameButton);
