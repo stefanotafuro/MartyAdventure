@@ -11,9 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -25,6 +27,7 @@ public class PlayerChoiceScreen implements Screen {
     private static final String DOC_PATH = "Characters/Doc/DocSelection.png";
     private static final String MARTY_PATH = "Characters/Marty/MartySelection.png";
     private static final String BIFF_PATH = "Characters/Biff/BiffSelection.png";
+    private static final String BUTTON_BG_PATH = "Level/Menu/XclosingButton.png";
     private static final int BIFF_BUTTON_X = 975;
     private static final int DOC_BUTTON_X = 270;
     private static final int MARTY_BUTTON_X = 620;
@@ -46,6 +49,8 @@ public class PlayerChoiceScreen implements Screen {
     private Texture background;
     private static final String BG_PATH = "Level/Menu/SelectCharacters.png";
     private static final float FRAME_DURATION = 0.25f;
+    private static final float CLOSE_BUTTON_X = 200;
+    private static final float CLOSE_BUTTON_Y = 200;
     private float time=0;
     Animation<TextureRegion> biffAnimation;
     Animation<TextureRegion> martyAnimation;
@@ -62,6 +67,7 @@ public class PlayerChoiceScreen implements Screen {
 
     @Override
     public void show() {
+        ImageButton closeButton = new ImageButton(new TextureRegionDrawable(Toolbox.getTexture(BUTTON_BG_PATH)));
         TextButton newGameButton = new TextButton("Inizia partita", buttonSkin);
         ButtonGroup<TextButton> buttonGroup = new ButtonGroup<>();
         TextButton martyButton = new TextButton("Marty", buttonSkin);
@@ -78,6 +84,9 @@ public class PlayerChoiceScreen implements Screen {
         martyButton.setChecked(true);
         ScreenManager.changePlayer(Player.MARTY);
         
+        closeButton.setPosition(stage.getWidth() - CLOSE_BUTTON_X, stage.getHeight() - CLOSE_BUTTON_Y);  
+        closeButton.setTransform(true);
+        closeButton.scaleBy(2);
         martyButton.setPosition(MARTY_BUTTON_X, BUTTON_Y);
         docButton.setPosition(DOC_BUTTON_X, BUTTON_Y);
         biffButton.setPosition(BIFF_BUTTON_X, BUTTON_Y);
@@ -87,6 +96,7 @@ public class PlayerChoiceScreen implements Screen {
         stage.addActor(martyButton);
         stage.addActor(docButton);
         stage.addActor(biffButton);
+        stage.addActor(closeButton);
         
         newGameButton.addListener(new ClickListener() {
             @Override
@@ -114,6 +124,13 @@ public class PlayerChoiceScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ScreenManager.changePlayer(Player.BIFF);
+            }
+        });
+        
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ScreenManager.loadMenuScreen();
             }
         });
         biffAnimation = loadAnimation(BIFF_PATH);

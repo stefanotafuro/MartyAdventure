@@ -32,6 +32,8 @@ import edu.unibo.martyadventure.view.entity.EntityState;
 
 public class CombatGameScreen implements Screen {
 
+    private static final int TITLE_Y = 270;
+    private static final int WEAPON_SELECTION_WEAPON_SPACE = 350;
     private static final float WEAPON_TEXTURE_SCALE = 2;
     private static final int ZOOM = 100;
     private static final int TABLE_POSITION_Y = 190;
@@ -201,12 +203,16 @@ public class CombatGameScreen implements Screen {
         Image weapon1Image = new Image(playerWeaponTexture);
         Image weapon2Image = new Image(enemyView.getDropWeapon().getWeaponTexture());
         
+        Label titleLabel = new Label("Scegli che arma equipaggiare", skin, "title");
         Label playerDropLabel = new Label("La tua arma " + ":\n" + "Danno: " + df.format(fight.getPlayer().getWeapon().getDamageMultiplier()) , skin, "title");
         Label enemyDropLabel = new Label("Drop di " + fight.getEnemy().getName() + ":\n" + "Danno: " + df.format(fight.getEnemy().getDropitem().getDamageMultiplier()) , skin, "title");
 
+        titleLabel.setPosition(weaponSelection.getWidth()/2 - titleLabel.getWidth()/2, TITLE_Y);
         weaponSelection.addActor(weapon1Button);
         weaponSelection.addActor(weapon2Button);
-        weaponSelection.add(weapon1Image).spaceRight(350).center();
+        weaponSelection.addActor(titleLabel);
+        weaponSelection.row();
+        weaponSelection.add(weapon1Image).spaceRight(WEAPON_SELECTION_WEAPON_SPACE).center();
         weaponSelection.add(weapon2Image);
         weaponSelection.row();
         weaponSelection.add(playerDropLabel).left();

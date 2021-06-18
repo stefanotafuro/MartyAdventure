@@ -34,7 +34,7 @@ public class WeaponViewFactory {
             return weaponName;
         }
 
-        public Weapon.WeaponType getTypeName() {
+        public Weapon.WeaponType getType() {
             return type;
         }
     }
@@ -45,14 +45,14 @@ public class WeaponViewFactory {
 
     public static WeaponView createRandomWeaponView(MapManager.Maps map) {
         Weapons w = getRandomWeapon();
-        return new WeaponView(WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), map, w.getTypeName()),
+        return new WeaponView(WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), map, w.getType()),
                 new Texture(w.getTexturePath()));
     }
 
     public static WeaponView createPlayerWeaponView() {
         Weapons w = Weapons.CROWBAR;
         return new WeaponView(
-                WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), MapManager.Maps.MAP1, w.getTypeName()),
+                WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), MapManager.Maps.MAP1, w.getType()),
                 new Texture(w.getTexturePath()));
     }
 
