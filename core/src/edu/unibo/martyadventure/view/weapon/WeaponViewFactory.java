@@ -1,25 +1,29 @@
 package edu.unibo.martyadventure.view.weapon;
 
 import com.badlogic.gdx.graphics.Texture;
+
+import edu.unibo.martyadventure.model.weapon.Weapon;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
 
 public class WeaponViewFactory {
     
     public enum Weapons{
-        BASEBALL_BAT ("Weapons/baseballBat.png", "Mazza da baseball"), 
-        BRASS_KNUCKLES ("Weapons/BrassKnuckles.png", "Tirapugni"), 
-        CROWBAR ("Weapons/crowbar.png", "Piede di porco"), 
-        HAMMER ("Weapons/hammer.png", "Martello"), 
-        KNIFE ("Weapons/knife.png", "Coltello"), 
-        REVOLVER ("Weapons/Revolver.png", "Rivoltella");
+        BASEBALL_BAT ("Weapons/baseballBat.png", "Mazza da baseball", Weapon.WeaponType.MELEE), 
+        BRASS_KNUCKLES ("Weapons/BrassKnuckles.png", "Tirapugni", Weapon.WeaponType.MELEE), 
+        CROWBAR ("Weapons/crowbar.png", "Piede di porco", Weapon.WeaponType.MELEE), 
+        HAMMER ("Weapons/hammer.png", "Martello", Weapon.WeaponType.MELEE), 
+        KNIFE ("Weapons/knife.png", "Coltello", Weapon.WeaponType.MELEE), 
+        REVOLVER ("Weapons/Revolver.png", "Rivoltella", Weapon.WeaponType.RANGED);
         
         private final String texturePath;
         private final String weaponName;
+        private final Weapon.WeaponType type;
         
-        private Weapons(String path, String name) {
+        private Weapons(String path, String name, Weapon.WeaponType type) {
             texturePath = path;
             weaponName = name;
+            this.type = type;
         }
 
         public String getTexturePath() {
@@ -28,6 +32,10 @@ public class WeaponViewFactory {
 
         public String getWeaponName() {
             return weaponName;
+        }
+        
+        public Weapon.WeaponType getTypeName() {
+            return type;
         }
     }
     

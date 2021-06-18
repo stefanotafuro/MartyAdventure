@@ -73,6 +73,7 @@ public class CharacterViewFactory {
         bossMap = new HashMap<>();
         bossMap.put(Player.BIFF, martyTextureMapPath);
         bossMap.put(Player.MARTY, biffTextureMapPath);
+        bossMap.put(Player.DOC, biffTextureMapPath);
         
         mapBulloHp = new HashMap<>();
         mapBulloHp.put(MapManager.Maps.MAP1, BULLO_HP_1);
@@ -87,6 +88,7 @@ public class CharacterViewFactory {
         bossNameMap = new HashMap<>();
         bossNameMap.put(Player.BIFF, Player.MARTY);
         bossNameMap.put(Player.MARTY, Player.BIFF);
+        bossNameMap.put(Player.DOC, Player.BIFF);
     }
     
     public PlayerCharacterView createPlayer(Player player, Vector2 initialPosition, Maps map) throws InterruptedException, ExecutionException {
