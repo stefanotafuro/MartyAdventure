@@ -23,9 +23,9 @@ public class ScreenManager {
     }
 
     public static void changeMap(MapManager.Maps map) {
-        movementScreen = new MovementGameScreen(currentPlayer,map);
+        movementScreen = new MovementGameScreen(currentPlayer, map);
     }
-    
+
     public static void changePlayer(Player player) {
         currentPlayer = player;
     }
@@ -33,11 +33,11 @@ public class ScreenManager {
     public static void loadMovementScreen() {
         loadScreen(movementScreen);
     }
-    
+
     public static void loadMenuScreen() {
         loadScreen(menu);
     }
-    
+
     public static void loadChoicecreen() {
         loadScreen(choice);
     }

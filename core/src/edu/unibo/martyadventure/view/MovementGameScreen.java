@@ -90,11 +90,11 @@ public class MovementGameScreen implements Screen {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        
+
         worldBanner = new Sprite(bFactory.createBanner(map));
-        worldBanner.setSize(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/4);
-        worldBanner.setPosition(Gdx.app.getGraphics().getWidth()/2 - worldBanner.getWidth()/2, (Gdx.app.getGraphics().getHeight()/3)*2);
-        
+        worldBanner.setSize(Gdx.app.getGraphics().getWidth() / 2, Gdx.app.getGraphics().getHeight() / 4);
+        worldBanner.setPosition(Gdx.app.getGraphics().getWidth() / 2 - worldBanner.getWidth() / 2,
+                (Gdx.app.getGraphics().getHeight() / 3) * 2);
 
         setupList();
 
