@@ -59,10 +59,7 @@ public class MovementGameScreen implements Screen {
         cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
         WorldBannerFactory bFactory = new WorldBannerFactory();
-        
-        worldBanner = new Sprite(bFactory.createBanner(map));
-        worldBanner.setPosition(Gdx.app.getGraphics().getWidth()/2 - worldBanner.getWidth()/2, (Gdx.app.getGraphics().getHeight()/4)*3);
-        
+
         try {
             mapManager.loadMap(map);
         } catch (InterruptedException | ExecutionException | IOException e1) {
@@ -88,11 +85,16 @@ public class MovementGameScreen implements Screen {
 
         // biff
         try {
-            biffView = cFactory.createBoss(player,mapManager.getBiffStartPosition(), map);
+            biffView = cFactory.createBoss(player, mapManager.getBiffStartPosition(), map);
             biffView.setDirection(EntityDirection.DOWN);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        
+        worldBanner = new Sprite(bFactory.createBanner(map));
+        worldBanner.setSize(Gdx.app.getGraphics().getWidth()/2, Gdx.app.getGraphics().getHeight()/4);
+        worldBanner.setPosition(Gdx.app.getGraphics().getWidth()/2 - worldBanner.getWidth()/2, (Gdx.app.getGraphics().getHeight()/3)*2);
+        
 
         setupList();
 
@@ -124,7 +126,7 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-        
+
         PlayerInputProcessor.getPlayerInputProcessor().resetState();
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
         inputProcessor.setPlayer(playerView, true);
@@ -168,7 +170,7 @@ public class MovementGameScreen implements Screen {
             } else if (mapManager.getCurrentMapName() == MapManager.Maps.MAP3) {
                 ScreenManager.loadMenuScreen();
             }
-           
+
         }
 
         enemyList.forEach(enemy -> {
@@ -199,7 +201,7 @@ public class MovementGameScreen implements Screen {
             }
         });
         mapRenderer.getBatch().end();
-        
+
         uiBatch.begin();
         if (newWorld) {
             fadeTitle(delta);
@@ -210,11 +212,11 @@ public class MovementGameScreen implements Screen {
 
     private void fadeTitle(float delta) {
         if (time >= 0) {
-            worldBanner.draw(uiBatch, time -= delta/FADE_TIME);
+            worldBanner.draw(uiBatch, time -= delta / FADE_TIME);
         } else {
             newWorld = false;
         }
-        
+
     }
 
     /**
