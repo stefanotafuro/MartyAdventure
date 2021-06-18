@@ -125,7 +125,7 @@ public class PlayerChoiceScreen implements Screen {
     }
 
     private Animation<TextureRegion> loadAnimation(String path) {
-        TextureRegion[][] textures = new TextureRegion(new Texture (path)).split(SPRITE_WIDTH, SPRITE_HEIGHT);
+        TextureRegion[][] textures = new TextureRegion(Toolbox.getTexture(path)).split(SPRITE_WIDTH, SPRITE_HEIGHT);
         Animation<TextureRegion> a = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
         a.setPlayMode(PlayMode.LOOP);
         return a;

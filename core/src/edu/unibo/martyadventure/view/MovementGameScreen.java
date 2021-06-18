@@ -14,6 +14,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -25,14 +28,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
-import edu.unibo.martyadventure.view.character.EnemyViewFactory;
 import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
-import edu.unibo.martyadventure.view.character.PlayerViewFactory;
+import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.ui.WorldBannerFactory;
 
 public class MovementGameScreen implements Screen {
 
+    private static final int FADE_TIME = 4;
     private static final int SPRITE_SCALE_FACTOR = 3;
     private PlayerCharacterView playerView;
     private EnemyCharacterView biffView;
@@ -42,13 +46,22 @@ public class MovementGameScreen implements Screen {
     private OrthographicCamera camera;
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
-    private EnemyViewFactory eFactory;
+    private CharacterViewFactory cFactory;
     private Viewport viewport;
+    private boolean newWorld;
+    private Sprite worldBanner;
+    private float time = 1;
+    private Batch uiBatch;
 
     public MovementGameScreen(Player player, MapManager.Maps map) {
-        eFactory = new EnemyViewFactory();
-        PlayerViewFactory pFactory = new PlayerViewFactory();
+        uiBatch = new SpriteBatch();
+        newWorld = true;
+        cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
+        WorldBannerFactory bFactory = new WorldBannerFactory();
+        
+        worldBanner = new Sprite(bFactory.createBanner(map));
+        worldBanner.setPosition(Gdx.app.getGraphics().getWidth()/2 - worldBanner.getWidth()/2, (Gdx.app.getGraphics().getHeight()/4)*3);
         
         try {
             mapManager.loadMap(map);
@@ -68,14 +81,14 @@ public class MovementGameScreen implements Screen {
         // player
         try {
             playerInitialPosition = mapManager.getPlayerStartPosition();
-            playerView = pFactory.createPlayer(player, playerInitialPosition, map);
+            playerView = cFactory.createPlayer(player, playerInitialPosition, map);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         // biff
         try {
-            biffView = eFactory.createBiff(mapManager.getBiffStartPosition(), map);
+            biffView = cFactory.createBoss(player,mapManager.getBiffStartPosition(), map);
             biffView.setDirection(EntityDirection.DOWN);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -94,7 +107,7 @@ public class MovementGameScreen implements Screen {
         for (MapObject o : enemyLayer.getObjects()) {
             spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
             try {
-                enemyList.add(eFactory.createEnemy(
+                enemyList.add(cFactory.createEnemy(
                         new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE),
                         mapManager.getCurrentMapName()));
 
@@ -186,7 +199,22 @@ public class MovementGameScreen implements Screen {
             }
         });
         mapRenderer.getBatch().end();
+        
+        uiBatch.begin();
+        if (newWorld) {
+            fadeTitle(delta);
+        }
+        uiBatch.end();
 
+    }
+
+    private void fadeTitle(float delta) {
+        if (time >= 0) {
+            worldBanner.draw(uiBatch, time -= delta/FADE_TIME);
+        } else {
+            newWorld = false;
+        }
+        
     }
 
     /**
