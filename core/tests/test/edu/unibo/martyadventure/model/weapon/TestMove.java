@@ -15,23 +15,15 @@ public class TestMove {
         assertEquals(HOOK1.getFailRatio(), Move.HOOK.getFailRatio());
         assertEquals(HOOK1.getReloadTime(), Move.HOOK.getReloadTime());
         assertEquals(HOOK1.getMeleeOrRanged(), Move.HOOK.getMeleeOrRanged());
-        assertEquals(HOOK1.getLastUse(), Move.HOOK.getLastUse());
         // System.err.println("testLoadingMove ok");
-    }
-
-    @Test
-    void testSetLastUse() {
-        HOOK1.setLastUse(1);
-        assertEquals(HOOK1.getLastUse(), 1);
-        // System.err.println("testSetLastUse ok");
     }
 
     @Test
     void testIsUsable() {
         // HOOK1 reloadTime -> 1
         // HOOK1 lastUse -> 1
-        assertFalse(HOOK1.isUsable(2));
-        assertTrue(HOOK1.isUsable(3));
+        assertFalse(HOOK1.isUsable(2, 2));
+        assertTrue(HOOK1.isUsable(2, 1));
         // System.err.println("testIsUsable ok");
     }
 

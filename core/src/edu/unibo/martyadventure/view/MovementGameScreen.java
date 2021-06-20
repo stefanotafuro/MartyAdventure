@@ -1,6 +1,10 @@
 package edu.unibo.martyadventure.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.Gdx;
@@ -10,42 +14,112 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
+import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
+import edu.unibo.martyadventure.view.ui.WorldBannerFactory;
 
 public class MovementGameScreen implements Screen {
 
-    public static class VIEWPORT {
-        public static float viewportWidth;
-        public static float viewportHeight;
-        public static float virtualWidth;
-        public static float virtualHeight;
-        public static float physicalWidth;
-        public static float physicalHeight;
-        public static float aspectRatio;
-        public static int ZOOM = 30;
-    }
-
-    private PlayerCharacterView player;
-    private EnemyCharacterView biff;
+    private static final int FADE_TIME = 4;
+    private static final int SPRITE_SCALE_FACTOR = 3;
+    private PlayerCharacterView playerView;
+    private EnemyCharacterView biffView;
     private PlayerInputProcessor inputProcessor;
-    private TextureRegion playerCurrentFrame;
-    private TextureRegion biffCurrentFrame;
+    private List<EnemyCharacterView> enemyList;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
     private static MapManager mapManager;
+    private static Vector2 playerInitialPosition;
+    private CharacterViewFactory cFactory;
+    private Viewport viewport;
+    private boolean newWorld;
+    private Sprite worldBanner;
+    private float time = 1;
+    private Batch uiBatch;
 
-    public MovementGameScreen() {
+    public MovementGameScreen(Player player, MapManager.Maps map) {
+        uiBatch = new SpriteBatch();
+        newWorld = true;
+        cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
+        WorldBannerFactory bFactory = new WorldBannerFactory();
+
+        try {
+            mapManager.loadMap(map);
+        } catch (InterruptedException | ExecutionException | IOException e1) {
+            e1.printStackTrace();
+        }
+        playerInitialPosition = new Vector2(mapManager.getPlayerStartPosition());
+
+        // camera
+        camera = new OrthographicCamera();
+        this.viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT, ScreenManager.VIEWPORT.Y_VIEWPORT, camera);
+
+        // rederer
+        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
+        mapRenderer.setView(camera);
+
+        // player
+        try {
+            playerInitialPosition = mapManager.getPlayerStartPosition();
+            playerView = cFactory.createPlayer(player, playerInitialPosition, map);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        // biff
+        try {
+            biffView = cFactory.createBoss(player, mapManager.getBiffStartPosition(), map);
+            biffView.setDirection(EntityDirection.DOWN);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        worldBanner = new Sprite(bFactory.createBanner(map));
+        worldBanner.setSize(Gdx.app.getGraphics().getWidth() / 2, Gdx.app.getGraphics().getHeight() / 4);
+        worldBanner.setPosition(Gdx.app.getGraphics().getWidth() / 2 - worldBanner.getWidth() / 2,
+                (Gdx.app.getGraphics().getHeight() / 3) * 2);
+
+        setupList();
+
+    }
+
+    private void setupList() {
+        enemyList = new ArrayList<>();
+        MapLayer enemyLayer = mapManager.getEnemySpawnLayer();
+        Rectangle spawnPoint;
+
+        // iterate all the map box
+        for (MapObject o : enemyLayer.getObjects()) {
+            spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
+            try {
+                enemyList.add(cFactory.createEnemy(
+                        new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE),
+                        mapManager.getCurrentMapName()));
+
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        // set random direction for each enemy
+        Random r = new Random();
+        enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(r.nextInt(3))));
     }
 
     /**
@@ -53,39 +127,10 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-        // camera
-        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
 
-        // rederer
-
-        try {
-            mapManager.loadMap(MapManager.Maps.MAP1);
-        } catch (InterruptedException | ExecutionException | IOException e1) {
-            e1.printStackTrace();
-        }
-
-        mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
-        mapRenderer.setView(camera);
-
-        // player
-        try {
-            player = new PlayerCharacterView(mapManager.getPlayerStartPosition());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        // biff
-        try {
-            biff = new EnemyCharacterView(mapManager.getBiffStartPosition());
-            biff.setDirection(EntityDirection.DOWN);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
+        PlayerInputProcessor.getPlayerInputProcessor().resetState();
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
-        inputProcessor.setPlayer(player, true);
+        inputProcessor.setPlayer(playerView, true);
         Gdx.input.setInputProcessor(inputProcessor);
 
     }
@@ -99,20 +144,48 @@ public class MovementGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // set the camera position
-        camera.position.set(player.getCurrentPosition().x, player.getCurrentPosition().y, 0f);
+        camera.position.set(playerView.getCurrentPosition().x, playerView.getCurrentPosition().y, 0f);
         camera.update();
-        // update the current player frame
-        playerCurrentFrame = player.getCurrentFrame();
-        biffCurrentFrame = biff.getCurrentFrame();
 
         // check collisions
         try {
-            if (!collisionWithMapLayer(player.getBoundingBox())) {
-                player.goNextPosition();
+            if (!collisionWithMapLayer(playerView.getBoundingBox())) {
+                playerView.goNextPosition();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // check collisions
+        if (isAlive(biffView)) {
+            if (playerView.getBoundingBox().overlaps(biffView.getBoundingBox())) {
+                ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, biffView));
+            }
+        } else {
+            switch (mapManager.getCurrentMapName()) {
+            case MAP1: {
+                ScreenManager.changeMap(MapManager.Maps.MAP2);
+                ScreenManager.loadMovementScreen();
+                break;
+            }
+            case MAP2: {
+                ScreenManager.changeMap(MapManager.Maps.MAP3);
+                ScreenManager.loadMovementScreen();
+                break;
+            }
+            default: {
+                ScreenManager.loadMenuScreen();
+            }
+            }
+        }
+
+        enemyList.forEach(enemy -> {
+            if (isAlive(enemy)) {
+                if (playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
+                    ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, enemy));
+                }
+            }
+        });
 
         // update the input processor
         inputProcessor.update(delta);
@@ -121,10 +194,34 @@ public class MovementGameScreen implements Screen {
         mapRenderer.setView(camera);
         mapRenderer.render();
         mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(playerCurrentFrame, player.getCurrentPosition().x, player.getCurrentPosition().y, 3,
-                3);
-        mapRenderer.getBatch().draw(biffCurrentFrame, biff.getCurrentPosition().x, biff.getCurrentPosition().y, 3, 3);
+        mapRenderer.getBatch().draw(playerView.getCurrentFrame(), playerView.getCurrentPosition().x,
+                playerView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        if (isAlive(biffView)) {
+            mapRenderer.getBatch().draw(biffView.getCurrentFrame(), biffView.getCurrentPosition().x,
+                    biffView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+        }
+        enemyList.forEach(enemy -> {
+            if (isAlive(enemy)) {
+                mapRenderer.getBatch().draw(enemy.getCurrentFrame(), enemy.getCurrentPosition().x,
+                        enemy.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+            }
+        });
         mapRenderer.getBatch().end();
+
+        uiBatch.begin();
+        if (newWorld) {
+            fadeTitle(delta);
+        }
+        uiBatch.end();
+
+    }
+
+    private void fadeTitle(float delta) {
+        if (time >= 0) {
+            worldBanner.draw(uiBatch, time -= delta / FADE_TIME);
+        } else {
+            newWorld = false;
+        }
 
     }
 
@@ -170,6 +267,10 @@ public class MovementGameScreen implements Screen {
         return false;
     }
 
+    private boolean isAlive(EnemyCharacterView enemy) {
+        return enemy.getEnemy().getHp() != 0;
+    }
+
     /**
      * Resize the view
      * 
@@ -178,9 +279,7 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        setupViewport(width / VIEWPORT.ZOOM  , height / VIEWPORT.ZOOM );
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-
+        viewport.update(width, height);
     }
 
     @Override
@@ -191,14 +290,13 @@ public class MovementGameScreen implements Screen {
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void hide() {
         // TODO Auto-generated method stub
-
+        playerInitialPosition = new Vector2(playerView.getCurrentPosition());
     }
 
     @Override
@@ -207,40 +305,6 @@ public class MovementGameScreen implements Screen {
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
 
-    }
-
-    /**
-     * Setup the Viewport according due the screen dimensions
-     * 
-     * @param width
-     * @param height
-     */
-    private void setupViewport(int width, int height) {
-        // Make the viewport a percentage of the total display area
-        VIEWPORT.virtualWidth = width;
-        VIEWPORT.virtualHeight = height;
-
-        // Current viewport dimensions
-        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-
-        // pixel dimensions of display
-        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
-        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
-
-        // aspect ratio for current viewport
-        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
-
-        // update viewport if there could be skewing
-        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
-            // Letterbox left and right
-            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
-            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-        } else {
-            // letterbox above and below
-            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
-        }
     }
 
 }

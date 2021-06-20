@@ -37,10 +37,12 @@ public class TestFight {
         final EnemyCharacter enemy = TestCharacterFactory.getEnemyCharacter();
         final Fight testFight = new Fight(player, enemy);
 
-        int turnCount = testFight.getTurnCount() + 1;
+        int turnCount = testFight.getTurnCount() + 2;
         int enemyHp = testFight.getEnemy().getHp();
-        int damage = (int) (testFight.getPlayer().getWeapon().getDamageMultiplier() * Move.HOOK.getDamage());
-        testFight.playerAttack(Move.HOOK);
+        int damage = (int) (testFight.getPlayer().getWeapon().getDamageMultiplier()
+                * player.getWeapon().getMoveList().get(0).getDamage());
+
+        testFight.playerAttack(player.getWeapon().getMoveList().get(0));
         if (enemyHp != enemy.getHp()) {
             assertEquals(enemyHp - damage, enemy.getHp());
         }
@@ -59,5 +61,31 @@ public class TestFight {
         if (enemyHp != enemy.getHp()) {
             assertEquals(enemyHp - damage, enemy.getHp());
         }
+    }
+
+    @Test
+    void testIsMoveUsable() {
+        final PlayerCharacter player = TestCharacterFactory.getPlayerCharacter();
+        player.getWeapon().getMoveList().set(0, Move.HEADSHOT);
+        final EnemyCharacter enemy = TestCharacterFactory.getEnemyCharacter();
+        final Fight testFight = new Fight(player, enemy);
+        assertTrue(testFight.isMoveUsable(player, Move.HEADSHOT));
+        testFight.setLastUse(player, Move.HEADSHOT, 1);
+        assertFalse(testFight.isMoveUsable(player, Move.HEADSHOT));
+    }
+
+    @Test
+    void testSetLastUse() {
+        final PlayerCharacter player = TestCharacterFactory.getPlayerCharacter();
+        final EnemyCharacter enemy = TestCharacterFactory.getEnemyCharacter();
+        final Fight testFight = new Fight(player, enemy);
+        
+        int lastUse = 0;
+        testFight.setLastUse(player, player.getWeapon().getMoveList().get(0), lastUse);
+        assertTrue(player.getWeapon().getMoveList().get(0).isUsable(0, lastUse));
+        
+        lastUse++;
+        testFight.setLastUse(player, player.getWeapon().getMoveList().get(0), lastUse);
+        assertFalse(player.getWeapon().getMoveList().get(0).isUsable(1, lastUse));
     }
 }
