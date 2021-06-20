@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.unibo.martyadventure.model.fight.Fight;
@@ -34,14 +32,6 @@ class CombatGameScreen extends StaticScreen {
 
     private static final int SPRITE_DIMENSION = 300;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
-    private static final float BUTTON_SPACE = 30;
-    private static final int PLAYER_WEAPON_X = 250;
-    private static final float PLAYER_WEAPON_Y = 1050;
-    private static final int ENEMY_WEAPON_X = 1150;
-    private static final float ENEMY_WEAPON_Y = 750;
-    private static final int ENEMY_LABEL_X = 1400;
-    private static final int PLAYER_LABEL_X = 150;
-    private static final String weaponSelectionPath = "Level/Fight/WeaponSelection.png";
 
     private static final Vector2 PLAYER_HP_LABEL_POSITION = new Vector2(70, 700);
     private static final Vector2 ENEMY_HP_LABEL_POSITION = new Vector2(1200, 450);
@@ -50,8 +40,6 @@ class CombatGameScreen extends StaticScreen {
 
     private Sprite playerSprite;
     private Sprite enemySprite;
-    private Texture playerWeaponTexture;
-    private Texture enemyWeaponTexture;
     private Fight fight;
     private Label playerHpLabel;
     private Label enemyHpLabel;
@@ -59,8 +47,6 @@ class CombatGameScreen extends StaticScreen {
     private TextButton moveButton2;
     private TextButton moveButton3;
     private TextButton moveButton4;
-    private PlayerCharacterView playerView;
-    private EnemyCharacterView enemyView;
 
 
     private TextButton getIndexedButton(final int index) {
@@ -176,28 +162,8 @@ class CombatGameScreen extends StaticScreen {
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
         stage.getBatch().draw(playerSprite, PLAYER_POSITION.x, PLAYER_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
         stage.getBatch().draw(enemySprite, ENEMY_POSITION.x, ENEMY_POSITION.y, SPRITE_DIMENSION, SPRITE_DIMENSION);
-        stage.getBatch().draw(playerWeaponTexture, PLAYER_WEAPON_X, PLAYER_WEAPON_Y, playerWeaponTexture.getWidth() * WEAPON_TEXTURE_SCALE,playerWeaponTexture.getHeight() * WEAPON_TEXTURE_SCALE);
-        stage.getBatch().draw(enemyWeaponTexture, ENEMY_WEAPON_X, ENEMY_WEAPON_Y, enemyWeaponTexture.getWidth() * WEAPON_TEXTURE_SCALE,enemyWeaponTexture.getHeight() * WEAPON_TEXTURE_SCALE );
         stage.getBatch().end();
         stage.draw();
-    }
-
-    private void weaponSelection() {
-
-        weaponSelection.setVisible(true);
-        moveButton1.setTouchable(Touchable.disabled);
-        moveButton1.setDisabled(true);
-        moveButton2.setTouchable(Touchable.disabled);
-        moveButton2.setDisabled(true);
-        moveButton3.setTouchable(Touchable.disabled);
-        moveButton3.setDisabled(true);
-        moveButton4.setTouchable(Touchable.disabled);
-        moveButton4.setDisabled(true);
-
-        //playerView.setWeaponView(enemyView.getDropWeapon());
-
-        // ScreenManager.loadMovementScreen();
-
     }
 
     private void updateLabel() {

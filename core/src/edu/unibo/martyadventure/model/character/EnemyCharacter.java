@@ -3,8 +3,6 @@ package edu.unibo.martyadventure.model.character;
 import edu.unibo.martyadventure.model.weapon.Weapon;
 
 public class EnemyCharacter extends Character {
-    
-    private Weapon dropitem;//weapon drop from enemy
 
     // Weapon drop from enemy.
     private Weapon dropWeapon;

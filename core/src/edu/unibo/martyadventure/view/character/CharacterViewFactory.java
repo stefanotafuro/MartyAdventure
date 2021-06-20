@@ -1,9 +1,9 @@
 package edu.unibo.martyadventure.view.character;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,11 +18,11 @@ public class CharacterViewFactory {
     private static final String MARTY_PATH_1 = "Characters/Marty/MartyMove (1).png";
     private static final String MARTY_PATH_2 = "Characters/Marty/MartyMove (2).png";
     private static final String MARTY_PATH_3 = "Characters/Marty/MartyMove (3).png";
-    
+
     private static final String BIFF_PATH_1 = "Characters/Biff/BiffMove (1).png";
     private static final String BIFF_PATH_2 = "Characters/Biff/BiffMove (2).png";
     private static final String BIFF_PATH_3 = "Characters/Biff/BiffMove (3).png";
-    
+
     private static final String DOC_PATH_1 = "Characters/Doc/DocMove (1).png";
     private static final String DOC_PATH_2 = "Characters/Doc/DocMove (2).png";
     private static final String DOC_PATH_3 = "Characters/Doc/DocMove (3).png";

@@ -68,19 +68,8 @@ class MovementGameScreen implements Screen {
         this.loadingNewWorld = true;
         this.cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
-    }
+        WorldBannerFactory bFactory = new WorldBannerFactory();
 
-    /**
-     * Setup the screen elements
-     */
-    @Override
-    public void show() {
-        // camera
-        setupViewport(VIEWPORT.ZOOM, VIEWPORT.ZOOM);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-
-        // rederer
         try {
             mapManager.loadMap(map);
         } catch (InterruptedException | ExecutionException | IOException e1) {
@@ -131,6 +120,7 @@ class MovementGameScreen implements Screen {
                         mapManager.getCurrentMapName()));
 
             } catch (InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -367,8 +357,7 @@ class MovementGameScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        ScreenManager.setupViewport(width / ScreenManager.VIEWPORT.ZOOM, height / ScreenManager.VIEWPORT.ZOOM);
-        camera.setToOrtho(false, ScreenManager.VIEWPORT.viewportWidth, ScreenManager.VIEWPORT.viewportHeight);
+        viewport.update(width, height);
     }
 
     @Override
@@ -383,7 +372,7 @@ class MovementGameScreen implements Screen {
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
+        playerInitialPosition = new Vector2(playerView.getCurrentPosition());
     }
 
     @Override

@@ -72,17 +72,17 @@ class PlayerChoiceScreen extends StaticScreen {
         });
 
         ButtonGroup<TextButton> buttonGroup = new ButtonGroup<>();
-        TextButton martyButton = new TextButton("Marty", buttonSkin);
-        TextButton docButton = new TextButton("Doc", buttonSkin);
-        TextButton biffButton = new TextButton("Biff", buttonSkin);
-       
+        TextButton martyButton = getSetPlayerButton("Marty", MARTY_BUTTON_X, Player.MARTY);
+        TextButton docButton = getSetPlayerButton("Doc", DOC_BUTTON_X, Player.DOC);
+        TextButton biffButton = getSetPlayerButton("Biff", BIFF_BUTTON_X, Player.BIFF);
+
         buttonGroup.add(martyButton);
         buttonGroup.add(docButton);
         buttonGroup.add(biffButton);
         buttonGroup.setMaxCheckCount(1);
         buttonGroup.setMinCheckCount(1);
         buttonGroup.setUncheckLast(true);
-        
+
         martyButton.setChecked(true);
         screenManager.changePlayer(Player.MARTY);
 
@@ -104,11 +104,10 @@ class PlayerChoiceScreen extends StaticScreen {
             }
         });
         biffAnimation = loadAnimation(BIFF_PATH);
-        martyAnimation  = loadAnimation(MARTY_PATH);
+        martyAnimation = loadAnimation(MARTY_PATH);
         docAnimation = loadAnimation(DOC_PATH);
 
         Gdx.input.setInputProcessor(stage);
-
     }
 
     private Animation<TextureRegion> loadAnimation(String path) {
@@ -144,5 +143,4 @@ class PlayerChoiceScreen extends StaticScreen {
 
         stage.draw();
     }
-
 }
