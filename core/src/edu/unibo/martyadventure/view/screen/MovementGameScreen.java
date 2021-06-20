@@ -2,10 +2,10 @@ package edu.unibo.martyadventure.view.screen;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -27,12 +27,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.controller.entity.PlayerInputProcessor;
-import edu.unibo.martyadventure.model.character.EnemyFactory;
+import edu.unibo.martyadventure.model.character.Character;
 import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+import edu.unibo.martyadventure.view.character.CharacterView;
 import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.ui.WorldBannerFactory;
@@ -41,24 +42,29 @@ public class MovementGameScreen implements Screen {
 
     private static final int FADE_TIME = 4;
     private static final int SPRITE_SCALE_FACTOR = 3;
-    private PlayerCharacterView playerView;
-    private EnemyCharacterView biffView;
-    private PlayerInputProcessor inputProcessor;
-    private List<EnemyCharacterView> enemyList;
-    private OrthogonalTiledMapRenderer mapRenderer;
-    private OrthographicCamera camera;
+
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
+
+    private PlayerCharacterView playerView;
+    private EnemyCharacterView bossView;
+    private List<EnemyCharacterView> enemyViewList;
+    private PlayerInputProcessor inputProcessor;
     private CharacterViewFactory cFactory;
+
     private Viewport viewport;
-    private boolean newWorld;
+    private OrthographicCamera camera;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private boolean loadingNewWorld;
     private Sprite worldBanner;
     private float time = 1;
     private Batch uiBatch;
 
 
-    public MovementGameScreen(Maps map) {
-        eFactory = new EnemyFactory();
+    public MovementGameScreen(final Player player, final Maps map) {
+        uiBatch = new SpriteBatch();
+        loadingNewWorld = true;
+        cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
     }
 
@@ -78,28 +84,27 @@ public class MovementGameScreen implements Screen {
         } catch (InterruptedException | ExecutionException | IOException e1) {
             e1.printStackTrace();
         }
-        playerInitialPosition = new Vector2(mapManager.getPlayerStartPosition());
 
-        // camera
-        camera = new OrthographicCamera();
+        // Camera.
+        this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT, ScreenManager.VIEWPORT.Y_VIEWPORT, camera);
 
-        // rederer
+        // Rederer.
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
         mapRenderer.setView(camera);
 
-        // player
+        // Player.
+        playerInitialPosition = mapManager.getPlayerStartPosition();
         try {
-            playerInitialPosition = mapManager.getPlayerStartPosition();
-            playerView = cFactory.createPlayer(player, playerInitialPosition, map);
+            this.playerView = cFactory.createPlayer(player, playerInitialPosition, map);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        // biff
+        // Boss.
         try {
-            biffView = cFactory.createBoss(player, mapManager.getBiffStartPosition(), map);
-            biffView.setDirection(EntityDirection.DOWN);
+            bossView = cFactory.createBoss(player, mapManager.getBiffStartPosition(), map);
+            bossView.setDirection(EntityDirection.DOWN);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -109,19 +114,17 @@ public class MovementGameScreen implements Screen {
         worldBanner.setPosition(Gdx.app.getGraphics().getWidth() / 2 - worldBanner.getWidth() / 2,
                 (Gdx.app.getGraphics().getHeight() / 3) * 2);
 
-        setupList();
+        this.enemyViewList = getEnemyList(mapManager.getEnemySpawnLayer());
     }
 
-    private void setupList() {
-        enemyList = new ArrayList<>();
-        MapLayer enemyLayer = mapManager.getEnemySpawnLayer();
-        Rectangle spawnPoint;
+    private List<EnemyCharacterView> getEnemyList(final MapLayer enemyLayer) {
+        final List<EnemyCharacterView> enemies = new ArrayList<>();
 
-        // iterate all the map box
+        // Iterate all the map box
         for (MapObject o : enemyLayer.getObjects()) {
-            spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
+            final Rectangle spawnPoint = new Rectangle(((RectangleMapObject) o).getRectangle());
             try {
-                enemyList.add(cFactory.createEnemy(
+                enemies.add(cFactory.createEnemy(
                         new Vector2(spawnPoint.x * MapManager.UNIT_SCALE, spawnPoint.y * MapManager.UNIT_SCALE),
                         mapManager.getCurrentMapName()));
 
@@ -129,9 +132,165 @@ public class MovementGameScreen implements Screen {
                 e.printStackTrace();
             }
         }
-        // set random direction for each enemy
-        Random r = new Random();
-        enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(r.nextInt(3))));
+
+        // Set a random direction for each enemy
+        final EntityDirection[] directions = EntityDirection.values();
+        enemies.forEach(e -> e.setDirection(directions[ThreadLocalRandom.current().nextInt(directions.length)]));
+
+        return enemies;
+    }
+
+    /**
+     * @return true if the boss is dead
+     */
+    private boolean cleanDeadEnemies() {
+        final List<EnemyCharacterView> deadEnemies = this.enemyViewList.stream().filter(e -> !isAlive(e))
+                .collect(Collectors.toUnmodifiableList());
+        deadEnemies.stream().forEach(e -> e.dispose());
+        this.enemyViewList.removeAll(deadEnemies);
+
+        if (!isAlive(bossView)) {
+            bossView.dispose();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Battle the living enemy if the player overlaps it's box.
+     *
+     * @param enemy the enemy the player may battle.
+     * @return true if the combat screen was loaded.
+     */
+    private boolean trySetBattleOverlap(final EnemyCharacterView enemy) {
+        if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
+            ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, bossView));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Initiate a CombatScreen with the boss or any enemy if the player overlaps
+     * with their box.
+     */
+    private void battleOverlappingEnemies() {
+        // Check if the final battle with the boss should start.
+        if (!trySetBattleOverlap(bossView)) {
+            // Battle the first enemy that overlaps
+            for (EnemyCharacterView enemy : this.enemyViewList) {
+                if (trySetBattleOverlap(enemy)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Update the player, camera and input processor positions.
+     */
+    private void updatePositions(final float delta) {
+        // Check collisions
+        try {
+            if (!collisionWithMapLayer(playerView.getBoundingBox())) {
+                playerView.goNextPosition();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Update the camera position.
+        camera.position.set(playerView.getCurrentPosition().x, playerView.getCurrentPosition().y, 0f);
+        camera.update();
+
+        // Update the input processor.
+        inputProcessor.update(delta);
+    }
+
+    /**
+     * Dispatch the screen once the current level has ended.
+     */
+    private void levelEndDispatch(final Maps currentMap) {
+        switch (currentMap) {
+        case MAP1:
+            ScreenManager.changeMap(MapManager.Maps.MAP2);
+            ScreenManager.loadMovementScreen();
+            break;
+        case MAP2:
+            ScreenManager.changeMap(MapManager.Maps.MAP3);
+            ScreenManager.loadMovementScreen();
+            break;
+        case MAP3:
+            ScreenManager.loadMenuScreen();
+            break;
+        default:
+            throw new IllegalArgumentException("Unknow map");
+        }
+    }
+
+    /**
+     * Update the game logic status
+     */
+    private void updateGameLogic(final float delta) {
+        updatePositions(delta);
+
+        final boolean isBossDead = cleanDeadEnemies();
+        if (isBossDead) {
+            levelEndDispatch(mapManager.getCurrentMapName());
+        } else {
+            battleOverlappingEnemies();
+        }
+    }
+
+    /**
+     * Draw a character view.
+     */
+    private <C extends Character> void drawCharacter(final CharacterView<C> character, final Batch batch) {
+        final Vector2 pos = character.getCurrentPosition();
+        batch.draw(character.getCurrentFrame(), pos.x, pos.y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
+    }
+
+    /**
+     * Draw the level's map.
+     */
+    private void drawMap() {
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+
+        final Batch batch = mapRenderer.getBatch();
+        batch.begin();
+        drawCharacter(playerView, batch);
+
+        if (isAlive(bossView)) {
+            drawCharacter(bossView, batch);
+        }
+
+        enemyViewList.forEach(enemy -> {
+            drawCharacter(enemy, batch);
+        });
+        batch.end();
+    }
+
+    /**
+     * Draw the game UI.
+     */
+    private void drawUI(final float delta) {
+        uiBatch.begin();
+        if (loadingNewWorld) {
+            fadeTitle(delta);
+        }
+        uiBatch.end();
+    }
+
+    /**
+     * Update the fading, if any.
+     */
+    private void fadeTitle(float delta) {
+        if (time >= 0) {
+            worldBanner.draw(uiBatch, time -= delta / FADE_TIME);
+        } else {
+            loadingNewWorld = false;
+        }
     }
 
     /**
@@ -139,8 +298,8 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void show() {
-        resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
         inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
+        inputProcessor.resetState();
         inputProcessor.setPlayer(playerView, true);
         Gdx.input.setInputProcessor(inputProcessor);
     }
@@ -150,69 +309,18 @@ public class MovementGameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
+        updateGameLogic(delta);
+
+        // Render the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // set the camera position
-        camera.position.set(playerView.getCurrentPosition().x, playerView.getCurrentPosition().y, 0f);
-        camera.update();
-
-        // check collisions
-        try {
-            if (!collisionWithMapLayer(playerView.getBoundingBox())) {
-                playerView.goNextPosition();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // check collisions
-        if (isAlive(biffView)) {
-            if (playerView.getBoundingBox().overlaps(biffView.getBoundingBox())) {
-                ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, biffView));
-            }
-        } else {
-            if (mapManager.getCurrentMapName() == Maps.MAP1) {
-                ScreenManager.changeMap(Maps.MAP2);
-            } else {
-                ScreenManager.changeMap(Maps.MAP3);
-            }
-            }
-        }
-
-        enemyList.forEach(enemy -> {
-            if (isAlive(enemy)) {
-                if (playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-                    ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, enemy));
-                }
-            }
-        });
-
-        // update the input processor
-        inputProcessor.update(delta);
-
-        // render the screen
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-        mapRenderer.getBatch().begin();
-        mapRenderer.getBatch().draw(playerView.getCurrentFrame(), playerView.getCurrentPosition().x,
-                playerView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
-        if (isAlive(biffView)) {
-            mapRenderer.getBatch().draw(biffView.getCurrentFrame(), biffView.getCurrentPosition().x,
-                    biffView.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
-        }
-        enemyList.forEach(enemy -> {
-            if (isAlive(enemy)) {
-                mapRenderer.getBatch().draw(enemy.getCurrentFrame(), enemy.getCurrentPosition().x,
-                        enemy.getCurrentPosition().y, SPRITE_SCALE_FACTOR, SPRITE_SCALE_FACTOR);
-            }
-        });
-        mapRenderer.getBatch().end();
+        drawMap();
+        drawUI(delta);
     }
 
     /**
-     * for debug, used to render the bounding box of the player
-     * 
+     * For debug, used to render the bounding box of the player
+     *
      * @param r the rectangle to render
      */
     @SuppressWarnings("unused")
@@ -225,39 +333,40 @@ public class MovementGameScreen implements Screen {
 
     /**
      * Check if the given box is colliding with a map layer box
-     * 
+     *
      * @param box
      * @return
      * @throws IOException
      */
     private boolean collisionWithMapLayer(Rectangle box) throws IOException {
-        MapLayer mapLayer = mapManager.getCollisionLayer();
-        Rectangle layerBox = new Rectangle();
+        final MapLayer mapLayer = mapManager.getCollisionLayer();
         if (mapLayer == null) {
             throw new IOException();
         }
 
         // iterate all the map box
         for (MapObject o : mapLayer.getObjects()) {
-            layerBox = ((RectangleMapObject) o).getRectangle();
-            layerBox = new Rectangle(((RectangleMapObject) o).getRectangle());
-            layerBox.x *= MapManager.UNIT_SCALE;
-            layerBox.y *= MapManager.UNIT_SCALE;
-            layerBox.width *= MapManager.UNIT_SCALE;
-            layerBox.height *= MapManager.UNIT_SCALE;
-            if (box.overlaps(layerBox)) {
+            final Rectangle layerBox = ((RectangleMapObject) o).getRectangle();
+            final Rectangle scaledLayerBox = new Rectangle(layerBox.x * MapManager.UNIT_SCALE,
+                    layerBox.y * MapManager.UNIT_SCALE, layerBox.width * MapManager.UNIT_SCALE,
+                    layerBox.height * MapManager.UNIT_SCALE);
+
+            if (box.overlaps(scaledLayerBox)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isAlive(EnemyCharacterView enemy) {
-        return enemy.getCharacter().getHp() != 0;
+    /**
+     * @return true if the given character is alive.
+     */
+    private <C extends Character> boolean isAlive(final CharacterView<C> character) {
+        return character.getCharacter().getHp() > 0;
     }
 
     /**
-     * Resize the view
+     * Resize the view.
      * 
      * @param width
      * @param height
@@ -270,12 +379,12 @@ public class MovementGameScreen implements Screen {
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+        // unused
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
+        // unused
     }
 
     @Override
