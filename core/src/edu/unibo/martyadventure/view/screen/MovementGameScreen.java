@@ -166,7 +166,7 @@ class MovementGameScreen implements Screen {
      */
     private boolean trySetBattleOverlap(final EnemyCharacterView enemy) {
         if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, bossView));
+            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy));
             return true;
         }
         return false;
