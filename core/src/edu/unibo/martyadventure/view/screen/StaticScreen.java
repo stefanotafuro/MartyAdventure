@@ -3,8 +3,12 @@ package edu.unibo.martyadventure.view.screen;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -20,7 +24,9 @@ abstract class StaticScreen implements Screen {
     protected final TextureRegion background;
     protected final TextureAtlas uiAtlas;
     protected final Skin uiSkin;
+
     protected final Stage stage;
+    protected final ScreenManager screenManager;
 
     static {
         Toolbox.queueAtlas(ATLAS_PATH);
@@ -34,7 +40,7 @@ abstract class StaticScreen implements Screen {
         return new Stage(viewport);
     }
 
-    protected StaticScreen(final String backgroundPath, final int width, final int height) {
+    protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int width, final int height) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
 
@@ -42,6 +48,25 @@ abstract class StaticScreen implements Screen {
         this.uiSkin = Toolbox.getSkin(SKIN_PATH);
 
         this.stage = getStage(width, height);
+        this.screenManager = manager;
+    }
+
+    protected TextButton getTextButton(final String title, final Vector2 position, final Runnable clickListener) {
+        return getTextButton(title, position.x, position.y, clickListener);
+    }
+
+    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener) {
+        final TextButton button = new TextButton(title, this.uiSkin);
+        button.setPosition(x, y);
+        button.addListener(new ClickListener() {
+
+            @SuppressWarnings("unused")
+            @Override
+            public void clicked(InputEvent event, float xDummy, float yDummy) {
+                clickListener.run();
+            }
+        });
+        return button;
     }
 
     @Override

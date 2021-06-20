@@ -94,8 +94,9 @@ public class CombatGameScreen extends StaticScreen {
                 + new DecimalFormat("###.#").format(character.getWeapon().getDamageMultiplier()), position);
     }
 
-    public CombatGameScreen(PlayerCharacterView player, EnemyCharacterView enemy) {
-        super(BG_PATH, BASE_WIDTH, BASE_HEIGHT);
+    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
+            final EnemyCharacterView enemy) {
+        super(manager, BG_PATH, BASE_WIDTH, BASE_HEIGHT);
 
         this.playerSprite = player.getFightSprite();
         this.enemySprite = enemy.getFightSprite();
@@ -161,7 +162,8 @@ public class CombatGameScreen extends StaticScreen {
 
         if (fight.fightWinner() != null) {
             if (fight.fightWinner() == fight.getPlayer()) {
-                weaponSelection();
+                fight.getPlayer().setWeapon(fight.getEnemy().getDropitem());
+                screenManager.loadMovementScreen();
             } else {
                 // TODO lose screen
                 System.err.println("GAME OVER");

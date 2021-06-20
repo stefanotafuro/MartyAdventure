@@ -46,22 +46,24 @@ public class MovementGameScreen implements Screen {
     private static MapManager mapManager;
     private static Vector2 playerInitialPosition;
 
+    private final CharacterViewFactory cFactory;
+    private final List<EnemyCharacterView> enemyViewList;
     private PlayerCharacterView playerView;
     private EnemyCharacterView bossView;
-    private List<EnemyCharacterView> enemyViewList;
     private PlayerInputProcessor inputProcessor;
-    private CharacterViewFactory cFactory;
 
+    private final ScreenManager screenManager;
     private Viewport viewport;
     private OrthographicCamera camera;
     private OrthogonalTiledMapRenderer mapRenderer;
     private boolean loadingNewWorld;
     private Sprite worldBanner;
-    private float time = 1;
     private Batch uiBatch;
+    private float time = 1;
 
 
-    public MovementGameScreen(final Player player, final Maps map) {
+    public MovementGameScreen(final ScreenManager manager, final Player player, final Maps map) {
+        this.screenManager = manager;
         uiBatch = new SpriteBatch();
         loadingNewWorld = true;
         cFactory = new CharacterViewFactory();
@@ -164,7 +166,7 @@ public class MovementGameScreen implements Screen {
      */
     private boolean trySetBattleOverlap(final EnemyCharacterView enemy) {
         if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-            ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, bossView));
+            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, bossView));
             return true;
         }
         return false;
@@ -213,15 +215,15 @@ public class MovementGameScreen implements Screen {
     private void levelEndDispatch(final Maps currentMap) {
         switch (currentMap) {
         case MAP1:
-            ScreenManager.changeMap(MapManager.Maps.MAP2);
-            ScreenManager.loadMovementScreen();
+            screenManager.changeMap(MapManager.Maps.MAP2);
+            screenManager.loadMovementScreen();
             break;
         case MAP2:
-            ScreenManager.changeMap(MapManager.Maps.MAP3);
-            ScreenManager.loadMovementScreen();
+            screenManager.changeMap(MapManager.Maps.MAP3);
+            screenManager.loadMovementScreen();
             break;
         case MAP3:
-            ScreenManager.loadMenuScreen();
+            screenManager.loadMenuScreen();
             break;
         default:
             throw new IllegalArgumentException("Unknow map");

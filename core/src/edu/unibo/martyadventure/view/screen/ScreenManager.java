@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import edu.unibo.martyadventure.view.MapManager.Maps;
-import edu.unibo.martyadventure.view.PlayerChoiceScreen;
 import edu.unibo.martyadventure.view.character.Player;
 
 public class ScreenManager {
@@ -16,53 +15,54 @@ public class ScreenManager {
         public static int Y_VIEWPORT = 15;
     }
 
+    private final MenuScreen menu;
+    private final PlayerChoiceScreen choice;
 
-    private static MovementGameScreen movementScreen;
+    private MovementGameScreen movementScreen;
+    private Player currentPlayer;
 
-
-    private static void loadScreen(final Screen s) {
+    private void loadScreen(final Screen s) {
         Game game = (Game) Gdx.app.getApplicationListener();
         game.setScreen(s);
     }
 
-    private ScreenManager() {}
-
-    public static void changeMap(final Maps map) {
-        movementScreen = new MovementGameScreen(currentPlayer, map);
+    public ScreenManager() {
+        menu = new MenuScreen(this);
+        choice = new PlayerChoiceScreen(this);
     }
 
-    public static void changePlayer(final Player player) {
+    public void changeMap(final Maps map) {
+        if (movementScreen != null) {
+            movementScreen.dispose();
+        }
+        movementScreen = new MovementGameScreen(this, currentPlayer, map);
+    }
+
+    public void changePlayer(final Player player) {
         currentPlayer = player;
     }
 
-    public static void loadMovementScreen() {
+    public void loadMovementScreen() {
         loadScreen(movementScreen);
     }
 
-    public static void loadCombatScreen(CombatGameScreen screen) {
-        loadScreen(screen);
-    }
-
-    /**
-     * Setup the Viewport according due the screen dimensions
-     *
-     * @param width
-     * @param height
-     */
-    public static void setupViewport(int width, int height) {
-        // Make the viewport a percentage of the total display area
-        VIEWPORT.virtualWidth = width;
-        VIEWPORT.virtualHeight = height;
-
-    public static void loadMenuScreen() {
+    public void loadMenuScreen() {
         loadScreen(menu);
     }
 
-    public static void loadChoiceScreen() {
+    public void loadChoiceScreen() {
         loadScreen(choice);
     }
 
-    public static void loadCombatScreen(final CombatGameScreen screen) {
+    public void loadCombatScreen(final CombatGameScreen screen) {
         loadScreen(screen);
+    }
+
+    public void dispose() {
+        if (movementScreen != null) {
+            movementScreen.dispose();
+        }
+        menu.dispose();
+        choice.dispose();
     }
 }

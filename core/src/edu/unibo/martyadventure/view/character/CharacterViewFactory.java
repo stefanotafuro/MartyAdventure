@@ -27,10 +27,10 @@ public class CharacterViewFactory {
     private static final String DOC_PATH_1 = "Characters/Doc/DocMove (1).png";
     private static final String DOC_PATH_2 = "Characters/Doc/DocMove (2).png";
     private static final String DOC_PATH_3 = "Characters/Doc/DocMove (3).png";
-    
-    private static final String ENEMY_PATH_1 = "Characters/Bulli/Bullo (1).png";
-    private static final String ENEMY_PATH_2 = "Characters/Bulli/Bullo (2).png";
-    
+
+    private static final String ENEMY_PATH_1 = "Characters/Bully/Bully (1).png";
+    private static final String ENEMY_PATH_2 = "Characters/Bully/Bully (2).png";
+
     private static final int BOSS_HP_1 = 100;
     private static final int BOSS_HP_2 = 200;
     private static final int BOSS_HP_3 = 300;

@@ -16,8 +16,8 @@ public class GameOverScreen extends StaticScreen {
     private final TextButton menuButton;
 
 
-    public GameOverScreen(boolean playerWon, final int height, final int width) {
-        super(BACKGROUND_PATH, height, width);
+    public GameOverScreen(final ScreenManager manager, final boolean playerWon, final int height, final int width) {
+        super(manager, BACKGROUND_PATH, height, width);
         this.textLabel = new Label(playerWon ? WON_TEXT : LOST_TEXT, uiSkin);
         this.menuButton = new TextButton("Ritornare al menu?", uiSkin);
 

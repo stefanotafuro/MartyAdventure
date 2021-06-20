@@ -27,35 +27,23 @@ public class MenuScreen extends StaticScreen {
     private static final Vector2 EXIT_BUTTON_POSITION = new Vector2(120, 350);
     private static final Vector2 OPTIONS_BUTTON_POSITION = new Vector2(110, 450);
 
-    private static final String BG_PATH = "Level/Menu/Menu.png";
-    private static final String WINDOW_BG_PATH = "Level/Menu/button.png";
-    private static final String BUTTON_BG_PATH = "Level/Menu/XclosingButton.png";
+    private static final String BG_PATH = "menu/menu.png";
+    private static final String WINDOW_BG_PATH = "menu/button.png";
+    private static final String BUTTON_BG_PATH = "menu/XclosingButton.png";
 
     private Window optionWindow;
 
 
-    private TextButton getMenuButton(final String title, final Vector2 position, final Runnable clickListener) {
-        final TextButton button = new TextButton(title, super.uiSkin);
-        button.setPosition(position.x, position.y);
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                clickListener.run();
-            }
-        });
-        return button;
-    }
-
-    public MenuScreen() {
-        super(BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+    public MenuScreen(final ScreenManager manager) {
+        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
         MusicController.startMusic();
     }
 
     @Override
     public void show() {
-        stage.addActor(getMenuButton("Nuova partita", NEW_GAME_BUTTON_POSITION, () -> ScreenManager.loadChoiceScreen()));
-        stage.addActor(getMenuButton("Esci", EXIT_BUTTON_POSITION, () -> Gdx.app.exit()));
-        stage.addActor(getMenuButton("Opzioni", OPTIONS_BUTTON_POSITION, () -> optionWindow.setVisible(true)));
+        stage.addActor(getTextButton("Nuova partita", NEW_GAME_BUTTON_POSITION, () -> screenManager.loadChoiceScreen()));
+        stage.addActor(getTextButton("Esci", EXIT_BUTTON_POSITION, () -> Gdx.app.exit()));
+        stage.addActor(getTextButton("Opzioni", OPTIONS_BUTTON_POSITION, () -> optionWindow.setVisible(true)));
 
         optionWindow = new Window("", super.uiSkin);
         optionWindow.setSize(stage.getWidth() / 2, stage.getHeight() / 4);
