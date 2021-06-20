@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.EnemyCharacter;
@@ -57,11 +55,6 @@ public class CharacterViewFactory {
     }
 
 
-    private TextureRegion loadTexture(Player player, Maps map) {
-        final Texture texture = new Texture(mapData.get(map).getTexturePathOf(player));
-        return new TextureRegion(texture);
-    }
-
     public CharacterViewFactory() {
         Toolbox.queueTexture(ENEMY_PATH_1);
         Toolbox.queueTexture(ENEMY_PATH_2);
@@ -69,7 +62,7 @@ public class CharacterViewFactory {
 
     public PlayerCharacterView createPlayer(Player player, Vector2 initialPosition, Maps map)
             throws InterruptedException, ExecutionException {
-        return new PlayerCharacterView(player.getName(), initialPosition, loadTexture(player, map));
+        return new PlayerCharacterView(player.getName(), initialPosition, mapData.get(map).getTexturePathOf(player));
     }
 
     public EnemyCharacterView createEnemy(Vector2 initialPosition, Maps map)
@@ -84,18 +77,18 @@ public class CharacterViewFactory {
                 dropWeaponView);
     }
 
-    public EnemyCharacterView createBoss(final Player player, final Vector2 initialPosition, final Maps map)
+    public BossCharacterView createBoss(final Player player, final Vector2 initialPosition, final Maps map)
             throws InterruptedException, ExecutionException {
         final WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
         final WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
 
         final MapData currentMapData = mapData.get(map);
         final Player bossPlayer = bossNameMap.get(player);
-        final Texture bossTexture = Toolbox.getTexture(currentMapData.getTexturePathOf(bossPlayer));
 
         final EnemyCharacter boss = new EnemyCharacter(dropWeaponView.getWeapon(), bossPlayer.getName(),
                 currentMapData.bossHp, weaponView.getWeapon());
-        return new EnemyCharacterView(boss, initialPosition, bossTexture, weaponView, dropWeaponView);
+        return new BossCharacterView(boss, initialPosition, currentMapData.getTexturePathOf(bossPlayer), weaponView,
+                dropWeaponView);
     }
 
     public void dipose() {

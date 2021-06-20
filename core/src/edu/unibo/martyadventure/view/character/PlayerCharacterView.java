@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.character.Shoes;
+import edu.unibo.martyadventure.view.Toolbox;
 import edu.unibo.martyadventure.view.weapon.WeaponView;
 import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
 
@@ -25,11 +26,13 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
 
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
 
+    private final String texturePath;
 
-    public PlayerCharacterView(final String name, final Vector2 initialPosition, final TextureRegion textureRegion)
+    public PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
             throws InterruptedException, ExecutionException {
         super(new PlayerCharacter(Shoes.SLOW, name, PLAYER_HP, playerWeapon.getWeapon()), initialPosition, MAX_ACCELLERATION,
-                ACCELLERATION_FACTOR, MAX_SPEED, textureRegion, playerWeapon);
+                ACCELLERATION_FACTOR, MAX_SPEED, new TextureRegion(Toolbox.getTexture(texturePath)), playerWeapon);
+        this.texturePath = texturePath;
     }
 
     /**
@@ -39,6 +42,13 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
         super.weaponView = weapon;
         super.character.setWeapon(weapon.getWeapon());
         playerWeapon = weapon;
+    }
+
+    /**
+     * Dispose of the player's texture
+     */
+    public void dispose() {
+        Toolbox.unloadAsset(this.texturePath);
     }
 
     @Override

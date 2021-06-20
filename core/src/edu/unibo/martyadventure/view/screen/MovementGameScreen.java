@@ -32,6 +32,7 @@ import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.Player;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+import edu.unibo.martyadventure.view.character.BossCharacterView;
 import edu.unibo.martyadventure.view.character.CharacterView;
 import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
@@ -48,7 +49,7 @@ class MovementGameScreen implements Screen {
     private final CharacterViewFactory cFactory;
     private final List<EnemyCharacterView> enemyViewList;
     private PlayerCharacterView playerView;
-    private EnemyCharacterView bossView;
+    private BossCharacterView bossView;
     private PlayerInputProcessor inputProcessor;
 
     private final ScreenManager screenManager;
@@ -388,6 +389,8 @@ class MovementGameScreen implements Screen {
     @Override
     public void dispose() {
         this.cFactory.dipose();
+        this.playerView.dispose();
+        this.bossView.dispose();
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
     }
