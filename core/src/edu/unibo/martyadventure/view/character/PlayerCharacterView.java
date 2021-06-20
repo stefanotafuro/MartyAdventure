@@ -45,9 +45,4 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     public Sprite getFightSprite() {
         return new Sprite(animations.getRightIdle());
     }
-
-    @Override
-    public void dispose() {
-        // unused
-    }
 }

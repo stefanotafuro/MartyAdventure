@@ -49,11 +49,6 @@ public abstract class CharacterView<C extends Character> implements Controllable
      */
     public abstract Sprite getFightSprite();
 
-    /**
-     * Cleanup the character's view managed resources.
-     */
-    public abstract void dispose();
-
     public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration,
             final float accellerationFactor, final float maxSpeed, final TextureRegion texture,
             final WeaponView weaponView) {

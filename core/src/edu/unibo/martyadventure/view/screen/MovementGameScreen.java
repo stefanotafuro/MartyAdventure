@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -64,9 +63,9 @@ class MovementGameScreen implements Screen {
 
     public MovementGameScreen(final ScreenManager manager, final Player player, final Maps map) {
         this.screenManager = manager;
-        uiBatch = new SpriteBatch();
-        loadingNewWorld = true;
-        cFactory = new CharacterViewFactory();
+        this.uiBatch = new SpriteBatch();
+        this.loadingNewWorld = true;
+        this.cFactory = new CharacterViewFactory();
         mapManager = new MapManager();
     }
 
@@ -146,16 +145,8 @@ class MovementGameScreen implements Screen {
      * @return true if the boss is dead
      */
     private boolean cleanDeadEnemies() {
-        final List<EnemyCharacterView> deadEnemies = this.enemyViewList.stream().filter(e -> !isAlive(e))
-                .collect(Collectors.toUnmodifiableList());
-        deadEnemies.stream().forEach(e -> e.dispose());
-        this.enemyViewList.removeAll(deadEnemies);
-
-        if (!isAlive(bossView)) {
-            bossView.dispose();
-            return true;
-        }
-        return false;
+        this.enemyViewList.removeIf(e -> !isAlive(e));
+        return !isAlive(bossView);
     }
 
     /**
@@ -396,7 +387,7 @@ class MovementGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO player disposed
+        this.cFactory.dipose();
         mapRenderer.dispose();
         Gdx.input.setInputProcessor(null);
     }
