@@ -21,7 +21,7 @@ import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.model.character.Character;
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 
-public class CombatGameScreen extends StaticScreen {
+class CombatGameScreen extends StaticScreen {
 
     private static final int BASE_HEIGHT = 1080;
     private static final int BASE_WIDTH = 1920;

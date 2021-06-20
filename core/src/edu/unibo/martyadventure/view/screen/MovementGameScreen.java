@@ -38,7 +38,7 @@ import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.ui.WorldBannerFactory;
 
-public class MovementGameScreen implements Screen {
+class MovementGameScreen implements Screen {
 
     private static final int FADE_TIME = 4;
     private static final int SPRITE_SCALE_FACTOR = 3;

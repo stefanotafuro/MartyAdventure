@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class GameOverScreen extends StaticScreen {
+class GameOverScreen extends StaticScreen {
 
     private static final String BACKGROUND_PATH = "menu/gameover.png";
     private static final String WON_TEXT = "Hai vinto!";
