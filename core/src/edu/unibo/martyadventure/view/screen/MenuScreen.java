@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,7 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import edu.unibo.martyadventure.controller.sound.MusicController;
 import edu.unibo.martyadventure.view.Toolbox;
 
-public class MenuScreen extends StaticScreen {
+class MenuScreen extends StaticScreen {
+
+    private static final float DEFAULT_MUSIC_VOLUME = 0.5f;
 
     private static final int CLOSE_BUTTON_X = 600;
     private static final int CLOSE_BUTTON_Y = 170;
@@ -37,6 +38,8 @@ public class MenuScreen extends StaticScreen {
     public MenuScreen(final ScreenManager manager) {
         super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
         MusicController.startMusic();
+        // Start silently.
+        MusicController.setMusicVolume(0.0f);
     }
 
     @Override
@@ -81,6 +84,9 @@ public class MenuScreen extends StaticScreen {
             }
         });
 
+        // Set the music volume to the current slider value.
+        volumeSlider.setValue(DEFAULT_MUSIC_VOLUME);
+        MusicController.setMusicVolume(volumeSlider.getValue());
         Gdx.input.setInputProcessor(stage);
     }
 
