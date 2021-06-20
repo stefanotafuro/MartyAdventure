@@ -30,7 +30,8 @@ public class DesktopLauncher {
         // Set the game window to the scaled ratio of 3/4.
         final int base = getHorizontalScale();
         config.setWindowedMode(base, (int) Math.round(base * SECONDARY_SCALING));
-        config.setWindowSizeLimits(600, 338, 5120, 2880);
+        config.setWindowSizeLimits(600, 600, 5120, 2880);
+        config.setWindowIcon("Icons/icon.png");
 
         config.setForegroundFPS(60);
         new Lwjgl3Application(new MartyAdventureGame(), config);
