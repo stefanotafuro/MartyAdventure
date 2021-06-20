@@ -118,7 +118,8 @@ public class MovementGameScreen implements Screen {
             }
         }
         // set random direction for each enemy
-        enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(new Random().nextInt(3))));
+        Random r = new Random();
+        enemyList.forEach(e -> e.setDirection(Arrays.asList(EntityDirection.values()).get(r.nextInt(3))));
     }
 
     /**
@@ -161,16 +162,21 @@ public class MovementGameScreen implements Screen {
                 ScreenManager.loadCombatScreen(new CombatGameScreen(playerView, biffView));
             }
         } else {
-            if (mapManager.getCurrentMapName() == MapManager.Maps.MAP1) {
+            switch (mapManager.getCurrentMapName()) {
+            case MAP1: {
                 ScreenManager.changeMap(MapManager.Maps.MAP2);
                 ScreenManager.loadMovementScreen();
-            } else if (mapManager.getCurrentMapName() == MapManager.Maps.MAP2) {
+                break;
+            }
+            case MAP2: {
                 ScreenManager.changeMap(MapManager.Maps.MAP3);
                 ScreenManager.loadMovementScreen();
-            } else if (mapManager.getCurrentMapName() == MapManager.Maps.MAP3) {
+                break;
+            }
+            default: {
                 ScreenManager.loadMenuScreen();
             }
-
+            }
         }
 
         enemyList.forEach(enemy -> {

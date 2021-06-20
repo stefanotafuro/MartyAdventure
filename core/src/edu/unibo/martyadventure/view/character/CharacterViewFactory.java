@@ -103,12 +103,13 @@ public class CharacterViewFactory {
     
     public EnemyCharacterView createEnemy(Vector2 initialPosition, MapManager.Maps map)
             throws InterruptedException, ExecutionException {
+        Random r = new Random();
         WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
         WeaponView dropWeaponView = WeaponViewFactory.createRandomWeaponView(map);
         EnemyCharacter b = new EnemyCharacter(dropWeaponView.getWeapon(), "Bullo", mapBulloHp.get(map),
                 weaponView.getWeapon());
         EnemyCharacterView bullo = new EnemyCharacterView(initialPosition,
-                new Random().nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b, weaponView, dropWeaponView);
+                r.nextBoolean() ? ENEMY_PATH_1 : ENEMY_PATH_2, b, weaponView, dropWeaponView);
 
         return bullo;
     }

@@ -11,6 +11,9 @@ import edu.unibo.martyadventure.view.weapon.WeaponView;
 
 public class EnemyCharacterView extends CharacterView {
 
+    private static final float MAX_SPEED = 70f;
+    private static final float ACCELERATION_FACTOR = 5f;
+    private static final float MAX_ACCELERATION = 20f;
     private EnemyCharacter enemy;
     public static final int FRAME_WIDTH = 140;
     public static final int FRAME_HEIGHT = 148;
@@ -18,7 +21,7 @@ public class EnemyCharacterView extends CharacterView {
 
     public EnemyCharacterView(Vector2 initialPosition, String enemy_path, EnemyCharacter enemy, WeaponView weapon, WeaponView dropWeapon)
             throws InterruptedException, ExecutionException {
-        super(initialPosition, 20f, 5f, 70f, new TextureRegion(new Texture(enemy_path)), FRAME_WIDTH, FRAME_HEIGHT, weapon);
+        super(initialPosition, MAX_ACCELERATION, ACCELERATION_FACTOR, MAX_SPEED, new TextureRegion(new Texture(enemy_path)), FRAME_WIDTH, FRAME_HEIGHT, weapon);
         this.enemy = enemy;
         this.dropWeapon = dropWeapon;
     }

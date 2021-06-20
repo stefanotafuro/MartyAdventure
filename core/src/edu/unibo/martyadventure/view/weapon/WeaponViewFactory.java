@@ -1,5 +1,7 @@
 package edu.unibo.martyadventure.view.weapon;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.unibo.martyadventure.model.weapon.Weapon;
@@ -40,7 +42,8 @@ public class WeaponViewFactory {
     }
 
     private static Weapons getRandomWeapon() {
-        return Weapons.values()[(int) (Math.random() * Weapons.values().length)];
+        
+        return Weapons.values()[ThreadLocalRandom.current().nextInt(Weapons.values().length)];
     }
 
     public static WeaponView createRandomWeaponView(MapManager.Maps map) {
