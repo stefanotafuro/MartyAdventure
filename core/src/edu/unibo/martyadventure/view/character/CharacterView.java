@@ -21,7 +21,7 @@ public abstract class CharacterView<C extends Character> implements Controllable
     private static final int BOX_SCALE = 15;
     private static final float BOX_OFFSET = 1.7f;
 
-    public static final int FRAME_WIDTH = 140;
+    public static final int FRAME_WIDTH = 141;
     public static final int FRAME_HEIGHT = 148;
 
 
@@ -49,9 +49,14 @@ public abstract class CharacterView<C extends Character> implements Controllable
      */
     public abstract Sprite getFightSprite();
 
+    /**
+     * Cleanup the character's view managed resources.
+     */
+    public abstract void dispose();
 
-    public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final TextureRegion texture) {
+    public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration,
+            final float accellerationFactor, final float maxSpeed, final TextureRegion texture,
+            final WeaponView weaponView) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;

@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.character.Shoes;
-import edu.unibo.martyadventure.model.weapon.WeaponFactory;
-import edu.unibo.martyadventure.view.Toolbox;
+import edu.unibo.martyadventure.view.weapon.WeaponView;
+import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
 
 /**
  * A player character's base providing basic movement, interaction with given
@@ -17,21 +17,37 @@ import edu.unibo.martyadventure.view.Toolbox;
  */
 public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
 
-    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "Marty", 9300,
-            WeaponFactory.createRandomMeleeWeapon("Pugno", 1.9));
-    private static final String PLAYER_PATH = "Characters/Marty/MartyMove (1).png";
-    private static final float MAX_ACCELLERATION = 20f;
-    private static final float ACCELLERATION_FACTOR = 10f;
-    private static final float MAX_SPEED = 100f;
+    private static final float MAX_ACCELLERATION = 20.0f;
+    private static final float ACCELLERATION_FACTOR = 10.0f;
+    private static final float MAX_SPEED = 100.0f;
+
+    private static final int PLAYER_HP = 9300;
+
+    private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
 
 
-    public PlayerCharacterView(final Vector2 initialPosition) throws InterruptedException, ExecutionException {
-        super(player, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
-                new TextureRegion(Toolbox.getTexture(PLAYER_PATH)));
+    public PlayerCharacterView(final String name, final Vector2 initialPosition, final TextureRegion textureRegion)
+            throws InterruptedException, ExecutionException {
+        super(new PlayerCharacter(Shoes.SLOW, name, PLAYER_HP, playerWeapon.getWeapon()), initialPosition, MAX_ACCELLERATION,
+                ACCELLERATION_FACTOR, MAX_SPEED, textureRegion, playerWeapon);
+    }
+
+    /**
+     * Set the player's current and default weapon.
+     */
+    public void setWeapon(final WeaponView weapon) {
+        super.weaponView = weapon;
+        super.character.setWeapon(weapon.getWeapon());
+        playerWeapon = weapon;
     }
 
     @Override
     public Sprite getFightSprite() {
         return new Sprite(animations.getRightIdle());
+    }
+
+    @Override
+    public void dispose() {
+        // unused
     }
 }

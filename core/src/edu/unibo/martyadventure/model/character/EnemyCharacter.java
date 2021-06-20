@@ -6,19 +6,20 @@ public class EnemyCharacter extends Character {
     
     private Weapon dropitem;//weapon drop from enemy
 
-    private Weapon dropitem; // weapon drop from enemy
+    // Weapon drop from enemy.
+    private Weapon dropWeapon;
 
 
-    public EnemyCharacter(Weapon dropitem, String name, int hp, Weapon weapon) {
+    public EnemyCharacter(final Weapon dropWeapon, final String name, final int hp, final Weapon weapon) {
         super(name, hp, weapon);
-        this.dropitem = dropitem;
+        this.dropWeapon = dropWeapon;
     }
 
     public Weapon getDropitem() {
-        return dropitem;
+        return this.dropWeapon;
     }
 
-    public void setDropitem(Weapon dropitem) {
-        this.dropitem = dropitem;
+    public void setDropitem(final Weapon dropWeapon) {
+        this.dropWeapon = dropWeapon;
     }
 }
