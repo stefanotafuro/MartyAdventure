@@ -37,24 +37,26 @@ abstract class StaticScreen implements Screen {
     protected StaticScreen(final String backgroundPath, final int width, final int height) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
+
         this.uiAtlas = Toolbox.getAtlas(ATLAS_PATH);
         this.uiSkin = Toolbox.getSkin(SKIN_PATH);
+
         this.stage = getStage(width, height);
     }
 
     @Override
     public void pause() {
-        // TODO Auto-generated method stub
+        // unused
     }
 
     @Override
     public void resume() {
-        // TODO Auto-generated method stub
+        // unused
     }
 
     @Override
     public void hide() {
-        // TODO Auto-generated method stub
+        // unused
     }
 
     @Override

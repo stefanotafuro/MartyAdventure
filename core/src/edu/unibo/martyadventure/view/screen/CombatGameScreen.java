@@ -19,6 +19,7 @@ import edu.unibo.martyadventure.model.fight.Fight;
 import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.model.character.Character;
+import edu.unibo.martyadventure.model.character.PlayerCharacter;
 
 public class CombatGameScreen extends StaticScreen {
 
@@ -62,7 +63,7 @@ public class CombatGameScreen extends StaticScreen {
     private EnemyCharacterView enemyView;
 
 
-    private TextButton getButton(final int index) {
+    private TextButton getIndexedButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
                 uiSkin);
         button.addListener(new ClickListener() {
@@ -107,10 +108,10 @@ public class CombatGameScreen extends StaticScreen {
         Gdx.input.setInputProcessor(stage);
 
         // Create buttons
-        moveButton1 = getButton(0);
-        moveButton2 = getButton(1);
-        moveButton3 = getButton(2);
-        moveButton4 = getButton(3);
+        moveButton1 = getIndexedButton(0);
+        moveButton2 = getIndexedButton(1);
+        moveButton3 = getIndexedButton(2);
+        moveButton4 = getIndexedButton(3);
 
         // Create Table
         Table mainTable = new Table();
@@ -162,10 +163,12 @@ public class CombatGameScreen extends StaticScreen {
             if (fight.fightWinner() == fight.getPlayer()) {
                 weaponSelection();
             } else {
-                // TODO Lose screen
-                ScreenManager.loadMenuScreen();
+                // TODO lose screen
+                System.err.println("GAME OVER");
+                Gdx.app.exit();
             }
         }
+
         stage.act();
         stage.getBatch().begin();
         stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
@@ -200,8 +203,9 @@ public class CombatGameScreen extends StaticScreen {
         enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
     }
 
-    private void checkButton(TextButton button, int moveNumber) {
-        if (fight.getPlayer().getWeapon().getMoveList().get(moveNumber).isUsable(fight.getTurnCount())) {
+    private void checkButton(final TextButton button, final int moveNumber) {
+        final PlayerCharacter player = fight.getPlayer();
+        if (fight.isMoveUsable(player, player.getWeapon().getMoveList().get(moveNumber))) {
             button.setTouchable(Touchable.enabled);
             button.setDisabled(false);
         } else {

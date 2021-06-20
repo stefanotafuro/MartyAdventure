@@ -5,34 +5,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import edu.unibo.martyadventure.view.MapManager.Maps;
+import edu.unibo.martyadventure.view.PlayerChoiceScreen;
+import edu.unibo.martyadventure.view.character.Player;
 
 public class ScreenManager {
 
     public static class VIEWPORT {
 
-        public static float viewportWidth;
-        public static float viewportHeight;
-        public static float virtualWidth;
-        public static float virtualHeight;
-        public static float physicalWidth;
-        public static float physicalHeight;
-        public static float aspectRatio;
-        public static int ZOOM = 75;
+        public static int X_VIEWPORT = 20;
+        public static int Y_VIEWPORT = 15;
     }
 
 
     private static MovementGameScreen movementScreen;
 
 
-    private ScreenManager() {}
-
-    private static void loadScreen(Screen s) {
-        final Game game = (Game) Gdx.app.getApplicationListener();
+    private static void loadScreen(final Screen s) {
+        Game game = (Game) Gdx.app.getApplicationListener();
         game.setScreen(s);
     }
 
-    public static void changeMap(Maps map) {
-        movementScreen = new MovementGameScreen(map);
+    private ScreenManager() {}
+
+    public static void changeMap(final Maps map) {
+        movementScreen = new MovementGameScreen(currentPlayer, map);
+    }
+
+    public static void changePlayer(final Player player) {
+        currentPlayer = player;
     }
 
     public static void loadMovementScreen() {
@@ -58,16 +58,11 @@ public class ScreenManager {
         loadScreen(menu);
     }
 
-    public static void loadChoicecreen() {
+    public static void loadChoiceScreen() {
         loadScreen(choice);
     }
 
-    public static void loadCombatScreen(CombatGameScreen screen) {
+    public static void loadCombatScreen(final CombatGameScreen screen) {
         loadScreen(screen);
-    }
-
-    private static void loadScreen(Screen s) {
-        Game game = (Game) Gdx.app.getApplicationListener();
-        game.setScreen(s);
     }
 }
