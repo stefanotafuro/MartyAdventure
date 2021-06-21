@@ -44,7 +44,7 @@ public class MovementGameScreen implements Screen {
     private List<EnemyCharacterView> enemyList;
     private OrthogonalTiledMapRenderer mapRenderer;
     private OrthographicCamera camera;
-    private static MapManager mapManager;
+    private MapManager mapManager;
     private static Vector2 playerInitialPosition;
     private CharacterViewFactory cFactory;
     private Viewport viewport;

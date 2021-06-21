@@ -2,7 +2,6 @@ package edu.unibo.martyadventure.controller.sound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 
 public class MusicController {
     
@@ -10,7 +9,7 @@ public class MusicController {
         
     }
     
-    private static Music music = Gdx.audio.newMusic(new FileHandle("music/theme.ogg"));
+    private static Music music = Gdx.audio.newMusic(Gdx.files.internal("music/theme.ogg"));
     
     public static void startMusic() {
         music.setLooping(true);
