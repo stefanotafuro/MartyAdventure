@@ -23,7 +23,7 @@ class MenuScreen extends StaticScreen {
     private static final int CLOSE_BUTTON_X = 600;
     private static final int CLOSE_BUTTON_Y = 170;
     private static final int ZOOM = 70;
-    
+
     private static final Vector2 NEW_GAME_BUTTON_POSITION = new Vector2(70, 550);
     private static final Vector2 EXIT_BUTTON_POSITION = new Vector2(120, 350);
     private static final Vector2 OPTIONS_BUTTON_POSITION = new Vector2(110, 450);

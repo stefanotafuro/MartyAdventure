@@ -137,7 +137,7 @@ public class Toolbox {
     public static void queueAtlas(final String atlasPath) {
         Toolbox.assetManager.load(getAtlasAssetDescriptor(atlasPath));
     }
-    
+
     /**
      * Queues a skin for loading.
      */
@@ -154,7 +154,7 @@ public class Toolbox {
 
     /**
      * Get the map at the path. Block if the asset hasn't been fully loaded yet.
-     * 
+     *
      * @return the map asset at the given path.
      */
     public static TiledMap getMap(final String mapPath) {
@@ -163,7 +163,7 @@ public class Toolbox {
 
     /**
      * Get the texture at the path. Block if the asset hasn't been fully loaded yet.
-     * 
+     *
      * @return the texture asset at the given path.
      */
     public static Texture getTexture(final String texturePath) {
@@ -172,7 +172,7 @@ public class Toolbox {
 
     /**
      * Get the atlas at the path. Block if the asset hasn't been fully loaded yet.
-     * 
+     *
      * @return the atlas asset at the given path.
      */
     public static TextureAtlas getAtlas(final String atlasPath) {
@@ -181,7 +181,7 @@ public class Toolbox {
 
     /**
      * Get the skin at the path. Block if the asset hasn't been fully loaded yet.
-     * 
+     *
      * @return the skin asset at the given path.
      */
     public static Skin getSkin(final String skinPath) {

@@ -351,7 +351,7 @@ class MovementGameScreen implements Screen {
 
     /**
      * Resize the view.
-     * 
+     *
      * @param width
      * @param height
      */
