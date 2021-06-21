@@ -27,12 +27,14 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
 
     private final String texturePath;
+    private boolean disposed;
 
     public PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
             throws InterruptedException, ExecutionException {
         super(new PlayerCharacter(Shoes.SLOW, name, PLAYER_HP, playerWeapon.getWeapon()), initialPosition, MAX_ACCELLERATION,
                 ACCELLERATION_FACTOR, MAX_SPEED, new TextureRegion(Toolbox.getTexture(texturePath)), playerWeapon);
         this.texturePath = texturePath;
+        this.disposed = false;
     }
 
     /**
@@ -48,7 +50,10 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
      * Dispose of the player's texture
      */
     public void dispose() {
-        Toolbox.unloadAsset(this.texturePath);
+        if (!this.disposed) {
+            Toolbox.unloadAsset(this.texturePath);
+            this.disposed = true;
+        }
     }
 
     @Override

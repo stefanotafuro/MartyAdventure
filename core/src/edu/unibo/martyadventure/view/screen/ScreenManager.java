@@ -25,6 +25,13 @@ public class ScreenManager {
     private Player currentPlayer;
 
 
+    private void disposeMovementScreen() {
+        if (this.movementScreen != null) {
+            this.movementScreen.dispose();
+            this.movementScreen = null;
+        }
+    }
+
     private void loadScreen(final Screen s) {
         Game game = (Game) Gdx.app.getApplicationListener();
         game.setScreen(s);
@@ -37,9 +44,7 @@ public class ScreenManager {
     }
 
     public void changeMap(final Maps map) {
-        if (this.movementScreen != null) {
-            this.movementScreen.dispose();
-        }
+        disposeMovementScreen();
         this.movementScreen = new MovementGameScreen(this, this.characterFactory, currentPlayer, map);
     }
 
@@ -52,10 +57,12 @@ public class ScreenManager {
     }
 
     public void loadMenuScreen() {
+        disposeMovementScreen();
         loadScreen(this.menu);
     }
 
     public void loadChoiceScreen() {
+        disposeMovementScreen();
         loadScreen(this.choice);
     }
 
@@ -64,9 +71,7 @@ public class ScreenManager {
     }
 
     public void dispose() {
-        if (this.movementScreen != null) {
-            this.movementScreen.dispose();
-        }
+        disposeMovementScreen();
         this.menu.dispose();
         this.choice.dispose();
         this.characterFactory.dispose();

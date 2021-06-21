@@ -88,7 +88,7 @@ public class Toolbox {
      * Unloads the asset if the reference count has reached 0.
      */
     public static void unloadAsset(String filePath) {
-        if (Toolbox.assetManager.contains(filePath)) {
+        if (Toolbox.assetManager.isLoaded(filePath)) {
             Toolbox.assetManager.unload(filePath);
         }
     }

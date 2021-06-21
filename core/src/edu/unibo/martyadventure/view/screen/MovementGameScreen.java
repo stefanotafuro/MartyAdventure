@@ -61,8 +61,11 @@ class MovementGameScreen implements Screen {
     private Batch uiBatch;
     private float time = 1;
 
+    private boolean disposed;
 
-    public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory, final Player player, final Maps map) {
+
+    public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory,
+            final Player player, final Maps map) {
         this.screenManager = manager;
         this.uiBatch = new SpriteBatch();
         this.loadingNewWorld = true;
@@ -106,6 +109,8 @@ class MovementGameScreen implements Screen {
                 (Gdx.app.getGraphics().getHeight() / 3) * 2);
 
         this.enemyViewList = getEnemyList(mapManager.getEnemySpawnLayer());
+
+        this.disposed = false;
     }
 
     private List<EnemyCharacterView> getEnemyList(final MapLayer enemyLayer) {
@@ -295,11 +300,13 @@ class MovementGameScreen implements Screen {
     public void render(float delta) {
         updateGameLogic(delta);
 
-        // Render the screen.
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        drawMap();
-        drawUI(delta);
+        if (!disposed) {
+            // Render the screen.
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            drawMap();
+            drawUI(delta);
+        }
     }
 
     /**
@@ -377,9 +384,13 @@ class MovementGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        this.playerView.dispose();
-        this.bossView.dispose();
-        mapRenderer.dispose();
-        Gdx.input.setInputProcessor(null);
+        if (!this.disposed) {
+            this.bossView.dispose();
+            this.playerView.dispose();
+            this.mapRenderer.dispose();
+            Gdx.input.setInputProcessor(null);
+
+            this.disposed = true;
+        }
     }
 }
