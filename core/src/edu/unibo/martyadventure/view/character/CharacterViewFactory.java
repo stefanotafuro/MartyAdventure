@@ -32,13 +32,13 @@ public class CharacterViewFactory {
     private static final String ENEMY_PATH_1 = "Characters/Bulli/Bullo (1).png";
     private static final String ENEMY_PATH_2 = "Characters/Bulli/Bullo (2).png";
     
-    private static final int BOSS_HP_1 = 100;
-    private static final int BOSS_HP_2 = 200;
-    private static final int BOSS_HP_3 = 300;
+    private static final int BOSS_HP_1 = 150;
+    private static final int BOSS_HP_2 = 250;
+    private static final int BOSS_HP_3 = 500;
 
     private static final int BULLO_HP_1 = 50;
-    private static final int BULLO_HP_2 = 10;
-    private static final int BULLO_HP_3 = 15;
+    private static final int BULLO_HP_2 = 100;
+    private static final int BULLO_HP_3 = 150;
 
     private Map<MapManager.Maps, String> martyTextureMapPath;
     private Map<MapManager.Maps, String> docTextureMapPath;

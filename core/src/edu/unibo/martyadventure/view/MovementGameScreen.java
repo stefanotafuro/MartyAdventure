@@ -38,6 +38,9 @@ public class MovementGameScreen implements Screen {
 
     private static final int FADE_TIME = 4;
     private static final int SPRITE_SCALE_FACTOR = 3;
+    private static final int PLAYER_HP = 300;
+    private static final int MAP1_HP_MULTIPLIER = 2;
+    private static final int MAP2_HP_MULTIPLIER = 3;
     private PlayerCharacterView playerView;
     private EnemyCharacterView biffView;
     private PlayerInputProcessor inputProcessor;
@@ -164,11 +167,13 @@ public class MovementGameScreen implements Screen {
         } else {
             switch (mapManager.getCurrentMapName()) {
             case MAP1: {
+                playerView.getPlayer().setHp(PLAYER_HP * MAP1_HP_MULTIPLIER);
                 ScreenManager.changeMap(MapManager.Maps.MAP2);
                 ScreenManager.loadMovementScreen();
                 break;
             }
             case MAP2: {
+                playerView.getPlayer().setHp(PLAYER_HP * MAP2_HP_MULTIPLIER);
                 ScreenManager.changeMap(MapManager.Maps.MAP3);
                 ScreenManager.loadMovementScreen();
                 break;

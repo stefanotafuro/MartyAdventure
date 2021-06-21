@@ -15,21 +15,23 @@ import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
  * the map and visual representation.
  */
 public class PlayerCharacterView extends CharacterView {
-    
-    private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
-    private static PlayerCharacter player;
+
+    private static final int PLAYER_HP = 500;
     public static final int FRAME_WIDTH = 141;
     public static final int FRAME_HEIGHT = 148;
+    private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
+    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());;
 
-    public PlayerCharacterView(String name,Vector2 initialPosition, TextureRegion textureRegion) throws InterruptedException, ExecutionException {
+    public PlayerCharacterView(String name, Vector2 initialPosition, TextureRegion textureRegion)
+            throws InterruptedException, ExecutionException {
         super(initialPosition, 20f, 10f, 100f, textureRegion, FRAME_WIDTH, FRAME_HEIGHT, playerWeapon);
-        player = new PlayerCharacter(Shoes.SLOW, name, 9300, playerWeapon.getWeapon());
+        player.setName(name);
     }
 
     public PlayerCharacter getPlayer() {
         return player;
     }
-    
+
     public void setWeaponView(WeaponView weapon) {
         this.weapon = weapon;
         playerWeapon = weapon;

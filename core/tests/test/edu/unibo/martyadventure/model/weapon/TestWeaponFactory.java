@@ -63,7 +63,7 @@ public class TestWeaponFactory {
         checkDuplicateItemsInMoveList(weaponTest);
         // check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
-            assertEquals(weaponTest.getMoveList().get(i).getType(), Move.MoveType.MELEE);
+            assertEquals(weaponTest.getMoveList().get(i).getType(), Move.MoveType.RANGED);
         }
 
         // weaponTest.printWeapon();

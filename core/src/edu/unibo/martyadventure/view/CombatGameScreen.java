@@ -92,16 +92,16 @@ public class CombatGameScreen implements Screen {
     public void show() {
         // Setup move labels
         Label move1Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(0).getReloadTime()
-                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(0).getDamage(), skin, "title");
+                + " Dmg: " + getFullDamage(0), skin, "title");
 
         Label move2Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(1).getReloadTime()
-                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(1).getDamage(), skin, "title");
+                + " Dmg: " + getFullDamage(1), skin, "title");
 
         Label move3Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(2).getReloadTime()
-                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(2).getDamage(), skin, "title");
+                + " Dmg: " + getFullDamage(2), skin, "title");
 
         Label move4Label = new Label("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(3).getReloadTime()
-                + " Dmg: " + fight.getPlayer().getWeapon().getMoveList().get(3).getDamage(), skin, "title");
+                + " Dmg: " + getFullDamage(3), skin, "title");
 
         // Setup info labels
         Label playerWeaponLabel;
@@ -284,10 +284,6 @@ public class CombatGameScreen implements Screen {
         moveButton4.setTouchable(Touchable.disabled);
         moveButton4.setDisabled(true);
 
-        //playerView.setWeaponView(enemyView.getDropWeapon());
-
-        // ScreenManager.loadMovementScreen();
-
     }
 
     private void updateLabel() {
@@ -305,6 +301,10 @@ public class CombatGameScreen implements Screen {
                 button.setDisabled(true);
             }
 
+    }
+    
+    private int getFullDamage(int moveNumber) {
+        return (int) (fight.getPlayer().getWeapon().getMoveList().get(0).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
     }
 
     private void setupPlayer(PlayerCharacterView p) {

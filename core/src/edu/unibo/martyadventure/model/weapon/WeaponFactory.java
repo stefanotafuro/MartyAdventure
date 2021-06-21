@@ -18,8 +18,8 @@ public class WeaponFactory {
     public static final float LEVEL1 = 1;
     public static final float LEVEL2 = 2;
     public static final float LEVEL3 = 3;
-    public final static int MIN_DAMAGE_MULTIPLIER = 1;
-    public final static int MAX_DAMAGE_MULTIPLIER = 3;
+    public final static float MIN_DAMAGE_MULTIPLIER = 0.5f;
+    public final static float MAX_DAMAGE_MULTIPLIER = 1.5f;
 
     /**
      * Weapon public constructor
@@ -133,7 +133,7 @@ public class WeaponFactory {
      * @return Random double between MIN and MAX
      */
     public static float randomDamageMultiplier() {
-        return (ThreadLocalRandom.current().nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER;
+        return ((ThreadLocalRandom.current().nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER);
     }
 
     private WeaponFactory() {
