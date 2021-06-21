@@ -30,13 +30,13 @@ public class CharacterViewFactory {
     private static final String ENEMY_PATH_1 = "Characters/Bully/Bully (1).png";
     private static final String ENEMY_PATH_2 = "Characters/Bully/Bully (2).png";
 
-    private static final int BOSS_HP_1 = 100;
-    private static final int BOSS_HP_2 = 200;
-    private static final int BOSS_HP_3 = 300;
+    private static final int BOSS_HP_1 = 150;
+    private static final int BOSS_HP_2 = 250;
+    private static final int BOSS_HP_3 = 500;
 
     private static final int BULLY_HP_1 = 50;
-    private static final int BULLY_HP_2 = 10;
-    private static final int BULLY_HP_3 = 15;
+    private static final int BULLY_HP_2 = 100;
+    private static final int BULLY_HP_3 = 150;
 
     // Static since they're read-only
     private static Map<Player, Player> bossNameMap;

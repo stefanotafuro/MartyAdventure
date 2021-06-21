@@ -56,7 +56,7 @@ class PlayerChoiceScreen extends StaticScreen {
 
 
     private TextButton getSetPlayerButton(final String name, final int xPosition, final Player player) {
-        return getTextButton(name, xPosition, PLAYER_BUTTON_Y, () -> screenManager.changePlayer(player));
+        return getChoiceTextButton(name, xPosition, PLAYER_BUTTON_Y, () -> screenManager.changePlayer(player));
     }
 
     private Animation<TextureRegion> loadAnimation(String path) {
@@ -80,7 +80,7 @@ class PlayerChoiceScreen extends StaticScreen {
     @Override
     public void show() {
         ImageButton closeButton = new ImageButton(new TextureRegionDrawable(Toolbox.getTexture(BUTTON_BG_PATH)));
-        TextButton newGameButton = getTextButton("Inizia partita", START_BUTTON_POSITION, () -> {
+        TextButton newGameButton = getStandardTextButton("Inizia partita", START_BUTTON_POSITION, () -> {
             screenManager.changeMap(Maps.MAP1);
             screenManager.loadMovementScreen();
         });

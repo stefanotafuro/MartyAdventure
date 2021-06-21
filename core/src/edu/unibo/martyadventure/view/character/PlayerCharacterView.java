@@ -22,7 +22,9 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     private static final float ACCELLERATION_FACTOR = 10.0f;
     private static final float MAX_SPEED = 100.0f;
 
-    private static final int PLAYER_HP = 500;
+    public static final int PLAYER_HP = 300;
+    public static final int MAP1_PLAYER_HP_MULTIPLIER = 2;
+    public static final int MAP2_PLAYER_HP_MULTIPLIER = 3;
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
     private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
 
@@ -60,5 +62,9 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     @Override
     public Sprite getFightSprite() {
         return new Sprite(animations.getRightIdle());
+    }
+
+    public PlayerCharacter getPlayer() {
+        return player;
     }
 }

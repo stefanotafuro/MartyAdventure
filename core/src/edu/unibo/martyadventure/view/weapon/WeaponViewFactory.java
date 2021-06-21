@@ -17,6 +17,7 @@ public class WeaponViewFactory {
         CROWBAR("Weapons/crowbar.png", "Piede di porco", Weapon.WeaponType.MELEE),
         HAMMER("Weapons/hammer.png", "Martello", Weapon.WeaponType.MELEE),
         KNIFE("Weapons/knife.png", "Coltello", Weapon.WeaponType.MELEE),
+        PUNCH("Weapons/punch.png", "Pugno", Weapon.WeaponType.MELEE),
         REVOLVER("Weapons/Revolver.png", "Rivoltella", Weapon.WeaponType.RANGED);
 
 
@@ -56,7 +57,7 @@ public class WeaponViewFactory {
     }
 
     public static WeaponView createPlayerWeaponView() {
-        Weapons w = Weapons.CROWBAR;
+        Weapons w = Weapons.PUNCH;
         return new WeaponView(
                 WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), MapManager.Maps.MAP1, w.getType()),
                 new Texture(w.getTexturePath()));
