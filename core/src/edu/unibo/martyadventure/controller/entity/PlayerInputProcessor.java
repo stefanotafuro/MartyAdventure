@@ -149,36 +149,42 @@ public class PlayerInputProcessor implements InputProcessor {
         return setSelectedDirection(keycode, false);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean keyTyped(char character) {
         // Unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // Unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         // Unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         // Unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         // Unused
         return false;
     }
 
+    @SuppressWarnings("unused")
     @Override
     public boolean scrolled(float amountX, float amountY) {
         // Unused

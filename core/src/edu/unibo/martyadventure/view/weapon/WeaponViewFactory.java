@@ -11,6 +11,7 @@ import edu.unibo.martyadventure.view.MapManager;
 public class WeaponViewFactory {
 
     public enum Weapons {
+
         BASEBALL_BAT("Weapons/baseballBat.png", "Mazza da baseball", Weapon.WeaponType.MELEE),
         BRASS_KNUCKLES("Weapons/BrassKnuckles.png", "Tirapugni", Weapon.WeaponType.MELEE),
         CROWBAR("Weapons/crowbar.png", "Piede di porco", Weapon.WeaponType.MELEE),
@@ -18,9 +19,11 @@ public class WeaponViewFactory {
         KNIFE("Weapons/knife.png", "Coltello", Weapon.WeaponType.MELEE),
         REVOLVER("Weapons/Revolver.png", "Rivoltella", Weapon.WeaponType.RANGED);
 
+
         private final String texturePath;
         private final String weaponName;
         private final Weapon.WeaponType type;
+
 
         private Weapons(String path, String name, Weapon.WeaponType type) {
             texturePath = path;
@@ -41,8 +44,8 @@ public class WeaponViewFactory {
         }
     }
 
+
     private static Weapons getRandomWeapon() {
-        
         return Weapons.values()[ThreadLocalRandom.current().nextInt(Weapons.values().length)];
     }
 
@@ -58,5 +61,4 @@ public class WeaponViewFactory {
                 WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), MapManager.Maps.MAP1, w.getType()),
                 new Texture(w.getTexturePath()));
     }
-
 }

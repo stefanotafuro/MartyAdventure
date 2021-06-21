@@ -72,7 +72,6 @@ public class Fight {
      * 
      * @return The random Move choosen from the enemy MoveList
      */
-
     public Move enemyMove() {
         Move move;
         do {
@@ -96,19 +95,17 @@ public class Fight {
 
     }
 
+
     /**
-     * 
      * @param weapon    The striker's weapon
      * @param move      The striker's move
      * @param character The opponent character
      */
     public void attack(Weapon weapon, Move move, Character character) {
-        // check if the move fail
+        // check if the move failed
         if (!move.testFailure()) {
             setLastUse(opponent(character), move, turnCount);
-            // System.out.println("Move Fail");
         }
-        // ATTACK
         else {
             setLastUse(opponent(character), move, turnCount);
             // check if the damage will kill the opponent using isDead function
@@ -171,7 +168,6 @@ public class Fight {
      */
     public boolean isMoveUsable(Character character, Move move) {
         return move.isUsable(turnCount, mapCharactersMove.get(character).get(move));
-
     }
 
     /**
