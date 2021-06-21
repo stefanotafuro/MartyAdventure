@@ -179,7 +179,7 @@ public class Fight {
     private void createHashMap() {
         mapMartyMove = new HashMap<>();
         mapEnemyMove = new HashMap<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < Weapon.MOVE_LIST_SIZE; i++) {
             mapMartyMove.put(player.getWeapon().getMoveList().get(i), 0);
             mapEnemyMove.put(enemy.getWeapon().getMoveList().get(i), 0);
         }
