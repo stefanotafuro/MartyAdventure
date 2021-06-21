@@ -19,7 +19,7 @@ import edu.unibo.martyadventure.view.weapon.WeaponView;
  */
 public abstract class CharacterView<C extends Character> implements ControllableEntity {
 
-    private static final int BOX_SCALE = 8;
+    private static final int BOX_SCALE = 15;
     private static final float BOX_OFFSET = 1.7f;
 
     public static final int FRAME_WIDTH = 141;
