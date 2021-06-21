@@ -152,7 +152,8 @@ class MovementGameScreen implements Screen {
      */
     private boolean trySetBattleOverlap(final EnemyCharacterView enemy) {
         if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy));
+            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy,
+                    mapManager.getCurrentMapName() == Maps.MAP3));
             return true;
         }
         return false;
@@ -213,7 +214,7 @@ class MovementGameScreen implements Screen {
             screenManager.loadMovementScreen();
             break;
         case MAP3:
-            screenManager.loadMenuScreen();
+            screenManager.loadGameOverScreen(isAlive(this.bossView));
             break;
         default:
             throw new IllegalArgumentException("Unknow map");

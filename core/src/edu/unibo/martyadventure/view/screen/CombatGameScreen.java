@@ -56,9 +56,11 @@ class CombatGameScreen extends StaticScreen {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.#");
 
-    private PlayerCharacterView playerView;
-    private EnemyCharacterView enemyView;
-    private Fight fight;
+    private final PlayerCharacterView playerView;
+    private final EnemyCharacterView enemyView;
+    private final Fight fight;
+    private final boolean displayGameOver;
+
     private Label playerHpLabel;
     private Label enemyHpLabel;
     private Label playerFailLabel;
@@ -68,16 +70,7 @@ class CombatGameScreen extends StaticScreen {
     private TextButton moveButton3;
     private TextButton moveButton4;
     private Window weaponSelectionWindow;
-    
-    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
-            final EnemyCharacterView enemy) {
-        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
 
-        this.playerView = player;
-        this.enemyView = enemy;
-
-        fight = new Fight(player.getCharacter(), enemy.getCharacter());
-    }
 
     private TextButton getIndexedButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
@@ -218,6 +211,17 @@ class CombatGameScreen extends StaticScreen {
         this.moveButton4.setDisabled(true);
     }
 
+    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
+            final EnemyCharacterView enemy, final boolean displayGameOver) {
+        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+
+        this.playerView = player;
+        this.enemyView = enemy;
+        this.displayGameOver = displayGameOver;
+
+        fight = new Fight(player.getCharacter(), enemy.getCharacter());
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -282,12 +286,11 @@ class CombatGameScreen extends StaticScreen {
         checkButton(moveButton4, 3);
 
         if (fight.fightWinner() != null) {
-            if (fight.fightWinner() == fight.getPlayer()) {
+            final boolean playerWon = fight.fightWinner() == fight.getPlayer();
+            if (!displayGameOver && playerWon) {
                 weaponSelectionMode();
             } else {
-                // TODO lose screen
-                System.err.println("GAME OVER");
-                Gdx.app.exit();
+                super.screenManager.loadGameOverScreen(playerWon);
             }
         }
 

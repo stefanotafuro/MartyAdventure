@@ -2,36 +2,53 @@ package edu.unibo.martyadventure.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 class GameOverScreen extends StaticScreen {
 
-    private static final String BACKGROUND_PATH = "menu/gameover.png";
-    private static final String WON_TEXT = "Hai vinto!";
-    private static final String LOST_TEXT = "Hai perso, vuoi riprovare?";
+    private static final int ZOOM = 50;
 
-    private final Label textLabel;
+    private static final String BACKGROUND_PATH = "menu/gameover.png";
+    private static final float TITLE_FONT_SCALE = 1.10f;
+    private static final Vector2 TITLE_POSITION = new Vector2(100, 650);
+    private static final Vector2 MENU_BUTTON_POSITION = new Vector2(30, 40);
+
+    private static final String WON_TEXT = "Hai vinto!";
+    private static final String LOSE_TEXT = "Hai perso, vuoi riprovare?";
+
+    private final Label titleLabel;
     private final TextButton menuButton;
 
 
-    public GameOverScreen(final ScreenManager manager, final boolean playerWon, final int height, final int width) {
-        super(manager, BACKGROUND_PATH, height, width);
-        this.textLabel = new Label(playerWon ? WON_TEXT : LOST_TEXT, uiSkin);
-        this.menuButton = new TextButton("Ritornare al menu?", uiSkin);
+    private Label getLabel() {
+        final Label label = new Label("", super.uiSkin, "title");
+        label.setPosition(TITLE_POSITION.x, TITLE_POSITION.y);
+        label.setFontScale(TITLE_FONT_SCALE);
+        return label;
+    }
 
-        super.stage.addActor(this.textLabel);
+    public GameOverScreen(final ScreenManager manager) {
+        super(manager, BACKGROUND_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM,
+                ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+        this.titleLabel = getLabel();
+
+        this.menuButton = getStandardTextButton("Ritornare al menu?", MENU_BUTTON_POSITION, () -> {
+            screenManager.loadMenuScreen();
+        });
+
+        super.stage.addActor(this.titleLabel);
         super.stage.addActor(this.menuButton);
     }
 
     /**
-     * Set the callback for when a request to go back to the main menu is made.
+     * Set the appropriate text to the player winning.
      *
-     * @param listener the callback object.
+     * @param playerWon if the player has won the game or not.
      */
-    public void addMenuListener(final EventListener listener) {
-        this.menuButton.addListener(listener);
+    public void setPlayerWon(final boolean playerWon) {
+        this.titleLabel.setText(playerWon ? WON_TEXT : LOSE_TEXT);
     }
 
     @Override

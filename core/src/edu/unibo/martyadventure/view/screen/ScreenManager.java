@@ -19,6 +19,7 @@ public class ScreenManager {
 
     private final MenuScreen menu;
     private final PlayerChoiceScreen choice;
+    private final GameOverScreen gameOver;
     private final CharacterViewFactory characterFactory;
 
     private MovementGameScreen movementScreen;
@@ -38,9 +39,10 @@ public class ScreenManager {
     }
 
     public ScreenManager() {
-        menu = new MenuScreen(this);
-        choice = new PlayerChoiceScreen(this);
-        characterFactory = new CharacterViewFactory();
+        this.menu = new MenuScreen(this);
+        this.choice = new PlayerChoiceScreen(this);
+        this.gameOver = new GameOverScreen(this);
+        this.characterFactory = new CharacterViewFactory();
     }
 
     public void changeMap(final Maps map) {
@@ -70,10 +72,16 @@ public class ScreenManager {
         loadScreen(screen);
     }
 
+    public void loadGameOverScreen(final boolean playerWon) {
+        this.gameOver.setPlayerWon(playerWon);
+        loadScreen(this.gameOver);
+    }
+
     public void dispose() {
         disposeMovementScreen();
         this.menu.dispose();
         this.choice.dispose();
+        this.gameOver.dispose();
         this.characterFactory.dispose();
     }
 }

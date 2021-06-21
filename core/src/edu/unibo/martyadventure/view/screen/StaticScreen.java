@@ -56,19 +56,23 @@ abstract class StaticScreen implements Screen {
         this.screenManager = manager;
     }
 
-    protected TextButton getStandardTextButton(final String title, final Vector2 position, final Runnable clickListener) {
+    protected TextButton getStandardTextButton(final String title, final Vector2 position,
+            final Runnable clickListener) {
         return getStandardTextButton(title, position.x, position.y, clickListener);
     }
 
-    protected TextButton getStandardTextButton(final String title, final float x, final float y, final Runnable clickListener) {
+    protected TextButton getStandardTextButton(final String title, final float x, final float y,
+            final Runnable clickListener) {
         return getTextButton(title, x, y, clickListener, this.uiSkin);
     }
-    
-    protected TextButton getChoiceTextButton(final String title, final float x, final float y, final Runnable clickListener) {
+
+    protected TextButton getChoiceTextButton(final String title, final float x, final float y,
+            final Runnable clickListener) {
         return getTextButton(title, x, y, clickListener, this.choiceSkin);
     }
-    
-    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener, Skin skin) {
+
+    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener,
+            Skin skin) {
         final TextButton button = new TextButton(title, skin);
         button.setPosition(x, y);
         button.addListener(new ClickListener() {
@@ -81,8 +85,6 @@ abstract class StaticScreen implements Screen {
         });
         return button;
     }
-    
-
 
     @Override
     public void pause() {
