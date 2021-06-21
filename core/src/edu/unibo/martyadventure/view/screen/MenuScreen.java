@@ -44,9 +44,9 @@ class MenuScreen extends StaticScreen {
 
     @Override
     public void show() {
-        stage.addActor(getTextButton("Nuova partita", NEW_GAME_BUTTON_POSITION, () -> screenManager.loadChoiceScreen()));
-        stage.addActor(getTextButton("Esci", EXIT_BUTTON_POSITION, () -> Gdx.app.exit()));
-        stage.addActor(getTextButton("Opzioni", OPTIONS_BUTTON_POSITION, () -> optionWindow.setVisible(true)));
+        stage.addActor(getStandardTextButton("Nuova partita", NEW_GAME_BUTTON_POSITION, () -> screenManager.loadChoiceScreen()));
+        stage.addActor(getStandardTextButton("Esci", EXIT_BUTTON_POSITION, () -> Gdx.app.exit()));
+        stage.addActor(getStandardTextButton("Opzioni", OPTIONS_BUTTON_POSITION, () -> optionWindow.setVisible(true)));
 
         optionWindow = new Window("", super.uiSkin);
         optionWindow.setSize(stage.getWidth() / 2, stage.getHeight() / 4);

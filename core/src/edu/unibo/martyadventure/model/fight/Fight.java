@@ -33,17 +33,7 @@ public class Fight {
         this.player = player;
         this.enemy = enemy;
         this.turnCount = 1;
-
-        mapMartyMove = new HashMap<>();
-        mapEnemyMove = new HashMap<>();
-        for (int i = 0; i < 4; i++) {
-            mapMartyMove.put(player.getWeapon().getMoveList().get(i), 0);
-            mapEnemyMove.put(enemy.getWeapon().getMoveList().get(i), 0);
-        }
-
-        mapCharactersMove = new HashMap<>();
-        mapCharactersMove.put(player, mapMartyMove);
-        mapCharactersMove.put(enemy, mapEnemyMove);
+        createHashMap();
 
     }
 
@@ -75,9 +65,8 @@ public class Fight {
     public Move enemyMove() {
         Move move;
         do {
-            move = enemy.getWeapon().getMoveList().
-                    get(ThreadLocalRandom.current().
-                            nextInt(enemy.getWeapon().getMoveList().size()));
+            move = enemy.getWeapon().getMoveList()
+                    .get(ThreadLocalRandom.current().nextInt(enemy.getWeapon().getMoveList().size()));
 
         } while (!isMoveUsable(enemy, move));
         return move;
@@ -89,8 +78,9 @@ public class Fight {
      * @param inputMove The Move that the player wants to use
      */
     public void playerAttack(Move inputMove) {
-        if (isMoveUsable(player, inputMove))
+        if (isMoveUsable(player, inputMove)) {
             attack(player.getWeapon(), inputMove, enemy);
+        }
         enemyAttack();
 
     }
@@ -109,14 +99,14 @@ public class Fight {
         else {
             setLastUse(opponent(character), move, turnCount);
             // check if the damage will kill the opponent using isDead function
-            if (isDead((int) (weapon.getDamageMultiplier() * move.getDamage()), character.getHp())) {
+            if (isDead((int) Math.round((weapon.getDamageMultiplier() * move.getDamage())), character.getHp())) {
                 // opponent is DEAD
                 character.setHp(0);
                 fightWinner();
 
             } else {
                 // inflict attack on the opponent
-                character.setHp((int) (character.getHp() - (weapon.getDamageMultiplier() * move.getDamage())));
+                character.setHp((int) Math.round((character.getHp() - (weapon.getDamageMultiplier() * move.getDamage()))));
             }
         }
 
@@ -181,5 +171,21 @@ public class Fight {
             return enemy;
         }
         return player;
+    }
+
+    /**
+     * Function to create the hashMaps when the fight start
+     */
+    private void createHashMap() {
+        mapMartyMove = new HashMap<>();
+        mapEnemyMove = new HashMap<>();
+        for (int i = 0; i < Weapon.MOVE_LIST_SIZE; i++) {
+            mapMartyMove.put(player.getWeapon().getMoveList().get(i), 0);
+            mapEnemyMove.put(enemy.getWeapon().getMoveList().get(i), 0);
+        }
+
+        mapCharactersMove = new HashMap<>();
+        mapCharactersMove.put(player, mapMartyMove);
+        mapCharactersMove.put(enemy, mapEnemyMove);
     }
 }

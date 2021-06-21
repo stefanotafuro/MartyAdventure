@@ -18,12 +18,14 @@ abstract class StaticScreen implements Screen {
 
     private static final String ATLAS_PATH = "skin/comic-ui.atlas";
     private static final String SKIN_PATH = "skin/comic-ui.json";
+    private static final String CHOICE_SKIN_PATH = "skin/menuButton.json";
 
     private final String backgroundPath;
 
     protected final TextureRegion background;
     protected final TextureAtlas uiAtlas;
     protected final Skin uiSkin;
+    protected final Skin choiceSkin;
 
     protected final Stage stage;
     protected final ScreenManager screenManager;
@@ -31,6 +33,7 @@ abstract class StaticScreen implements Screen {
     static {
         Toolbox.queueAtlas(ATLAS_PATH);
         Toolbox.queueSkin(SKIN_PATH);
+        Toolbox.queueSkin(CHOICE_SKIN_PATH);
     }
 
 
@@ -46,17 +49,26 @@ abstract class StaticScreen implements Screen {
 
         this.uiAtlas = Toolbox.getAtlas(ATLAS_PATH);
         this.uiSkin = Toolbox.getSkin(SKIN_PATH);
+        this.choiceSkin = Toolbox.getSkin(CHOICE_SKIN_PATH);
 
         this.stage = getStage(width, height);
         this.screenManager = manager;
     }
 
-    protected TextButton getTextButton(final String title, final Vector2 position, final Runnable clickListener) {
-        return getTextButton(title, position.x, position.y, clickListener);
+    protected TextButton getStandardTextButton(final String title, final Vector2 position, final Runnable clickListener) {
+        return getStandardTextButton(title, position.x, position.y, clickListener);
     }
 
-    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener) {
-        final TextButton button = new TextButton(title, this.uiSkin);
+    protected TextButton getStandardTextButton(final String title, final float x, final float y, final Runnable clickListener) {
+        return getTextButton(title, x, y, clickListener, this.uiSkin);
+    }
+    
+    protected TextButton getChoiceTextButton(final String title, final float x, final float y, final Runnable clickListener) {
+        return getTextButton(title, x, y, clickListener, this.choiceSkin);
+    }
+    
+    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener, Skin skin) {
+        final TextButton button = new TextButton(title, skin);
         button.setPosition(x, y);
         button.addListener(new ClickListener() {
 
@@ -68,6 +80,8 @@ abstract class StaticScreen implements Screen {
         });
         return button;
     }
+    
+
 
     @Override
     public void pause() {

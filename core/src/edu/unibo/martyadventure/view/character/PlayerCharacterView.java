@@ -22,17 +22,20 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     private static final float ACCELLERATION_FACTOR = 10.0f;
     private static final float MAX_SPEED = 100.0f;
 
-    private static final int PLAYER_HP = 9300;
-
+    public static final int PLAYER_HP = 300;
+    public static final int MAP1_PLAYER_HP_MULTIPLIER = 2;
+    public static final int MAP2_PLAYER_HP_MULTIPLIER = 3;
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
+    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
 
     private final String texturePath;
     private boolean disposed;
 
     public PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
             throws InterruptedException, ExecutionException {
-        super(new PlayerCharacter(Shoes.SLOW, name, PLAYER_HP, playerWeapon.getWeapon()), initialPosition, MAX_ACCELLERATION,
+        super(player, initialPosition, MAX_ACCELLERATION,
                 ACCELLERATION_FACTOR, MAX_SPEED, new TextureRegion(Toolbox.getTexture(texturePath)), playerWeapon);
+        player.setName(name);
         this.texturePath = texturePath;
         this.disposed = false;
     }

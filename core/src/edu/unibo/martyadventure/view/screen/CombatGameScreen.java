@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -30,16 +28,16 @@ import edu.unibo.martyadventure.model.character.PlayerCharacter;
 
 class CombatGameScreen extends StaticScreen {
 
-    private static final int BASE_HEIGHT = 1080;
-    private static final int BASE_WIDTH = 1920;
-    private static final int TABLE_POSITION_Y = 135;
-    private static final int ROW_SPACE = 15;
-    private static final int BUTTON_SPACE = 220;
+    private static final int ZOOM = 100;
+    private static final int TABLE_POSITION_Y = 190;
+    private static final int ROW_SPACE = 100;
+    private static final int BUTTON_SPACE = 30;
     private static final int TITLE_Y = 270;
     private static final int WEAPON_SELECTION_WEAPON_SPACE = 350;
+    private static final int X_TABLE_SPACE = 330;
 
-    private static final Vector2 PLAYER_POSITION = new Vector2(220, 320);
-    private static final Vector2 ENEMY_POSITION = new Vector2(1360, 780);
+    private static final Vector2 PLAYER_POSITION = new Vector2(220, 470);
+    private static final Vector2 ENEMY_POSITION = new Vector2(1360, 1100);
 
     private static final int SPRITE_DIMENSION = 300;
     private static final String BG_PATH = "Level/Fight/fight_map1.png";
@@ -47,10 +45,10 @@ class CombatGameScreen extends StaticScreen {
     private static final float WEAPON_TEXTURE_SCALE = 2;
     private static final String WEAPON_SELECTION_PATH = "Level/Fight/WeaponSelection.png";
 
-    private static final Vector2 PLAYER_HP_LABEL_POSITION = new Vector2(70, 700);
-    private static final Vector2 ENEMY_HP_LABEL_POSITION = new Vector2(1200, 450);
-    private static final Vector2 PLAYER_WEAPON_LABEL_POSITION = new Vector2(70, 650);
-    private static final Vector2 ENEMY_WEAPON_LABEL_POSITION = new Vector2(1200, 500);
+    private static final Vector2 PLAYER_HP_LABEL_POSITION = new Vector2(150, 800);
+    private static final Vector2 ENEMY_HP_LABEL_POSITION = new Vector2(1400, 800);
+    private static final Vector2 PLAYER_WEAPON_LABEL_POSITION = new Vector2(150, 900);
+    private static final Vector2 ENEMY_WEAPON_LABEL_POSITION = new Vector2(1400, 700);
     private static final Vector2 PLAYER_WEAPON_POSITION = new Vector2(250, 1050);
     private static final Vector2 ENEMY_WEAPON_POSITION = new Vector2(1150, 750);
 
@@ -66,7 +64,16 @@ class CombatGameScreen extends StaticScreen {
     private TextButton moveButton3;
     private TextButton moveButton4;
     private Window weaponSelectionWindow;
+    
+    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
+            final EnemyCharacterView enemy) {
+        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
 
+        this.playerView = player;
+        this.enemyView = enemy;
+
+        fight = new Fight(player.getCharacter(), enemy.getCharacter());
+    }
 
     private TextButton getIndexedButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
@@ -90,12 +97,14 @@ class CombatGameScreen extends StaticScreen {
     }
 
     private Label getMoveLabel(final int index) {
-        return getLabel("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(index).getReloadTime(),
+        return getLabel("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(index).getReloadTime()
+                + " Dmg: " + getFullDamage(index),
                 Vector2.Zero);
     }
 
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
-        return getLabel("Weapon : " + weapon.getName() + " Dmg: " + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
+        return getLabel("Arma: " + weapon.getName() + " \nDanno: "
+                + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
                 position);
     }
 
@@ -193,16 +202,6 @@ class CombatGameScreen extends StaticScreen {
         this.moveButton4.setDisabled(true);
     }
 
-    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
-            final EnemyCharacterView enemy) {
-        super(manager, BG_PATH, BASE_WIDTH, BASE_HEIGHT);
-
-        this.playerView = player;
-        this.enemyView = enemy;
-
-        fight = new Fight(player.getCharacter(), enemy.getCharacter());
-    }
-
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -221,16 +220,16 @@ class CombatGameScreen extends StaticScreen {
 
         // Add buttons to table
         mainTable.row();
-        mainTable.add(moveButton1);
-        mainTable.add(getMoveLabel(0)).spaceRight(BUTTON_SPACE);
-        mainTable.add(moveButton2);
-        mainTable.add(getMoveLabel(1));
+        mainTable.add(moveButton1).center().spaceRight(BUTTON_SPACE);
+        mainTable.add(getMoveLabel(0)).right().spaceRight(X_TABLE_SPACE);
+        mainTable.add(moveButton2).center().spaceRight(BUTTON_SPACE);
+        mainTable.add(getMoveLabel(1)).right();
 
         mainTable.row().spaceTop(ROW_SPACE);
-        mainTable.add(moveButton3);
-        mainTable.add(getMoveLabel(2)).spaceRight(BUTTON_SPACE);
-        mainTable.add(moveButton4);
-        mainTable.add(getMoveLabel(3));
+        mainTable.add(moveButton3).center().spaceRight(BUTTON_SPACE);
+        mainTable.add(getMoveLabel(2)).right().spaceRight(X_TABLE_SPACE);
+        mainTable.add(moveButton4).center().spaceRight(BUTTON_SPACE);
+        mainTable.add(getMoveLabel(3)).right();
 
         // Add table to stage
         stage.addActor(mainTable);
@@ -286,5 +285,9 @@ class CombatGameScreen extends StaticScreen {
     public void dispose() {
         Toolbox.unloadAsset(WEAPON_SELECTION_PATH);
         super.dispose();
+    }
+    
+    private int getFullDamage(int moveNumber) {
+        return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
     }
 }

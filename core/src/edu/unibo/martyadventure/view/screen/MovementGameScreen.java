@@ -164,9 +164,9 @@ class MovementGameScreen implements Screen {
      * with their box.
      */
     private void battleOverlappingEnemies() {
-        // Check if the final battle with the boss should start.
-        if (!trySetBattleOverlap(bossView)) {
-            // Battle the first enemy that overlaps
+        if (this.enemyViewList.stream().allMatch(e -> !isAlive(e))) {
+            trySetBattleOverlap(bossView);
+        } else {
             for (EnemyCharacterView enemy : this.enemyViewList) {
                 if (trySetBattleOverlap(enemy)) {
                     break;
@@ -202,10 +202,12 @@ class MovementGameScreen implements Screen {
     private void levelEndDispatch(final Maps currentMap) {
         switch (currentMap) {
         case MAP1:
+            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER);
             screenManager.changeMap(MapManager.Maps.MAP2);
             screenManager.loadMovementScreen();
             break;
         case MAP2:
+            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER);
             screenManager.changeMap(MapManager.Maps.MAP3);
             screenManager.loadMovementScreen();
             break;
@@ -386,7 +388,6 @@ class MovementGameScreen implements Screen {
     public void dispose() {
         if (!this.disposed) {
             this.bossView.dispose();
-            this.playerView.dispose();
             this.mapRenderer.dispose();
             Gdx.input.setInputProcessor(null);
 
