@@ -9,42 +9,45 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public enum Move {    
     //FIST, BRASS KNUCKLES MOVE
-    HOOK("Gancio", 5, 10, 0, 'M'),
-    JAB("Diretto", 6, 20, 0, 'M'),
-    UPPERCUT("Montante", 7, 30, 2, 'M'),
-    SUPERMANPUNCH("SupermanPunch", 10, 40, 2, 'M'),
+    HOOK("Gancio", 5, 10, 0, MoveType.MELEE),
+    JAB("Diretto", 6, 20, 0, MoveType.MELEE),
+    UPPERCUT("Montante", 7, 30, 2, MoveType.MELEE),
+    SUPERMANPUNCH("SupermanPunch", 10, 40, 2, MoveType.MELEE),
     
     //BASEBALL BAT, CROWBAR, SLEDGEHUMMER MOVE 
-    LOWDAMAGE("Colpo Debole", 5, 10, 0, 'M'),
-    HANDLESHOT("Colpo di Manico", 6, 20, 0, 'M'),
-    HIGHDAMAGE("Colpo Potente", 8, 30, 2, 'M'),
-    TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, 'M'),
+    LOWDAMAGE("Colpo Debole", 5, 10, 0, MoveType.MELEE),
+    HANDLESHOT("Colpo di Manico", 6, 20, 0, MoveType.MELEE),
+    HIGHDAMAGE("Colpo Potente", 8, 30, 2, MoveType.MELEE),
+    TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, MoveType.MELEE),
     
     //KNIFE MOVE
-    THRUST("Pugnalata", 7, 20, 2, 'M'),
-    STAB("Coltellata", 8, 20, 2, 'M'),
-    TROW("Lancio", 15, 70, 4, 'R'),
+    THRUST("Pugnalata", 7, 20, 2, MoveType.MELEE),
+    STAB("Coltellata", 8, 20, 2, MoveType.MELEE),
+    TROW("Lancio", 15, 70, 4, MoveType.RANGED),
     
     //REVOLVER MOVE
-    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, 'R'),
-    BODYSHOT("Colpo al Corpo", 15, 30, 4, 'R'),
-    HEADSHOT("Colpo alla Testa", 30, 70, 4, 'R');
+    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, MoveType.RANGED),
+    BODYSHOT("Colpo al Corpo", 15, 30, 4, MoveType.RANGED),
+    HEADSHOT("Colpo alla Testa", 30, 70, 4, MoveType.RANGED);
 
     
     private final String name;
     private final int damage;
     private final int failRatio; // 0 success 100 fail
     private final int reloadTime;
-    private final char MeleeOrRanged;
+    public enum MoveType{
+        MELEE, RANGED;
+    };
+    MoveType type;
     
     
 
-    private Move(String name, int damage, int failRatio, int reloadTime, char MeleeOrRanged) {
+    private Move(String name, int damage, int failRatio, int reloadTime, MoveType type) {
         this.name = name;
         this.damage = damage;
         this.failRatio = failRatio;
         this.reloadTime = reloadTime;
-        this.MeleeOrRanged = MeleeOrRanged;
+        this.type = type;
     }
 
     // Getter & Setter
@@ -60,8 +63,8 @@ public enum Move {
         return reloadTime;
     }
 
-    public char getMeleeOrRanged() {
-        return MeleeOrRanged;
+    public MoveType getType() {
+        return type;
     }
 
     public String getName() {
@@ -108,7 +111,7 @@ public enum Move {
         Move MELEE;
         do {
             MELEE = getRandomMove();
-        } while (MELEE.getMeleeOrRanged() != 'M');
+        } while (MELEE.getType() != MoveType.MELEE);
 
         return MELEE;
     }
@@ -121,7 +124,7 @@ public enum Move {
         Move RANGED;
         do {
             RANGED = getRandomMove();
-        } while (RANGED.getMeleeOrRanged() != 'R');
+        } while (RANGED.getType() != MoveType.RANGED);
 
         return RANGED;
     }

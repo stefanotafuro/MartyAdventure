@@ -46,7 +46,7 @@ public class TestWeaponFactory {
         checkDuplicateItemsInMoveList();
         // Check if the items of moveList are all melee MOVE
         for (int i = 0; i < 4; i++) {
-            assertEquals(weaponTest.getMoveList().get(i).getMeleeOrRanged(), 'M');
+            assertEquals(weaponTest.getMoveList().get(i).getType(), Move.MoveType.MELEE);
         }
     }
 
@@ -56,7 +56,7 @@ public class TestWeaponFactory {
         checkDuplicateItemsInMoveList();
         // Check if the items of moveList are all ranged MOVE
         for (int i = 1; i < 4; i++) {
-            assertEquals(weaponTest.getMoveList().get(i).getMeleeOrRanged(), 'R');
+            assertEquals(weaponTest.getMoveList().get(i).getType(), Move.MoveType.RANGED);
         }
     }
 

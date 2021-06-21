@@ -14,7 +14,7 @@ public class TestMove {
         assertEquals(HOOK1.getDamage(), Move.HOOK.getDamage());
         assertEquals(HOOK1.getFailRatio(), Move.HOOK.getFailRatio());
         assertEquals(HOOK1.getReloadTime(), Move.HOOK.getReloadTime());
-        assertEquals(HOOK1.getMeleeOrRanged(), Move.HOOK.getMeleeOrRanged());
+        assertEquals(HOOK1.getType(), Move.HOOK.getType());
         // System.err.println("testLoadingMove ok");
     }
 
@@ -29,12 +29,12 @@ public class TestMove {
 
     @Test
     void testGetRandomMeleeMove() {
-        assertEquals(Move.getRandomMeleeMove().getMeleeOrRanged(), 'M');
+        assertEquals(Move.getRandomMeleeMove().getType(), Move.MoveType.MELEE);
     }
 
     @Test
     void testGetRandomRangedMove() {
-        assertEquals(Move.getRandomRangedMove().getMeleeOrRanged(), 'R');
+        assertEquals(Move.getRandomRangedMove().getType(), Move.MoveType.MELEE);
     }
 
 }
