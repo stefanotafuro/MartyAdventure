@@ -39,11 +39,12 @@ abstract class StaticScreen implements Screen {
 
     private Stage getStage(final int width, final int height) {
         final Viewport viewport = new FitViewport(width, height);
-        viewport.apply();
+        viewport.apply(true);
         return new Stage(viewport);
     }
 
-    protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int width, final int height) {
+    protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int width,
+            final int height) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
 
