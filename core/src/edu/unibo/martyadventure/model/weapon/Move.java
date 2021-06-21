@@ -41,7 +41,14 @@ public enum Move {
     MoveType type;
     
     
-
+    /**
+     * Private constructor
+     * @param name The name of the move 
+     * @param damage The damage of the move
+     * @param failRatio The failRatio of the move
+     * @param reloadTime The reloadTime of the move
+     * @param type The type of the move
+     */
     private Move(String name, int damage, int failRatio, int reloadTime, MoveType type) {
         this.name = name;
         this.damage = damage;

@@ -173,6 +173,9 @@ public class Fight {
         return player;
     }
 
+    /**
+     * Function to create the hashMaps when the fight start
+     */
     private void createHashMap() {
         mapMartyMove = new HashMap<>();
         mapEnemyMove = new HashMap<>();
