@@ -288,6 +288,6 @@ class CombatGameScreen extends StaticScreen {
     }
     
     private int getFullDamage(int moveNumber) {
-        return (int) (fight.getPlayer().getWeapon().getMoveList().get(0).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
+        return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
     }
 }

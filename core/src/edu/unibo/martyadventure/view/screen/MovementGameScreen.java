@@ -164,9 +164,9 @@ class MovementGameScreen implements Screen {
      * with their box.
      */
     private void battleOverlappingEnemies() {
-        // Check if the final battle with the boss should start.
-        if (!trySetBattleOverlap(bossView)) {
-            // Battle the first enemy that overlaps
+        if (this.enemyViewList.stream().allMatch(e -> !isAlive(e))) {
+            trySetBattleOverlap(bossView);
+        } else {
             for (EnemyCharacterView enemy : this.enemyViewList) {
                 if (trySetBattleOverlap(enemy)) {
                     break;
