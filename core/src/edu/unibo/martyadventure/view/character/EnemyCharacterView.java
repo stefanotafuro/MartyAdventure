@@ -31,6 +31,6 @@ public class EnemyCharacterView extends CharacterView<EnemyCharacter> {
 
     @Override
     public Sprite getFightSprite() {
-        return new Sprite(animations.getDownIdle());
+        return new Sprite(animations.getLeftIdle());
     }
 }
