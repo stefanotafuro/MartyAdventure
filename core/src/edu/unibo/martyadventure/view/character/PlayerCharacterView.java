@@ -63,8 +63,4 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     public Sprite getFightSprite() {
         return new Sprite(animations.getRightIdle());
     }
-
-    public PlayerCharacter getPlayer() {
-        return player;
-    }
 }

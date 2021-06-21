@@ -202,12 +202,12 @@ class MovementGameScreen implements Screen {
     private void levelEndDispatch(final Maps currentMap) {
         switch (currentMap) {
         case MAP1:
-            playerView.getPlayer().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER);
+            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER);
             screenManager.changeMap(MapManager.Maps.MAP2);
             screenManager.loadMovementScreen();
             break;
         case MAP2:
-            playerView.getPlayer().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER);
+            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER);
             screenManager.changeMap(MapManager.Maps.MAP3);
             screenManager.loadMovementScreen();
             break;
@@ -388,7 +388,6 @@ class MovementGameScreen implements Screen {
     public void dispose() {
         if (!this.disposed) {
             this.bossView.dispose();
-            this.playerView.dispose();
             this.mapRenderer.dispose();
             Gdx.input.setInputProcessor(null);
 
