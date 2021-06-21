@@ -15,7 +15,7 @@ public class Weapon {
     private double damageMultiplier;
     private List<Move> moveList = new ArrayList<>();
 
-    static final int MOVE_LIST_SIZE = 4;
+    public static final int MOVE_LIST_SIZE = 4;
 
     /**
      * Protected constructor

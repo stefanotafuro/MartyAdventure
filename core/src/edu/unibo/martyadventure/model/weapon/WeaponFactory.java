@@ -13,8 +13,6 @@ import edu.unibo.martyadventure.view.MapManager;
 
 public class WeaponFactory {
 
-    private static final int RANDOM_WEAPON_MIN_DAMAGE = 5;
-    private static final int RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER = 10;
     public static final float LEVEL1 = 1;
     public static final float LEVEL2 = 2;
     public static final float LEVEL3 = 3;
@@ -47,14 +45,13 @@ public class WeaponFactory {
     /**
      * Used to create random weapon
      * 
-     * @param name
-     * @param type
-     * @return
+     * @param name The name of the weapon
+     * @param damageMultiplier The damageMultiplier of the weapon
+     * @param type The type of the weapon
+     * @return The weapon
      */
     private static Weapon createWeapon(String name, double damageMultiplier, Weapon.WeaponType type) {
-        Weapon weapon = new Weapon(name,
-                ThreadLocalRandom.current().nextInt((RANDOM_WEAPON_MAX_DAMAGE_MULTIPLIER - RANDOM_WEAPON_MIN_DAMAGE) + 1)
-                        + RANDOM_WEAPON_MIN_DAMAGE);
+        Weapon weapon = new Weapon(name, 0);
         List<Move> moveList = new ArrayList<>();
         int i = 0;
         Move move;
@@ -77,11 +74,11 @@ public class WeaponFactory {
     }
     
     /**
-     * 
-     * @param name
-     * @param damageMultiplier
-     * @param type
-     * @return
+     * Function used to create a random weapon
+     * @param name The name of the weapon
+     * @param damageMultiplier The damageMultiplier of the weapon
+     * @param type The type of the weapon
+     * @return The random weapon
      */
     public static Weapon createRandomWeapon(String name, double damageMultiplier, Weapon.WeaponType type) {
         return createWeapon(name, damageMultiplier, type);
