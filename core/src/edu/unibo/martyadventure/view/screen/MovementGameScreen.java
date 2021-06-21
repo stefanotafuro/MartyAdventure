@@ -63,6 +63,7 @@ class MovementGameScreen implements Screen {
 
     private boolean disposed;
 
+
     public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory,
             final Player player, final Maps map) {
         this.screenManager = manager;
@@ -150,10 +151,9 @@ class MovementGameScreen implements Screen {
      * @param enemy the enemy the player may battle.
      * @return true if the combat screen was loaded.
      */
-    private boolean trySetBattleOverlap(final EnemyCharacterView enemy) {
+    private boolean trySetBattleOverlap(final EnemyCharacterView enemy, final boolean displayGameOver) {
         if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy,
-                    mapManager.getCurrentMapName() == Maps.MAP3));
+            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy, displayGameOver));
             return true;
         }
         return false;
@@ -165,10 +165,10 @@ class MovementGameScreen implements Screen {
      */
     private void battleOverlappingEnemies() {
         if (this.enemyViewList.stream().allMatch(e -> !isAlive(e))) {
-            trySetBattleOverlap(bossView);
+            trySetBattleOverlap(bossView, mapManager.getCurrentMapName() == Maps.MAP3);
         } else {
             for (EnemyCharacterView enemy : this.enemyViewList) {
-                if (trySetBattleOverlap(enemy)) {
+                if (trySetBattleOverlap(enemy, false)) {
                     break;
                 }
             }
@@ -212,9 +212,6 @@ class MovementGameScreen implements Screen {
                     .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER));
             screenManager.changeMap(MapManager.Maps.MAP3);
             screenManager.loadMovementScreen();
-            break;
-        case MAP3:
-            screenManager.loadGameOverScreen(isAlive(this.bossView));
             break;
         default:
             throw new IllegalArgumentException("Unknow map");

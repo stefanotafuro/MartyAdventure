@@ -309,7 +309,7 @@ class CombatGameScreen extends StaticScreen {
         Toolbox.unloadAsset(WEAPON_SELECTION_PATH);
         super.dispose();
     }
-    
+
     private int getFullDamage(int moveNumber) {
         return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
     }
