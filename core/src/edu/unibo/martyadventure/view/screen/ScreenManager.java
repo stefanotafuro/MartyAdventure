@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import edu.unibo.martyadventure.view.MapManager.Maps;
+import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.character.Player;
 
 public class ScreenManager {
@@ -15,11 +16,14 @@ public class ScreenManager {
         public static int Y_VIEWPORT = 15;
     }
 
+
     private final MenuScreen menu;
     private final PlayerChoiceScreen choice;
+    private final CharacterViewFactory characterFactory;
 
     private MovementGameScreen movementScreen;
     private Player currentPlayer;
+
 
     private void loadScreen(final Screen s) {
         Game game = (Game) Gdx.app.getApplicationListener();
@@ -29,29 +33,30 @@ public class ScreenManager {
     public ScreenManager() {
         menu = new MenuScreen(this);
         choice = new PlayerChoiceScreen(this);
+        characterFactory = new CharacterViewFactory();
     }
 
     public void changeMap(final Maps map) {
-        if (movementScreen != null) {
-            movementScreen.dispose();
+        if (this.movementScreen != null) {
+            this.movementScreen.dispose();
         }
-        movementScreen = new MovementGameScreen(this, currentPlayer, map);
+        this.movementScreen = new MovementGameScreen(this, this.characterFactory, currentPlayer, map);
     }
 
     public void changePlayer(final Player player) {
-        currentPlayer = player;
+        this.currentPlayer = player;
     }
 
     public void loadMovementScreen() {
-        loadScreen(movementScreen);
+        loadScreen(this.movementScreen);
     }
 
     public void loadMenuScreen() {
-        loadScreen(menu);
+        loadScreen(this.menu);
     }
 
     public void loadChoiceScreen() {
-        loadScreen(choice);
+        loadScreen(this.choice);
     }
 
     public void loadCombatScreen(final CombatGameScreen screen) {
@@ -59,10 +64,11 @@ public class ScreenManager {
     }
 
     public void dispose() {
-        if (movementScreen != null) {
-            movementScreen.dispose();
+        if (this.movementScreen != null) {
+            this.movementScreen.dispose();
         }
-        menu.dispose();
-        choice.dispose();
+        this.menu.dispose();
+        this.choice.dispose();
+        this.characterFactory.dispose();
     }
 }

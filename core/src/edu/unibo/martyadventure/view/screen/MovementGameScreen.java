@@ -62,11 +62,11 @@ class MovementGameScreen implements Screen {
     private float time = 1;
 
 
-    public MovementGameScreen(final ScreenManager manager, final Player player, final Maps map) {
+    public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory, final Player player, final Maps map) {
         this.screenManager = manager;
         this.uiBatch = new SpriteBatch();
         this.loadingNewWorld = true;
-        this.cFactory = new CharacterViewFactory();
+        this.cFactory = characterFactory;
         mapManager = new MapManager();
         WorldBannerFactory bFactory = new WorldBannerFactory();
 
@@ -377,7 +377,6 @@ class MovementGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        this.cFactory.dipose();
         this.playerView.dispose();
         this.bossView.dispose();
         mapRenderer.dispose();

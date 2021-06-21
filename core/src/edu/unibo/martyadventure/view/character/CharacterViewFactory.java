@@ -91,7 +91,7 @@ public class CharacterViewFactory {
                 dropWeaponView);
     }
 
-    public void dipose() {
+    public void dispose() {
         Toolbox.unloadAsset(ENEMY_PATH_1);
         Toolbox.unloadAsset(ENEMY_PATH_2);
     }
