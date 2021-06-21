@@ -59,8 +59,22 @@ class PlayerChoiceScreen extends StaticScreen {
         return getTextButton(name, xPosition, PLAYER_BUTTON_Y, () -> screenManager.changePlayer(player));
     }
 
+    private Animation<TextureRegion> loadAnimation(String path) {
+        TextureRegion[][] textures = new TextureRegion(Toolbox.getTexture(path)).split(SPRITE_WIDTH, SPRITE_HEIGHT);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
+        a.setPlayMode(PlayMode.LOOP);
+        return a;
+    }
+
+    private void drawCharacterAnimation(final Animation<TextureRegion> animation, final int xPosition,
+            final Batch batch) {
+        batch.draw(animation.getKeyFrame(this.time), xPosition, SPRITE_Y, SPRITE_WIDTH * SPRITE_SCALE,
+                SPRITE_HEIGHT * SPRITE_SCALE);
+    }
+
     public PlayerChoiceScreen(final ScreenManager manager) {
         super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+        Toolbox.queueTexture(BUTTON_BG_PATH);
     }
 
     @Override
@@ -98,6 +112,7 @@ class PlayerChoiceScreen extends StaticScreen {
 
         closeButton.addListener(new ClickListener() {
 
+            @SuppressWarnings("unused")
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screenManager.loadMenuScreen();
@@ -108,19 +123,6 @@ class PlayerChoiceScreen extends StaticScreen {
         docAnimation = loadAnimation(DOC_PATH);
 
         Gdx.input.setInputProcessor(stage);
-    }
-
-    private Animation<TextureRegion> loadAnimation(String path) {
-        TextureRegion[][] textures = new TextureRegion(Toolbox.getTexture(path)).split(SPRITE_WIDTH, SPRITE_HEIGHT);
-        Animation<TextureRegion> a = new Animation<TextureRegion>(FRAME_DURATION, textures[0]);
-        a.setPlayMode(PlayMode.LOOP);
-        return a;
-    }
-
-    private void drawCharacterAnimation(final Animation<TextureRegion> animation, final int xPosition,
-            final Batch batch) {
-        batch.draw(animation.getKeyFrame(this.time), xPosition, SPRITE_Y, SPRITE_WIDTH * SPRITE_SCALE,
-                SPRITE_HEIGHT * SPRITE_SCALE);
     }
 
     @Override
@@ -142,5 +144,11 @@ class PlayerChoiceScreen extends StaticScreen {
         batch.end();
 
         stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        Toolbox.unloadAsset(BUTTON_BG_PATH);
+        super.dispose();
     }
 }

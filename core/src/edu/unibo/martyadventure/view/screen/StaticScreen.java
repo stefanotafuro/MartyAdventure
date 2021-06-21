@@ -84,11 +84,17 @@ abstract class StaticScreen implements Screen {
         // unused
     }
 
+    /**
+     * Resize this screen to the given width and height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Dispose of this screen's managed resources.
+     */
     @Override
     public void dispose() {
         Toolbox.unloadAsset(this.backgroundPath);
