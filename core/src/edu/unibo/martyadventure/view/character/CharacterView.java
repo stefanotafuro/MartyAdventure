@@ -1,11 +1,13 @@
 package edu.unibo.martyadventure.view.character;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.unibo.martyadventure.controller.entity.ControllableEntity;
+import edu.unibo.martyadventure.model.character.Character;
 import edu.unibo.martyadventure.view.MapManager;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.entity.EntityState;
@@ -15,33 +17,42 @@ import edu.unibo.martyadventure.view.weapon.WeaponView;
  * A character's base providing basic movement, interaction with given the map
  * and visual representation.
  */
-public abstract class CharacterView implements ControllableEntity {
+public abstract class CharacterView<C extends Character> implements ControllableEntity {
 
     private static final int BOX_SCALE = 15;
     private static final float BOX_OFFSET = 1.7f;
+
+    public static final int FRAME_WIDTH = 141;
+    public static final int FRAME_HEIGHT = 148;
+
+    protected float velocity;
+    protected Vector2 currentPosition;
+    protected Vector2 nextPosition;
+
+    protected EntityState movementState;
+    protected EntityDirection movementDirection;
+
+    protected final Rectangle boundingBox;
+
+    protected final AnimationPack animations;
+    protected float animationStartTime;
+
+    protected C character;
+    protected WeaponView weaponView;
+
     protected final float maxAccelleration;
     protected final float accellerationFactor;
     protected final float maxSpeed;
-    protected WeaponView weapon;
-
-    private float velocity;
-    private Vector2 currentPosition;
-    private Vector2 nextPosition;
-    private final int frameWidth;
-    private final int frameHeight;
-
-    private EntityState movementState;
-    private EntityDirection movementDirection;
 
 
-    private final AnimationPack animations;
-    private float animationStartTime;
+    /**
+     * @return the sprite for the fighting screen.
+     */
+    public abstract Sprite getFightSprite();
 
-    private final Rectangle boundingBox;
-
-
-    public CharacterView(final Vector2 initialPosition, final float maxAccelleration, final float accellerationFactor,
-            final float maxSpeed, final TextureRegion texture, int frameWidth, int frameHeight, WeaponView weapon) {
+    public CharacterView(final C character, final Vector2 initialPosition, final float maxAccelleration,
+            final float accellerationFactor, final float maxSpeed, final TextureRegion texture,
+            final WeaponView weaponView) {
         this.maxAccelleration = maxAccelleration;
         this.accellerationFactor = accellerationFactor;
         this.maxSpeed = maxSpeed;
@@ -52,16 +63,15 @@ public abstract class CharacterView implements ControllableEntity {
 
         this.movementState = EntityState.IDLE;
         this.movementDirection = EntityDirection.UP;
-        
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-
-        this.animations = new AnimationPack(texture, frameWidth, frameHeight);
-        this.animationStartTime = AnimationPack.ANIMATION_START;
 
         this.boundingBox = new Rectangle();
-        this.weapon = weapon;
         calculateBoundingBoxPosition();
+
+        this.animations = new AnimationPack(texture, FRAME_WIDTH, FRAME_HEIGHT);
+        this.animationStartTime = AnimationPack.ANIMATION_START;
+
+        this.character = character;
+        this.weaponView = weaponView;
     }
 
     /**
@@ -79,10 +89,8 @@ public abstract class CharacterView implements ControllableEntity {
      * Restore the character bounding box to it's original size.
      */
     public void calculateBoundingBoxPosition() {
-        this.boundingBox.set(nextPosition.x + BOX_OFFSET ,
-                nextPosition.y, 
-                this.frameWidth * MapManager.UNIT_SCALE / BOX_SCALE, 
-                this.frameHeight * MapManager.UNIT_SCALE / BOX_SCALE);
+        this.boundingBox.set(nextPosition.x + BOX_OFFSET, nextPosition.y,
+                FRAME_WIDTH * MapManager.UNIT_SCALE / BOX_SCALE, FRAME_HEIGHT * MapManager.UNIT_SCALE / BOX_SCALE);
     }
 
     /**
@@ -103,7 +111,7 @@ public abstract class CharacterView implements ControllableEntity {
      * @param position the position to set the character in.
      */
     public void setCurrentPosition(final Vector2 position) {
-        this.currentPosition = new Vector2 (position);
+        this.currentPosition = new Vector2(position);
     }
 
     /**
@@ -132,6 +140,20 @@ public abstract class CharacterView implements ControllableEntity {
             this.animationStartTime = AnimationPack.ANIMATION_START;
             return this.animations.getEntityDirectionIdle(this.movementDirection);
         }
+    }
+
+    /**
+     * @return the view's character.
+     */
+    public C getCharacter() {
+        return this.character;
+    }
+
+    /**
+     * @return the character's weapon view
+     */
+    public WeaponView getWeaponView() {
+        return this.weaponView;
     }
 
     @Override
@@ -177,9 +199,4 @@ public abstract class CharacterView implements ControllableEntity {
         this.nextPosition.set(this.currentPosition.x + movement.x, this.currentPosition.y + movement.y);
         calculateBoundingBoxPosition();
     }
-
-    public WeaponView getWeaponView() {
-        return weapon;
-    }
-
 }

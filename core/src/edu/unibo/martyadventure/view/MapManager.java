@@ -90,7 +90,7 @@ public class MapManager {
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws IOException
-     **/
+     */
     public void loadMap(Maps mapName) throws InterruptedException, ExecutionException, IOException {
 
         // get the map path from the table and check it

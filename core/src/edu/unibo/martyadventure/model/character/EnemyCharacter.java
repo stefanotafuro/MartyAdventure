@@ -3,20 +3,21 @@ package edu.unibo.martyadventure.model.character;
 import edu.unibo.martyadventure.model.weapon.Weapon;
 
 public class EnemyCharacter extends Character {
-    
-    private Weapon dropitem;//weapon drop from enemy
 
-    public EnemyCharacter(Weapon dropitem, String name, int hp, Weapon weapon) {
+    // Weapon drop from enemy.
+    private Weapon dropWeapon;
+
+
+    public EnemyCharacter(final Weapon dropWeapon, final String name, final int hp, final Weapon weapon) {
         super(name, hp, weapon);
-        setDropitem(dropitem);
-    }
-    
-    // Getter & Setter
-    public Weapon getDropitem() {
-        return dropitem;
+        this.dropWeapon = dropWeapon;
     }
 
-    public void setDropitem(Weapon dropitem) {
-        this.dropitem = dropitem;
+    public Weapon getDropitem() {
+        return this.dropWeapon;
+    }
+
+    public void setDropitem(final Weapon dropWeapon) {
+        this.dropWeapon = dropWeapon;
     }
 }

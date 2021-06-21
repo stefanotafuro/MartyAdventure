@@ -22,7 +22,8 @@ public class TestPlayerInputProcessor {
 
 
         @Override
-        public void calculateNextPosition(EntityDirection direction, float delta) {
+        public void calculateNextPosition(@SuppressWarnings("hiding") EntityDirection direction,
+                @SuppressWarnings("unused") float delta) {
             this.direction = direction;
         }
 
