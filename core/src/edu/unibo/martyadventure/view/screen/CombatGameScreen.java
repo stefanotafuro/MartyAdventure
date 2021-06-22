@@ -303,11 +303,14 @@ class CombatGameScreen extends StaticScreen {
         checkButton(moveButton4, 3);
 
         if (fight.fightWinner() != null) {
-            final boolean playerWon = fight.fightWinner() == fight.getPlayer();
-            if (!displayGameOver && playerWon) {
-                weaponSelectionMode();
-            } else {
-                super.screenManager.loadGameOverScreen(playerWon);
+            final Character winner = fight.fightWinner();
+            if (winner != null) {
+                final boolean playerWon = winner == fight.getPlayer();
+                if (!displayGameOver && playerWon) {
+                    weaponSelectionMode();
+                } else {
+                    screenManager.loadGameOverScreen(playerWon);
+                }
             }
         }
 

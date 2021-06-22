@@ -58,6 +58,7 @@ public class ScreenManager {
     }
 
     public void changeMovementScreen(final Maps map) {
+        clearDynamicScreen();
         cleanMovementScreen();
         this.gameScreen = new MovementGameScreen(this, this.characterFactory, this.currentPlayer, map);
     }
@@ -67,6 +68,7 @@ public class ScreenManager {
     }
 
     public void loadMovementScreen() {
+        clearDynamicScreen();
         loadScreen(this.gameScreen);
     }
 
