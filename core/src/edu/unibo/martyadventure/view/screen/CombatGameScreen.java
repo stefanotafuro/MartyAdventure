@@ -52,7 +52,7 @@ class CombatGameScreen extends StaticScreen {
     private static final Vector2 PLAYER_WEAPON_POSITION = new Vector2(250, 1150);
     private static final Vector2 ENEMY_WEAPON_POSITION = new Vector2(1150, 750);
     private static final Vector2 PLAYER_FAIL_LABEL_POSITION = new Vector2(150, 800);
-    private static final Vector2 ENEMY_FAIL_LABEL_POSITION = new Vector2(1150, 1000);
+    private static final Vector2 ENEMY_FAIL_LABEL_POSITION = new Vector2(1050, 600);
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.#");
 
@@ -61,6 +61,8 @@ class CombatGameScreen extends StaticScreen {
     private Fight fight;
     private Label playerHpLabel;
     private Label enemyHpLabel;
+    private Label playerFailLabel;
+    private Label enemyFailLabel;
     private TextButton moveButton1;
     private TextButton moveButton2;
     private TextButton moveButton3;
@@ -104,15 +106,6 @@ class CombatGameScreen extends StaticScreen {
                 Vector2.Zero);
     }
     
-    private Label getFailLabel(final Character character, final Vector2 position) {
-            if(fight.getLastFail(character)){
-                return getLabel(character.getName() + " ha fallito l'attacco con " + fight.getEnemyLastMove(),
-                        position);
-            } else {
-                return getLabel(character.getName() + " ha colpito con " + fight.getEnemyLastMove(),
-                        position);
-            }
-    }
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
         return getLabel("Arma: " + weapon.getName() + " \nDanno: "
                 + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
@@ -179,7 +172,19 @@ class CombatGameScreen extends StaticScreen {
     private void updateLabel() {
         playerHpLabel.setText(fight.getPlayer().getName() + " HP: " + fight.getPlayer().getHp());
         enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
+        updateFailLabel(fight.getPlayer(), playerFailLabel);
+        updateFailLabel(fight.getEnemy(), enemyFailLabel);
     }
+    
+    private void updateFailLabel(final Character character, Label label) {
+        if (fight.getPlayerLastMove() != null) {
+            if(fight.getLastFail(character)){
+                label.setText(character.getName() + " ha fallito l'attacco con " + fight.getPlayerLastMove().getName());
+            } else {
+                label.setText(character.getName() + " ha colpito con " + fight.getEnemyLastMove().getName());
+            }
+        }
+}
 
     private void checkButton(final TextButton button, final int moveNumber) {
         final PlayerCharacter player = fight.getPlayer();
@@ -251,8 +256,8 @@ class CombatGameScreen extends StaticScreen {
 
         Label playerWeaponLabel = getWeaponLabel(fight.getPlayer().getWeapon(), PLAYER_WEAPON_LABEL_POSITION);
         Label enemyWeaponLabel = getWeaponLabel(fight.getEnemy().getWeapon(), ENEMY_WEAPON_LABEL_POSITION);
-        Label playerFailLabel = getFailLabel(fight.getPlayer(), PLAYER_FAIL_LABEL_POSITION);
-        Label enemyFailLabel = getFailLabel(fight.getEnemy(), ENEMY_FAIL_LABEL_POSITION);
+        playerFailLabel = getLabel("", PLAYER_FAIL_LABEL_POSITION);
+        enemyFailLabel = getLabel("", ENEMY_FAIL_LABEL_POSITION);
 
         stage.addActor(playerHpLabel);
         stage.addActor(enemyHpLabel);
