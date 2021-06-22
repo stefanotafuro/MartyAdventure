@@ -188,8 +188,6 @@ public class Fight {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * 
      * @return
      */
@@ -198,7 +196,6 @@ public class Fight {
     }
 
     /**
->>>>>>> bomba/master
      * Function to return the opponent of the attack
      * 
      * @param character The character that will be attacked
