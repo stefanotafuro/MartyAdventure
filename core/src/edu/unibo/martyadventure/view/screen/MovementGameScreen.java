@@ -63,7 +63,6 @@ class MovementGameScreen implements Screen {
 
     private boolean disposed;
 
-
     public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory,
             final Player player, final Maps map) {
         this.screenManager = manager;
@@ -202,12 +201,14 @@ class MovementGameScreen implements Screen {
     private void levelEndDispatch(final Maps currentMap) {
         switch (currentMap) {
         case MAP1:
-            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER);
+            playerView.getCharacter()
+                    .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER));
             screenManager.changeMap(MapManager.Maps.MAP2);
             screenManager.loadMovementScreen();
             break;
         case MAP2:
-            playerView.getCharacter().setHp(PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER);
+            playerView.getCharacter()
+                    .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER));
             screenManager.changeMap(MapManager.Maps.MAP3);
             screenManager.loadMovementScreen();
             break;

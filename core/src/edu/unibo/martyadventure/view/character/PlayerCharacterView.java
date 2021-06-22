@@ -22,9 +22,9 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     private static final float ACCELLERATION_FACTOR = 10.0f;
     private static final float MAX_SPEED = 100.0f;
 
-    public static final int PLAYER_HP = 300;
-    public static final int MAP1_PLAYER_HP_MULTIPLIER = 2;
-    public static final int MAP2_PLAYER_HP_MULTIPLIER = 3;
+    public static final int PLAYER_HP = 500;
+    public static final double MAP1_PLAYER_HP_MULTIPLIER = 1.5;
+    public static final double MAP2_PLAYER_HP_MULTIPLIER = 2;
     private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
     private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
 
