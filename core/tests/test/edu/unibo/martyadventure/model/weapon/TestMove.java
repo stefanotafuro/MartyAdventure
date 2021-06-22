@@ -1,8 +1,12 @@
 package test.edu.unibo.martyadventure.model.weapon;
 
-import edu.unibo.martyadventure.model.weapon.Move;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
+
+import edu.unibo.martyadventure.model.weapon.Move;
 
 public class TestMove {
 
@@ -34,7 +38,6 @@ public class TestMove {
 
     @Test
     void testGetRandomRangedMove() {
-        assertEquals(Move.getRandomRangedMove().getType(), Move.MoveType.MELEE);
+        assertEquals(Move.getRandomRangedMove().getType(), Move.MoveType.RANGED);
     }
-
 }
