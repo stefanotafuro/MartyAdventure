@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 import edu.unibo.martyadventure.model.character.Shoes;
@@ -16,7 +17,7 @@ import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
  * A player character's base providing basic movement, interaction with given
  * the map and visual representation.
  */
-public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
+public class PlayerCharacterView extends CharacterView<PlayerCharacter> implements Disposable {
 
     private static final float MAX_ACCELLERATION = 20.0f;
     private static final float ACCELLERATION_FACTOR = 10.0f;
@@ -26,12 +27,21 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     public static final double MAP1_PLAYER_HP_MULTIPLIER = 1.5;
     public static final double MAP2_PLAYER_HP_MULTIPLIER = 2;
 
-    private static WeaponView playerWeapon = WeaponViewFactory.createPlayerWeaponView();
-    private static PlayerCharacter player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
+    private static WeaponView playerWeapon;
+    private static PlayerCharacter player;
 
     private final String texturePath;
     private boolean disposed;
 
+
+    static {
+        resetPlayer();
+    }
+
+    public static void resetPlayer() {
+        playerWeapon = WeaponViewFactory.createPlayerWeaponView();
+        player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
+    }
 
     PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
             throws InterruptedException, ExecutionException {
@@ -54,6 +64,7 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> {
     /**
      * Dispose of the player's texture
      */
+    @Override
     public void dispose() {
         if (!this.disposed) {
             Toolbox.unloadAsset(this.texturePath);

@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+
 
 class GameOverScreen extends StaticScreen {
 
@@ -34,6 +36,7 @@ class GameOverScreen extends StaticScreen {
         stage.addActor(titleLabel);
 
         stage.addActor(getStandardTextButton("Ritorna al menu", MENU_BUTTON_POSITION, () -> {
+            PlayerCharacterView.resetPlayer();
             screenManager.cleanMovementScreen();
             screenManager.loadMenuScreen();
         }));
