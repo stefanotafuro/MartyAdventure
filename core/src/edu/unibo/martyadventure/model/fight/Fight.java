@@ -19,6 +19,7 @@ public class Fight {
     private EnemyCharacter enemy;
     private boolean playerFail = false;
     private boolean enemyFail = false;
+    private Move playerLastMove;
     private Move enemyLastMove;
     private int turnCount;
 
@@ -56,7 +57,7 @@ public class Fight {
     /**
      * Call attack function with enemy weapon, random move and player character
      */
-    public void enemyAttack() {
+    private void enemyAttack() {
         attack(enemy.getWeapon(), enemyMove(), player);
     }
 
@@ -65,7 +66,7 @@ public class Fight {
      * 
      * @return The random Move choosen from the enemy MoveList
      */
-    public Move enemyMove() {
+    private Move enemyMove() {
         Move move;
         do {
             move = enemy.getWeapon().getMoveList()
@@ -83,6 +84,7 @@ public class Fight {
      */
     public void playerAttack(Move inputMove) {
         if (isMoveUsable(player, inputMove)) {
+            playerLastMove = inputMove;
             attack(player.getWeapon(), inputMove, enemy);
         }
         enemyAttack();
@@ -97,7 +99,7 @@ public class Fight {
     public void attack(Weapon weapon, Move move, Character character) {
         // check if the move failed
         if (!move.testFailure()) {
-            setLastFailCharacter(opponent(character), true, move);
+            setLastFailCharacter(opponent(character), true);
             setLastUse(opponent(character), move, turnCount);
         } else {
             setLastFailCharacter(opponent(character), false);
@@ -186,6 +188,17 @@ public class Fight {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * 
+     * @return
+     */
+    public Move getPlayerLastMove() {
+        return playerLastMove;
+    }
+
+    /**
+>>>>>>> bomba/master
      * Function to return the opponent of the attack
      * 
      * @param character The character that will be attacked

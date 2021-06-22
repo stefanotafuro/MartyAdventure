@@ -45,12 +45,14 @@ class CombatGameScreen extends StaticScreen {
     private static final float WEAPON_TEXTURE_SCALE = 2;
     private static final String WEAPON_SELECTION_PATH = "Level/Fight/WeaponSelection.png";
 
-    private static final Vector2 PLAYER_HP_LABEL_POSITION = new Vector2(150, 800);
+    private static final Vector2 PLAYER_HP_LABEL_POSITION = new Vector2(150, 900);
     private static final Vector2 ENEMY_HP_LABEL_POSITION = new Vector2(1400, 800);
-    private static final Vector2 PLAYER_WEAPON_LABEL_POSITION = new Vector2(150, 900);
+    private static final Vector2 PLAYER_WEAPON_LABEL_POSITION = new Vector2(150, 1000);
     private static final Vector2 ENEMY_WEAPON_LABEL_POSITION = new Vector2(1400, 700);
-    private static final Vector2 PLAYER_WEAPON_POSITION = new Vector2(250, 1050);
+    private static final Vector2 PLAYER_WEAPON_POSITION = new Vector2(250, 1150);
     private static final Vector2 ENEMY_WEAPON_POSITION = new Vector2(1150, 750);
+    private static final Vector2 PLAYER_FAIL_LABEL_POSITION = new Vector2(150, 800);
+    private static final Vector2 ENEMY_FAIL_LABEL_POSITION = new Vector2(1150, 1000);
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.#");
 
@@ -101,7 +103,16 @@ class CombatGameScreen extends StaticScreen {
                 + " Dmg: " + getFullDamage(index),
                 Vector2.Zero);
     }
-
+    
+    private Label getFailLabel(final Character character, final Vector2 position) {
+            if(fight.getLastFail(character)){
+                return getLabel(character.getName() + " ha fallito l'attacco con " + fight.getEnemyLastMove(),
+                        position);
+            } else {
+                return getLabel(character.getName() + " ha colpito con " + fight.getEnemyLastMove(),
+                        position);
+            }
+    }
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
         return getLabel("Arma: " + weapon.getName() + " \nDanno: "
                 + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
@@ -240,11 +251,15 @@ class CombatGameScreen extends StaticScreen {
 
         Label playerWeaponLabel = getWeaponLabel(fight.getPlayer().getWeapon(), PLAYER_WEAPON_LABEL_POSITION);
         Label enemyWeaponLabel = getWeaponLabel(fight.getEnemy().getWeapon(), ENEMY_WEAPON_LABEL_POSITION);
+        Label playerFailLabel = getFailLabel(fight.getPlayer(), PLAYER_FAIL_LABEL_POSITION);
+        Label enemyFailLabel = getFailLabel(fight.getEnemy(), ENEMY_FAIL_LABEL_POSITION);
 
         stage.addActor(playerHpLabel);
         stage.addActor(enemyHpLabel);
         stage.addActor(enemyWeaponLabel);
         stage.addActor(playerWeaponLabel);
+        stage.addActor(playerFailLabel);
+        stage.addActor(enemyFailLabel);
 
         this.weaponSelectionWindow = getWeaponSelection();
         stage.addActor(this.weaponSelectionWindow);
