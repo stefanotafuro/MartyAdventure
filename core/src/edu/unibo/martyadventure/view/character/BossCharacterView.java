@@ -18,7 +18,7 @@ public class BossCharacterView extends EnemyCharacterView {
     private boolean disposed;
 
 
-    public BossCharacterView(final EnemyCharacter character, final Vector2 initialPosition, final String texturePath,
+    BossCharacterView(final EnemyCharacter character, final Vector2 initialPosition, final String texturePath,
             final WeaponView weapon, final WeaponView dropWeapon) throws InterruptedException, ExecutionException {
         super(character, initialPosition, Toolbox.getTexture(texturePath), weapon, dropWeapon);
         this.texturePath = texturePath;
