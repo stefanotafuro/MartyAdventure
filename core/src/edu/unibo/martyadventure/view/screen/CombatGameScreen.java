@@ -171,11 +171,11 @@ class CombatGameScreen extends StaticScreen {
     }
     
     private void updateFailLabel(final Character character, Label label) {
-        if (fight.getPlayerLastMove() != null) {
+        if (fight.getLastMove(fight.getPlayer()) != null) {
             if(fight.getLastFail(character)){
-                label.setText(character.getName() + " ha fallito l'attacco con " + fight.getPlayerLastMove().getName());
+                label.setText(character.getName() + " ha fallito l'attacco con " + fight.getLastMove(character).getName());
             } else {
-                label.setText(character.getName() + " ha colpito con " + fight.getEnemyLastMove().getName());
+                label.setText(character.getName() + " ha colpito con " + fight.getLastMove(character).getName());
             }
         }
 }

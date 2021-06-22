@@ -183,18 +183,12 @@ public class Fight {
      * 
      * @return
      */
-    public Move getEnemyLastMove() {
+    public Move getLastMove(Character character) {
+        if (character == player) {
+            return playerLastMove;
+        }
         return enemyLastMove;
     }
-
-    /**
-     * 
-     * @return
-     */
-    public Move getPlayerLastMove() {
-        return playerLastMove;
-    }
-
     /**
      * Function to return the opponent of the attack
      * 
