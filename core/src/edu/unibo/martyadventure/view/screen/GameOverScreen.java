@@ -2,41 +2,46 @@ package edu.unibo.martyadventure.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.math.Vector2;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
+import edu.unibo.martyadventure.view.character.PlayerCharacterView;
+
 
 class GameOverScreen extends StaticScreen {
 
-    private static final String BACKGROUND_PATH = "menu/gameover.png";
+    private static final int ZOOM = 70;
+
+    private static final Vector2 TITLE_POSITION = new Vector2(100, 650);
+    private static final Vector2 MENU_BUTTON_POSITION = new Vector2(30, 40);
+
     private static final String WON_TEXT = "Hai vinto!";
-    private static final String LOST_TEXT = "Hai perso, vuoi riprovare?";
+    private static final String LOSE_TEXT = "Hai perso, vuoi riprovare?";
 
-    private final Label textLabel;
-    private final TextButton menuButton;
+    private static final String BG_PATH = "menu/gameover.png";
+
+    private final boolean playerWon;
 
 
-    public GameOverScreen(final ScreenManager manager, final boolean playerWon, final int height, final int width) {
-        super(manager, BACKGROUND_PATH, height, width);
-        this.textLabel = new Label(playerWon ? WON_TEXT : LOST_TEXT, uiSkin);
-        this.menuButton = new TextButton("Ritornare al menu?", uiSkin);
-
-        super.stage.addActor(this.textLabel);
-        super.stage.addActor(this.menuButton);
-    }
-
-    /**
-     * Set the callback for when a request to go back to the main menu is made.
-     *
-     * @param listener the callback object.
-     */
-    public void addMenuListener(final EventListener listener) {
-        this.menuButton.addListener(listener);
+    public GameOverScreen(final ScreenManager manager, final boolean playerWon) {
+        super(manager, BG_PATH, ZOOM);
+        this.playerWon = playerWon;
     }
 
     @Override
     public void show() {
-        resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
+        final Label titleLabel = new Label(this.playerWon ? WON_TEXT : LOSE_TEXT, super.uiSkin, "title");
+        titleLabel.setPosition(TITLE_POSITION.x, TITLE_POSITION.y);
+        stage.addActor(titleLabel);
+
+        stage.addActor(getStandardTextButton("Ritorna al menu", MENU_BUTTON_POSITION, () -> {
+            PlayerCharacterView.resetPlayer();
+            screenManager.cleanMovementScreen();
+            screenManager.loadMenuScreen();
+        }));
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -46,7 +51,7 @@ class GameOverScreen extends StaticScreen {
 
         stage.act();
         stage.getBatch().begin();
-        stage.getBatch().draw(this.background, 0.0f, 0.0f);
+        stage.getBatch().draw(background, 0, 0, stage.getWidth(), stage.getHeight());
         stage.getBatch().end();
         stage.draw();
     }

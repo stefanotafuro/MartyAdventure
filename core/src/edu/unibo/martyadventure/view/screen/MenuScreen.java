@@ -36,7 +36,7 @@ class MenuScreen extends StaticScreen {
 
 
     public MenuScreen(final ScreenManager manager) {
-        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+        super(manager, BG_PATH, ZOOM);
         MusicController.startMusic();
         // Start silently.
         MusicController.setMusicVolume(0.0f);

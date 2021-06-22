@@ -18,7 +18,7 @@ public class EnemyCharacterView extends CharacterView<EnemyCharacter> {
 
     private final WeaponView dropWeapon;
 
-    public EnemyCharacterView(final EnemyCharacter character, final Vector2 initialPosition, final Texture texture, final WeaponView weapon, final WeaponView dropWeapon)
+    EnemyCharacterView(final EnemyCharacter character, final Vector2 initialPosition, final Texture texture, final WeaponView weapon, final WeaponView dropWeapon)
             throws InterruptedException, ExecutionException {
         super(character, initialPosition, MAX_ACCELLERATION, ACCELLERATION_FACTOR, MAX_SPEED,
                 new TextureRegion(texture), weapon);

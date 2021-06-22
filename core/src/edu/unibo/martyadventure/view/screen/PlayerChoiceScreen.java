@@ -73,7 +73,7 @@ class PlayerChoiceScreen extends StaticScreen {
     }
 
     public PlayerChoiceScreen(final ScreenManager manager) {
-        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
+        super(manager, BG_PATH, ZOOM);
         Toolbox.queueTexture(BUTTON_BG_PATH);
     }
 
@@ -81,7 +81,7 @@ class PlayerChoiceScreen extends StaticScreen {
     public void show() {
         ImageButton closeButton = new ImageButton(new TextureRegionDrawable(Toolbox.getTexture(BUTTON_BG_PATH)));
         TextButton newGameButton = getStandardTextButton("Inizia partita", START_BUTTON_POSITION, () -> {
-            screenManager.changeMap(Maps.MAP1);
+            screenManager.changeMovementScreen(Maps.MAP1);
             screenManager.loadMovementScreen();
         });
 

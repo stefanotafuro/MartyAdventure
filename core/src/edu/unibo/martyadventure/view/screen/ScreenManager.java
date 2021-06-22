@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 
 import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.character.CharacterViewFactory;
+import edu.unibo.martyadventure.view.character.EnemyCharacterView;
 import edu.unibo.martyadventure.view.character.Player;
+import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 
 public class ScreenManager {
 
@@ -21,14 +23,19 @@ public class ScreenManager {
     private final PlayerChoiceScreen choice;
     private final CharacterViewFactory characterFactory;
 
-    private MovementGameScreen movementScreen;
+    // Keep track of the dynamically instantiated screens.
+    private MovementGameScreen gameScreen;
+    private Screen dynamicScreen;
     private Player currentPlayer;
 
 
-    private void disposeMovementScreen() {
-        if (this.movementScreen != null) {
-            this.movementScreen.dispose();
-            this.movementScreen = null;
+    /**
+     * Disposes the current dynamic screen, if any
+     */
+    private void clearDynamicScreen() {
+        if (this.dynamicScreen != null) {
+            this.dynamicScreen.dispose();
+            this.dynamicScreen = null;
         }
     }
 
@@ -38,14 +45,22 @@ public class ScreenManager {
     }
 
     public ScreenManager() {
-        menu = new MenuScreen(this);
-        choice = new PlayerChoiceScreen(this);
-        characterFactory = new CharacterViewFactory();
+        this.menu = new MenuScreen(this);
+        this.choice = new PlayerChoiceScreen(this);
+        this.characterFactory = new CharacterViewFactory();
     }
 
-    public void changeMap(final Maps map) {
-        disposeMovementScreen();
-        this.movementScreen = new MovementGameScreen(this, this.characterFactory, currentPlayer, map);
+    public void cleanMovementScreen() {
+        if (this.gameScreen != null) {
+            this.gameScreen.dispose();
+            this.gameScreen = null;
+        }
+    }
+
+    public void changeMovementScreen(final Maps map) {
+        clearDynamicScreen();
+        cleanMovementScreen();
+        this.gameScreen = new MovementGameScreen(this, this.characterFactory, this.currentPlayer, map);
     }
 
     public void changePlayer(final Player player) {
@@ -53,25 +68,35 @@ public class ScreenManager {
     }
 
     public void loadMovementScreen() {
-        loadScreen(this.movementScreen);
+        clearDynamicScreen();
+        loadScreen(this.gameScreen);
     }
 
     public void loadMenuScreen() {
-        disposeMovementScreen();
+        clearDynamicScreen();
         loadScreen(this.menu);
     }
 
     public void loadChoiceScreen() {
-        disposeMovementScreen();
+        clearDynamicScreen();
         loadScreen(this.choice);
     }
 
-    public void loadCombatScreen(final CombatGameScreen screen) {
-        loadScreen(screen);
+    public void loadCombatScreen(final PlayerCharacterView player, final EnemyCharacterView enemy, final boolean displayGameOver) {
+        clearDynamicScreen();
+        this.dynamicScreen = new CombatGameScreen(this, player, enemy, displayGameOver);
+        loadScreen(this.dynamicScreen);
+    }
+
+    public void loadGameOverScreen(final boolean playerWon) {
+        clearDynamicScreen();
+        this.dynamicScreen = new GameOverScreen(this, playerWon);
+        loadScreen(this.dynamicScreen);
     }
 
     public void dispose() {
-        disposeMovementScreen();
+        clearDynamicScreen();
+        cleanMovementScreen();
         this.menu.dispose();
         this.choice.dispose();
         this.characterFactory.dispose();

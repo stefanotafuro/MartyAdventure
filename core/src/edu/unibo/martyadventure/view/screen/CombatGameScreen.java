@@ -56,9 +56,11 @@ class CombatGameScreen extends StaticScreen {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.#");
 
-    private PlayerCharacterView playerView;
-    private EnemyCharacterView enemyView;
-    private Fight fight;
+    private final PlayerCharacterView playerView;
+    private final EnemyCharacterView enemyView;
+    private final Fight fight;
+    private final boolean displayGameOver;
+
     private Label playerHpLabel;
     private Label enemyHpLabel;
     private Label playerFailLabel;
@@ -68,16 +70,7 @@ class CombatGameScreen extends StaticScreen {
     private TextButton moveButton3;
     private TextButton moveButton4;
     private Window weaponSelectionWindow;
-    
-    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
-            final EnemyCharacterView enemy) {
-        super(manager, BG_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM, ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
 
-        this.playerView = player;
-        this.enemyView = enemy;
-
-        fight = new Fight(player.getCharacter(), enemy.getCharacter());
-    }
 
     private TextButton getIndexedButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
@@ -101,14 +94,13 @@ class CombatGameScreen extends StaticScreen {
     }
 
     private Label getMoveLabel(final int index) {
-        return getLabel("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(index).getReloadTime()
-                + " Dmg: " + getFullDamage(index),
-                Vector2.Zero);
+        return getLabel("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(index).getReloadTime() + " Dmg: "
+                + getFullDamage(index), Vector2.Zero);
     }
     
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
-        return getLabel("Arma: " + weapon.getName() + " \nDanno: "
-                + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
+        return getLabel(
+                "Arma: " + weapon.getName() + " \nDanno: " + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
                 position);
     }
 
@@ -151,6 +143,7 @@ class CombatGameScreen extends StaticScreen {
 
         weapon1Button.addListener(new ClickListener() {
 
+            @SuppressWarnings("unused")
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screenManager.loadMovementScreen();
@@ -159,6 +152,7 @@ class CombatGameScreen extends StaticScreen {
 
         weapon2Button.addListener(new ClickListener() {
 
+            @SuppressWarnings("unused")
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 playerView.setWeapon(enemyView.getDropWeapon());
@@ -216,6 +210,33 @@ class CombatGameScreen extends StaticScreen {
         this.moveButton3.setDisabled(true);
         this.moveButton4.setTouchable(Touchable.disabled);
         this.moveButton4.setDisabled(true);
+    }
+
+    private int getFullDamage(int moveNumber) {
+        return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()
+                * fight.getPlayer().getWeapon().getDamageMultiplier());
+    }
+
+    /**
+     * Instantiate a new combat screen.
+     *
+     * @param manager         the screen manager to operate on.
+     * @param player          the player instance.
+     * @param enemy           the enemy instance.
+     * @param displayGameOver ask the manager to display a game over screen if the
+     *                        player wins this fight.
+     * @param goBackToMap     if displayGameOver is false, ask the manager to load
+     *                        this map if the player wins
+     */
+    public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
+            final EnemyCharacterView enemy, final boolean displayGameOver) {
+        super(manager, BG_PATH, ZOOM);
+
+        this.playerView = player;
+        this.enemyView = enemy;
+        this.displayGameOver = displayGameOver;
+
+        fight = new Fight(player.getCharacter(), enemy.getCharacter());
     }
 
     @Override
@@ -281,13 +302,15 @@ class CombatGameScreen extends StaticScreen {
         checkButton(moveButton3, 2);
         checkButton(moveButton4, 3);
 
+        final Character winner = fight.fightWinner();
         if (fight.fightWinner() != null) {
-            if (fight.fightWinner() == fight.getPlayer()) {
-                weaponSelectionMode();
-            } else {
-                // TODO lose screen
-                System.err.println("GAME OVER");
-                Gdx.app.exit();
+            final boolean playerWon = winner == fight.getPlayer();
+            if (winner != null) {
+                if (!displayGameOver && playerWon) {
+                    weaponSelectionMode();
+                } else {
+                    screenManager.loadGameOverScreen(playerWon);
+                }
             }
         }
 
@@ -305,9 +328,5 @@ class CombatGameScreen extends StaticScreen {
     public void dispose() {
         Toolbox.unloadAsset(WEAPON_SELECTION_PATH);
         super.dispose();
-    }
-    
-    private int getFullDamage(int moveNumber) {
-        return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()*fight.getPlayer().getWeapon().getDamageMultiplier());
     }
 }
