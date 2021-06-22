@@ -17,6 +17,9 @@ import edu.unibo.martyadventure.model.weapon.Weapon;
 public class Fight {
     private PlayerCharacter player;
     private EnemyCharacter enemy;
+    private boolean playerFail = false;
+    private boolean enemyFail = false;
+    private Move enemyLastMove;
     private int turnCount;
 
     private Map<Character, Map<Move, Integer>> mapCharactersMove;
@@ -69,6 +72,7 @@ public class Fight {
                     .get(ThreadLocalRandom.current().nextInt(enemy.getWeapon().getMoveList().size()));
 
         } while (!isMoveUsable(enemy, move));
+        enemyLastMove = move;
         return move;
     }
 
@@ -85,7 +89,6 @@ public class Fight {
 
     }
 
-
     /**
      * @param weapon    The striker's weapon
      * @param move      The striker's move
@@ -94,9 +97,10 @@ public class Fight {
     public void attack(Weapon weapon, Move move, Character character) {
         // check if the move failed
         if (!move.testFailure()) {
+            setLastFailCharacter(opponent(character), true, move);
             setLastUse(opponent(character), move, turnCount);
-        }
-        else {
+        } else {
+            setLastFailCharacter(opponent(character), false);
             setLastUse(opponent(character), move, turnCount);
             // check if the damage will kill the opponent using isDead function
             if (isDead((int) Math.round((weapon.getDamageMultiplier() * move.getDamage())), character.getHp())) {
@@ -106,7 +110,8 @@ public class Fight {
 
             } else {
                 // inflict attack on the opponent
-                character.setHp((int) Math.round((character.getHp() - (weapon.getDamageMultiplier() * move.getDamage()))));
+                character.setHp(
+                        (int) Math.round((character.getHp() - (weapon.getDamageMultiplier() * move.getDamage()))));
             }
         }
 
@@ -161,6 +166,26 @@ public class Fight {
     }
 
     /**
+     * 
+     * @param character
+     * @return
+     */
+    public boolean getLastFail(Character character) {
+        if (character == player) {
+            return playerFail;
+        }
+        return enemyFail;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Move getEnemyLastMove() {
+        return enemyLastMove;
+    }
+
+    /**
      * Function to return the opponent of the attack
      * 
      * @param character The character that will be attacked
@@ -171,6 +196,19 @@ public class Fight {
             return enemy;
         }
         return player;
+    }
+
+    /**
+     * 
+     * @param character
+     * @param testFailure
+     */
+    private void setLastFailCharacter(Character character, boolean testFailure) {
+        if (character == player) {
+            playerFail = testFailure;
+            return;
+        }
+        enemyFail = testFailure;
     }
 
     /**
