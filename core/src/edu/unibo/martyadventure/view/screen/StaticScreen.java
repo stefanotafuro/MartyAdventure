@@ -43,8 +43,7 @@ abstract class StaticScreen implements Screen {
         return new Stage(viewport);
     }
 
-    protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int width,
-            final int height) {
+    protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int viewportZoom) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
 
@@ -52,7 +51,8 @@ abstract class StaticScreen implements Screen {
         this.uiSkin = Toolbox.getSkin(SKIN_PATH);
         this.choiceSkin = Toolbox.getSkin(CHOICE_SKIN_PATH);
 
-        this.stage = getStage(width, height);
+        this.stage = getStage(ScreenManager.VIEWPORT.X_VIEWPORT * viewportZoom,
+                ScreenManager.VIEWPORT.Y_VIEWPORT * viewportZoom);
         this.screenManager = manager;
     }
 
@@ -115,8 +115,6 @@ abstract class StaticScreen implements Screen {
     @Override
     public void dispose() {
         Toolbox.unloadAsset(this.backgroundPath);
-        Toolbox.unloadAsset(ATLAS_PATH);
-        Toolbox.unloadAsset(SKIN_PATH);
         stage.dispose();
     }
 }

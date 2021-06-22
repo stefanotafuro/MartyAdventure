@@ -153,7 +153,7 @@ class MovementGameScreen implements Screen {
      */
     private boolean trySetBattleOverlap(final EnemyCharacterView enemy, final boolean displayGameOver) {
         if (isAlive(enemy) && playerView.getBoundingBox().overlaps(enemy.getBoundingBox())) {
-            screenManager.loadCombatScreen(new CombatGameScreen(screenManager, playerView, enemy, displayGameOver));
+            screenManager.loadCombatScreen(playerView, enemy, displayGameOver);
             return true;
         }
         return false;
@@ -211,6 +211,7 @@ class MovementGameScreen implements Screen {
             playerView.getCharacter()
                     .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER));
             screenManager.changeMap(MapManager.Maps.MAP3);
+
             screenManager.loadMovementScreen();
             break;
         default:

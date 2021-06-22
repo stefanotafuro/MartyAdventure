@@ -18,42 +18,37 @@ class GameOverScreen extends StaticScreen {
     private static final String WON_TEXT = "Hai vinto!";
     private static final String LOSE_TEXT = "Hai perso, vuoi riprovare?";
 
-    private final Label titleLabel;
-    private final TextButton menuButton;
+    private final boolean playerWon;
+    private Label titleLabel;
+    private TextButton menuButton;
 
 
     private Label getLabel() {
         final Label label = new Label("", super.uiSkin, "title");
         label.setPosition(TITLE_POSITION.x, TITLE_POSITION.y);
         label.setFontScale(TITLE_FONT_SCALE);
+        label.setText(this.playerWon ? WON_TEXT : LOSE_TEXT);
         return label;
     }
 
-    public GameOverScreen(final ScreenManager manager) {
-        super(manager, BACKGROUND_PATH, ScreenManager.VIEWPORT.X_VIEWPORT * ZOOM,
-                ScreenManager.VIEWPORT.Y_VIEWPORT * ZOOM);
-        this.titleLabel = getLabel();
+    /**
+     * @param playerWon if the player has won the game or not.
+     */
+    public GameOverScreen(final ScreenManager manager, final boolean playerWon) {
+        super(manager, BACKGROUND_PATH, ZOOM);
+        this.playerWon = playerWon;
+    }
 
+    @Override
+    public void show() {
+        this.titleLabel = getLabel();
         this.menuButton = getStandardTextButton("Ritornare al menu?", MENU_BUTTON_POSITION, () -> {
+            screenManager.cleanMovementScreen();
             screenManager.loadMenuScreen();
         });
 
         super.stage.addActor(this.titleLabel);
         super.stage.addActor(this.menuButton);
-    }
-
-    /**
-     * Set the appropriate text to the player winning.
-     *
-     * @param playerWon if the player has won the game or not.
-     */
-    public void setPlayerWon(final boolean playerWon) {
-        this.titleLabel.setText(playerWon ? WON_TEXT : LOSE_TEXT);
-    }
-
-    @Override
-    public void show() {
-        resize(Gdx.app.getGraphics().getWidth(), Gdx.app.getGraphics().getHeight());
     }
 
     @Override
