@@ -204,13 +204,13 @@ class MovementGameScreen implements Screen {
         case MAP1:
             playerView.getCharacter()
                     .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP1_PLAYER_HP_MULTIPLIER));
-            screenManager.changeMap(MapManager.Maps.MAP2);
+            screenManager.changeMovementScreen(MapManager.Maps.MAP2);
             screenManager.loadMovementScreen();
             break;
         case MAP2:
             playerView.getCharacter()
                     .setHp((int) (PlayerCharacterView.PLAYER_HP * PlayerCharacterView.MAP2_PLAYER_HP_MULTIPLIER));
-            screenManager.changeMap(MapManager.Maps.MAP3);
+            screenManager.changeMovementScreen(MapManager.Maps.MAP3);
 
             screenManager.loadMovementScreen();
             break;
