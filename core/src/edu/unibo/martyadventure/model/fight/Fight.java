@@ -19,6 +19,7 @@ public class Fight {
     private EnemyCharacter enemy;
     private boolean playerFail = false;
     private boolean enemyFail = false;
+    private Move playerLastMove;
     private Move enemyLastMove;
     private int turnCount;
 
@@ -83,6 +84,7 @@ public class Fight {
      */
     public void playerAttack(Move inputMove) {
         if (isMoveUsable(player, inputMove)) {
+            playerLastMove = inputMove;
             attack(player.getWeapon(), inputMove, enemy);
         }
         enemyAttack();
@@ -183,6 +185,14 @@ public class Fight {
      */
     public Move getEnemyLastMove() {
         return enemyLastMove;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Move getPlayerLastMove() {
+        return playerLastMove;
     }
 
     /**
