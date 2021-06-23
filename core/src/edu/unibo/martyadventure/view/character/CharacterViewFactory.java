@@ -68,7 +68,7 @@ public class CharacterViewFactory implements Disposable {
      * Get the player character view for the given map.
      *
      * @param player           the player character to use.
-     * @param initialiPosition the map position map the character should start at.
+     * @param initialPosition the map position map the character should start at.
      * @param map              the map the character is for.
      * @return the current player view.
      * @throws InterruptedException player not loaded.
@@ -82,7 +82,7 @@ public class CharacterViewFactory implements Disposable {
     /**
      * Create an enemy for the given map.
      *
-     * @param initialiPosition the map position map the character should start at.
+     * @param initialPosition the map position map the character should start at.
      * @param map              the map the character is for.
      * @return a new enemy based on the map level.
      * @throws InterruptedException error loading the enemy.
@@ -104,7 +104,7 @@ public class CharacterViewFactory implements Disposable {
      * Create the boss for the given player character and map.
      *
      * @param player           the player the map is using
-     * @param initialiPosition the map position map the character should start at.
+     * @param initialPosition the map position map the character should start at.
      * @param map              the map the character is for. 
      * @return a new boss.
      * @throws InterruptedException boss creation error
