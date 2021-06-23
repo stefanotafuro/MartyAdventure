@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
-import edu.unibo.martyadventure.model.character.Shoes;
 import edu.unibo.martyadventure.view.Toolbox;
 import edu.unibo.martyadventure.view.weapon.WeaponView;
 import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
@@ -40,7 +39,7 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> implemen
 
     public static void resetPlayer() {
         playerWeapon = WeaponViewFactory.createPlayerWeaponView();
-        player = new PlayerCharacter(Shoes.SLOW, "", PLAYER_HP, playerWeapon.getWeapon());
+        player = new PlayerCharacter("", PLAYER_HP, playerWeapon.getWeapon());
     }
 
     PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
