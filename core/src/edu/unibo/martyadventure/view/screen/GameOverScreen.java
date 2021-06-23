@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 
-
+/**
+ * A game over static screen.
+ */
 class GameOverScreen extends StaticScreen {
 
     private static final int ZOOM = 70;
@@ -24,7 +26,13 @@ class GameOverScreen extends StaticScreen {
     private final boolean playerWon;
 
 
-    public GameOverScreen(final ScreenManager manager, final boolean playerWon) {
+    /**
+     * Instantiate a new game over screen.
+     *
+     * @param manager   the screen manager to operate on.
+     * @param playerWon whatever the player won the game run or not.
+     */
+    GameOverScreen(final ScreenManager manager, final boolean playerWon) {
         super(manager, BG_PATH, ZOOM);
         this.playerWon = playerWon;
     }

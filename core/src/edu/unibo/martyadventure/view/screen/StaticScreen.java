@@ -14,6 +14,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import edu.unibo.martyadventure.view.Toolbox;
 
+/**
+ * Implements functionalities shared by static screens, managing the background,
+ * UI styling resources and the viewport.
+ */
 abstract class StaticScreen implements Screen {
 
     private static final String ATLAS_PATH = "skin/comic-ui.atlas";
@@ -43,6 +47,28 @@ abstract class StaticScreen implements Screen {
         return new Stage(viewport);
     }
 
+    private TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener,
+            Skin skin) {
+        final TextButton button = new TextButton(title, skin);
+        button.setPosition(x, y);
+        button.addListener(new ClickListener() {
+
+            @SuppressWarnings("unused")
+            @Override
+            public void clicked(InputEvent event, float xDummy, float yDummy) {
+                clickListener.run();
+            }
+        });
+        return button;
+    }
+
+    /**
+     * Instantiates a new static screen.
+     *
+     * @param manager        the screen manager to operate on.
+     * @param backgroundPath the path to the background texture.
+     * @param viewportZoom   the zoom level to apply to the viewport.
+     */
     protected StaticScreen(final ScreenManager manager, final String backgroundPath, final int viewportZoom) {
         this.backgroundPath = backgroundPath;
         this.background = new TextureRegion(Toolbox.getTexture(backgroundPath));
@@ -56,34 +82,39 @@ abstract class StaticScreen implements Screen {
         this.screenManager = manager;
     }
 
+    /**
+     * @param title         the button's text content.
+     * @param position      the button's position.
+     * @param clickListener the callback to execute when the button is clicked.
+     * @return a new text button with the default skin and given parameters.
+     */
     protected TextButton getStandardTextButton(final String title, final Vector2 position,
             final Runnable clickListener) {
         return getStandardTextButton(title, position.x, position.y, clickListener);
     }
 
+    /**
+     * @param title         the button's text content.
+     * @param x             the button's x-axis position.
+     * @param y             the button's y-axis position.
+     * @param clickListener the callback to execute when the button is clicked.
+     * @return a new text button with the default skin and given parameters.
+     */
     protected TextButton getStandardTextButton(final String title, final float x, final float y,
             final Runnable clickListener) {
         return getTextButton(title, x, y, clickListener, this.uiSkin);
     }
 
+    /**
+     * @param title         the button's text content.
+     * @param x             the button's x-axis position.
+     * @param y             the button's y-axis position.
+     * @param clickListener the callback to execute when the button is clicked.
+     * @return a new text button with the default choice skin and given parameters.
+     */
     protected TextButton getChoiceTextButton(final String title, final float x, final float y,
             final Runnable clickListener) {
         return getTextButton(title, x, y, clickListener, this.choiceSkin);
-    }
-
-    protected TextButton getTextButton(final String title, final float x, final float y, final Runnable clickListener,
-            Skin skin) {
-        final TextButton button = new TextButton(title, skin);
-        button.setPosition(x, y);
-        button.addListener(new ClickListener() {
-
-            @SuppressWarnings("unused")
-            @Override
-            public void clicked(InputEvent event, float xDummy, float yDummy) {
-                clickListener.run();
-            }
-        });
-        return button;
     }
 
     @Override
@@ -109,9 +140,6 @@ abstract class StaticScreen implements Screen {
         stage.getViewport().update(width, height, true);
     }
 
-    /**
-     * Dispose of this screen's managed resources.
-     */
     @Override
     public void dispose() {
         Toolbox.unloadAsset(this.backgroundPath);
