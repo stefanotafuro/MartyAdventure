@@ -75,7 +75,7 @@ class CombatGameScreen extends StaticScreen {
     private Window weaponSelectionWindow;
 
     /**
-     * @param index
+     * @param index the move index
      * @return the move button with the click listener for fight
      */
     private TextButton getIndexedButton(final int index) {
@@ -94,8 +94,8 @@ class CombatGameScreen extends StaticScreen {
 
     /**
      * 
-     * @param text
-     * @param position
+     * @param text     the text of the label
+     * @param position the label position
      * @return a label
      */
     private Label getLabel(final String text, final Vector2 position) {
@@ -107,7 +107,7 @@ class CombatGameScreen extends StaticScreen {
 
     /**
      * 
-     * @param index
+     * @param index the move index
      * @return the label that describe the indexed move
      */
     private Label getMoveLabel(final int index) {
@@ -118,8 +118,8 @@ class CombatGameScreen extends StaticScreen {
     /**
      * Show to the user the equipped weapon
      * 
-     * @param weapon
-     * @param position
+     * @param weapon   the weapon to get the name from
+     * @param position label position
      * @return a label with the weapon info
      */
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
@@ -222,8 +222,8 @@ class CombatGameScreen extends StaticScreen {
     /**
      * Check if the move button can be used
      * 
-     * @param button
-     * @param moveNumber
+     * @param button     the button to check
+     * @param moveNumber move index number
      */
     private void checkButton(final TextButton button, final int moveNumber) {
         final PlayerCharacter player = fight.getPlayer();
@@ -239,11 +239,11 @@ class CombatGameScreen extends StaticScreen {
     /**
      * Called every frame to draw the textures and sprites
      * 
-     * @param <C>
-     * @param characterView
-     * @param characterPosition
-     * @param weaponPosition
-     * @param batch
+     * @param <C>               class that extends Character
+     * @param characterView     the character view to draw
+     * @param characterPosition position of the character
+     * @param weaponPosition    weapon position
+     * @param batch             the batch used to draw
      */
     private <C extends Character> void drawCharacter(final CharacterView<C> characterView,
             final Vector2 characterPosition, final Vector2 weaponPosition, final Batch batch) {
@@ -272,7 +272,7 @@ class CombatGameScreen extends StaticScreen {
     /**
      * Get the damage that the move and the weapon combined does
      * 
-     * @param moveNumber
+     * @param moveNumber the move to calculate the damage
      * @return the damage as a product of the Move's damage and the Weapon's damage
      *         multiplier
      */
@@ -288,9 +288,7 @@ class CombatGameScreen extends StaticScreen {
      * @param player          the player instance.
      * @param enemy           the enemy instance.
      * @param displayGameOver ask the manager to display a game over screen if the
-     *                        player wins this fight.
-     * @param goBackToMap     if displayGameOver is false, ask the manager to load
-     *                        this map if the player wins
+     *                        player wins this fight. this map if the player wins
      */
     public CombatGameScreen(final ScreenManager manager, final PlayerCharacterView player,
             final EnemyCharacterView enemy, final boolean displayGameOver) {

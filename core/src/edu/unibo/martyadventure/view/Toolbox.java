@@ -30,7 +30,6 @@ public class Toolbox {
         Toolbox.assetManager.setLoader(TiledMap.class, new TmxMapLoader());
     }
 
-
     private static AssetDescriptor<Texture> getTextureAssetDescriptor(final String path) {
         return new AssetDescriptor<Texture>(getHandle(path, TEXTURE_EXTENSION), Texture.class);
     }
@@ -50,7 +49,9 @@ public class Toolbox {
     /**
      * Verifies that the path isn't empty and tries to verify the file type from the
      * extension.
-     *
+     * 
+     * @param path              the path of the file to handle
+     * @param expectedExtension the extension of the file
      * @return a file handle to the asset to load.
      */
     private static FileHandle getHandle(final String path, final String expectedExtension) {
@@ -69,6 +70,10 @@ public class Toolbox {
 
     /**
      * Get the described asset. Blocks if isn't not loaded yet.
+     * 
+     * @param <T>             the type of assets
+     * @param assetDescriptor the assets descriptor
+     * @return the assets
      */
     private static <T> T getAsset(final AssetDescriptor<T> assetDescriptor) {
         if (!Toolbox.assetManager.isLoaded(assetDescriptor)) {
@@ -86,6 +91,8 @@ public class Toolbox {
 
     /**
      * Unloads the asset if the reference count has reached 0.
+     * 
+     * @param filePath the path of the assets
      */
     public static void unloadAsset(String filePath) {
         if (Toolbox.assetManager.isLoaded(filePath)) {
@@ -118,6 +125,8 @@ public class Toolbox {
     }
 
     /**
+     * 
+     * @param filePath the path of the file
      * @return true if the asset at the path has been fully loaded.
      */
     public static boolean isAssetLoaded(final String filePath) {
@@ -126,6 +135,8 @@ public class Toolbox {
 
     /**
      * Queues a map for loading.
+     * 
+     * @param mapPath the path of the map
      */
     public static void queueMap(final String mapPath) {
         Toolbox.assetManager.load(getMapAssetDescriptor(mapPath));
@@ -133,6 +144,9 @@ public class Toolbox {
 
     /**
      * Queues an atlas for loading.
+     * 
+     * @param atlasPath the path of the atlas
+     * 
      */
     public static void queueAtlas(final String atlasPath) {
         Toolbox.assetManager.load(getAtlasAssetDescriptor(atlasPath));
@@ -140,6 +154,8 @@ public class Toolbox {
 
     /**
      * Queues a skin for loading.
+     * 
+     * @param skinPath the path of the skin
      */
     public static void queueSkin(final String skinPath) {
         Toolbox.assetManager.load(getSkinAssetDescriptor(skinPath));
@@ -147,6 +163,8 @@ public class Toolbox {
 
     /**
      * Queues a texture for loading.
+     * 
+     * @param texturePath the path of the texture
      */
     public static void queueTexture(final String texturePath) {
         Toolbox.assetManager.load(getTextureAssetDescriptor(texturePath));
@@ -154,7 +172,8 @@ public class Toolbox {
 
     /**
      * Get the map at the path. Block if the asset hasn't been fully loaded yet.
-     *
+     * 
+     * @param mapPath the path of the map
      * @return the map asset at the given path.
      */
     public static TiledMap getMap(final String mapPath) {
@@ -163,7 +182,8 @@ public class Toolbox {
 
     /**
      * Get the texture at the path. Block if the asset hasn't been fully loaded yet.
-     *
+     * 
+     * @param texturePath the path of the texture
      * @return the texture asset at the given path.
      */
     public static Texture getTexture(final String texturePath) {
@@ -172,7 +192,8 @@ public class Toolbox {
 
     /**
      * Get the atlas at the path. Block if the asset hasn't been fully loaded yet.
-     *
+     * 
+     * @param atlasPath the path of the atlas
      * @return the atlas asset at the given path.
      */
     public static TextureAtlas getAtlas(final String atlasPath) {
@@ -181,7 +202,8 @@ public class Toolbox {
 
     /**
      * Get the skin at the path. Block if the asset hasn't been fully loaded yet.
-     *
+     * 
+     * @param skinPath the path of the skin
      * @return the skin asset at the given path.
      */
     public static Skin getSkin(final String skinPath) {
@@ -191,5 +213,6 @@ public class Toolbox {
     /**
      * Prevent instantiation.
      */
-    private Toolbox() {}
+    private Toolbox() {
+    }
 }

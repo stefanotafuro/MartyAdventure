@@ -124,7 +124,7 @@ class MovementGameScreen implements Screen {
     /**
      * Setup the enemies of the level
      * 
-     * @param enemyLayer
+     * @param enemyLayer the layer to get the enemy positions
      * @return a list of EnemyCharacterView
      */
     private List<EnemyCharacterView> getEnemyList(final MapLayer enemyLayer) {
@@ -162,7 +162,8 @@ class MovementGameScreen implements Screen {
     /**
      * Battle the living enemy if the player overlaps it's box.
      *
-     * @param enemy the enemy the player may battle.
+     * @param enemy           the enemy the player may battle.
+     * @param displayGameOver if is the last combat
      * @return true if the combat screen was loaded.
      */
     private boolean trySetBattleOverlap(final EnemyCharacterView enemy, final boolean displayGameOver) {
@@ -191,6 +192,8 @@ class MovementGameScreen implements Screen {
 
     /**
      * Update the player, camera and input processor positions.
+     * 
+     * @param delta the game delta time
      */
     private void updatePositions(final float delta) {
         // Check collisions
@@ -212,6 +215,8 @@ class MovementGameScreen implements Screen {
 
     /**
      * Dispatch the screen once the current level has ended.
+     * 
+     * @param currentMap the current loaded map
      */
     private void levelEndDispatch(final Maps currentMap) {
         switch (currentMap) {
@@ -235,6 +240,8 @@ class MovementGameScreen implements Screen {
 
     /**
      * Update the game logic status
+     * 
+     * @param delta game delta time
      */
     private void updateGameLogic(final float delta) {
         updatePositions(delta);
@@ -249,6 +256,10 @@ class MovementGameScreen implements Screen {
 
     /**
      * Draw a character view.
+     * 
+     * @param <C>       class that extends character
+     * @param character the character to draw
+     * @param batch     the batch used to draw
      */
     private <C extends Character> void drawCharacter(final CharacterView<C> character, final Batch batch) {
         final Vector2 pos = character.getCurrentPosition();
@@ -278,6 +289,8 @@ class MovementGameScreen implements Screen {
 
     /**
      * Draw the game UI.
+     * 
+     * @param delta the game delta time
      */
     private void drawUI(final float delta) {
         uiBatch.begin();
@@ -289,6 +302,8 @@ class MovementGameScreen implements Screen {
 
     /**
      * Update the fading, if any.
+     * 
+     * @param delta the game delta time
      */
     private void fadeTitle(float delta) {
         if (time >= 0) {
@@ -341,9 +356,9 @@ class MovementGameScreen implements Screen {
     /**
      * Check if the given box is colliding with a map layer box
      *
-     * @param box
-     * @return
-     * @throws IOException
+     * @param box the collision box of the map layer
+     * @return if true if collision
+     * @throws IOException if error to get collision layer
      */
     private boolean collisionWithMapLayer(Rectangle box) throws IOException {
         final MapLayer mapLayer = mapManager.getCollisionLayer();
@@ -366,6 +381,8 @@ class MovementGameScreen implements Screen {
     }
 
     /**
+     * @param <C>       class that extends character
+     * @param character the character to check
      * @return true if the given character is alive.
      */
     private <C extends Character> boolean isAlive(final CharacterView<C> character) {
@@ -375,8 +392,8 @@ class MovementGameScreen implements Screen {
     /**
      * Resize the view.
      *
-     * @param width
-     * @param height
+     * @param width  width of the screen
+     * @param height height of the screen
      */
     @Override
     public void resize(int width, int height) {

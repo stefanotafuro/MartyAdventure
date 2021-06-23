@@ -8,25 +8,19 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public enum Move {
     // FIST, BRASS KNUCKLES MOVE
-    HOOK("Gancio", 5, 10, 0, MoveType.MELEE),
-    JAB("Diretto", 6, 20, 0, MoveType.MELEE),
-    UPPERCUT("Montante", 7, 30, 2, MoveType.MELEE),
-    SUPERMANPUNCH("SupermanPunch", 10, 40, 2, MoveType.MELEE),
+    HOOK("Gancio", 5, 10, 0, MoveType.MELEE), JAB("Diretto", 6, 20, 0, MoveType.MELEE),
+    UPPERCUT("Montante", 7, 30, 2, MoveType.MELEE), SUPERMANPUNCH("SupermanPunch", 10, 40, 2, MoveType.MELEE),
 
     // BASEBALL BAT, CROWBAR, SLEDGEHUMMER MOVE
-    LOWDAMAGE("Colpo Debole", 5, 10, 0, MoveType.MELEE),
-    HANDLESHOT("Colpo di Manico", 6, 20, 0, MoveType.MELEE),
-    HIGHDAMAGE("Colpo Potente", 8, 30, 2, MoveType.MELEE),
-    TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, MoveType.MELEE),
+    LOWDAMAGE("Colpo Debole", 5, 10, 0, MoveType.MELEE), HANDLESHOT("Colpo di Manico", 6, 20, 0, MoveType.MELEE),
+    HIGHDAMAGE("Colpo Potente", 8, 30, 2, MoveType.MELEE), TEMPLESHOT("Colpo alla Tempia", 12, 40, 2, MoveType.MELEE),
 
     // KNIFE MOVE
-    THRUST("Pugnalata", 7, 20, 2, MoveType.MELEE),
-    STAB("Coltellata", 8, 20, 2, MoveType.MELEE),
+    THRUST("Pugnalata", 7, 20, 2, MoveType.MELEE), STAB("Coltellata", 8, 20, 2, MoveType.MELEE),
     TROW("Lancio", 15, 70, 4, MoveType.RANGED),
 
     // REVOLVER MOVE
-    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, MoveType.RANGED),
-    BODYSHOT("Colpo al Corpo", 15, 30, 4, MoveType.RANGED),
+    GRAZEDSHOT("Colpo di Striscio", 10, 20, 2, MoveType.RANGED), BODYSHOT("Colpo al Corpo", 15, 30, 4, MoveType.RANGED),
     HEADSHOT("Colpo alla Testa", 30, 70, 4, MoveType.RANGED);
 
     private final String name;
@@ -82,6 +76,7 @@ public enum Move {
      * Check if the move is usable
      * 
      * @param fightTurn The fight turn where the move will be used
+     * @param lastUse   the last turn the move is used
      * @return TRUE if isUsable, FALSE in the other case
      */
     public boolean isUsable(int fightTurn, int lastUse) {
@@ -105,7 +100,7 @@ public enum Move {
     /**
      * Get a random Move of a specific type
      * 
-     * @param typr The type of the random move
+     * @param type The type of the random move
      * @return The Random Move of that type
      */
     private static Move getRandomTypeMove(MoveType type) {

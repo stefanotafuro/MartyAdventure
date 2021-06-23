@@ -36,7 +36,6 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> implemen
         resetPlayer();
     }
 
-
     /**
      * Reset the player model status to it's defaults.
      */
@@ -48,9 +47,11 @@ public class PlayerCharacterView extends CharacterView<PlayerCharacter> implemen
     /**
      * Instantiate a new player character view.
      *
-     * @param name             the character's in-game name.
-     * @param initialiPosition the map position map the character should start at.
-     * @param texturePath      the path to the character textures to load.
+     * @param name            the character's in-game name.
+     * @param initialPosition the map position map the character should start at.
+     * @param texturePath     the path to the character textures to load.
+     * @throws InterruptedException error loading player textures
+     * @throws ExecutionException   error loading player textures
      */
     PlayerCharacterView(final String name, final Vector2 initialPosition, final String texturePath)
             throws InterruptedException, ExecutionException {

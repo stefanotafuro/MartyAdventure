@@ -16,9 +16,10 @@ public class DesktopLauncher {
     private static final double BASE_SCALING = 0.8;
     private static final double SECONDARY_SCALING = 0.5625; // 9/16
 
-
     /**
      * Handle vertical and ultrawide displays by selecting the smallest dimension.
+     * 
+     * @return the horizontal scale
      */
     private static int getHorizontalScale() {
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

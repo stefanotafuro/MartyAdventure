@@ -70,9 +70,9 @@ public class CharacterViewFactory implements Disposable {
      * @param player           the player character to use.
      * @param initialiPosition the map position map the character should start at.
      * @param map              the map the character is for.
-     * @return the current player
-     * @throws InterruptedException
-     * @throws ExecutionException
+     * @return the current player view.
+     * @throws InterruptedException player not loaded.
+     * @throws ExecutionException   texture not loaded.
      */
     public PlayerCharacterView createPlayer(Player player, Vector2 initialPosition, Maps map)
             throws InterruptedException, ExecutionException {
@@ -84,9 +84,9 @@ public class CharacterViewFactory implements Disposable {
      *
      * @param initialiPosition the map position map the character should start at.
      * @param map              the map the character is for.
-     * @return the enemy
-     * @throws InterruptedException
-     * @throws ExecutionException
+     * @return a new enemy based on the map level.
+     * @throws InterruptedException error loading the enemy.
+     * @throws ExecutionException   error loading the enemy.
      */
     public EnemyCharacterView createEnemy(Vector2 initialPosition, Maps map)
             throws InterruptedException, ExecutionException {
@@ -103,9 +103,12 @@ public class CharacterViewFactory implements Disposable {
     /**
      * Create the boss for the given player character and map.
      *
-     * @param player           the character the player is using.
+     * @param player           the player the map is using
      * @param initialiPosition the map position map the character should start at.
-     * @param map              the map the character is for.
+     * @param map              the map the character is for. 
+     * @return a new boss.
+     * @throws InterruptedException boss creation error
+     * @throws ExecutionException   boss creation error
      */
     public BossCharacterView createBoss(final Player player, final Vector2 initialPosition, final Maps map)
             throws InterruptedException, ExecutionException {

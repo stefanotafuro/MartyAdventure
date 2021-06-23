@@ -22,6 +22,10 @@ public class WeaponFactory {
     /**
      * Weapon public constructor
      * 
+     * @param name             the weapon name
+     * @param type             the weapon type
+     * @param damageMultiplier the weapon damage multiplier
+     * @param moveList         the list of move for the current weapon
      * @return The new weapon
      */
     public static Weapon newWeapon(String name, Weapon.WeaponType type, double damageMultiplier, List<Move> moveList) {
@@ -32,9 +36,12 @@ public class WeaponFactory {
     /**
      * Set an input moveList on a specific Weapon
      * 
-     * @param weapon      The weapon that will be modify
-     * @param move1/2/3/4 The moves that compose the new moveList
-     * @return The new weapon
+     * @param weapon the weapon to set the move for
+     * @param move1  first move
+     * @param move2  second move
+     * @param move3  third move
+     * @param move4  fourth move
+     * @return the new weapon with the added moves
      */
     public static Weapon setWeaponMove(Weapon weapon, Move move1, Move move2, Move move3, Move move4) {
         List<Move> moveList = new ArrayList<>(List.of(move1, move2, move3, move4));
@@ -76,7 +83,8 @@ public class WeaponFactory {
     /**
      * Set a random RANGED moveList on a specific Weapon composed of 4 ranged move
      * 
-     * @param name The weapon name that will be created
+     * @param name             The weapon name that will be created
+     * @param damageMultiplier the damage of the weapon
      * @return The new weapon with random MELEE moveList
      */
     public static Weapon createRandomRangedWeapon(String name, double damageMultiplier) {
@@ -86,7 +94,8 @@ public class WeaponFactory {
     /**
      * Set a random MELEE moveList on a specific Weapon composed of 4 melee move
      * 
-     * @param name The weapon name that will be created
+     * @param damageMultiplier the damage of the weapon
+     * @param name             The weapon name that will be created
      * @return The new weapon with random MELEE moveList
      */
     public static Weapon createRandomMeleeWeapon(String name, double damageMultiplier) {

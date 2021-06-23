@@ -25,7 +25,6 @@ class AnimationPack {
     private final Animation<TextureRegion> leftAnimations;
     private final Animation<TextureRegion> rightAnimations;
 
-
     private Animation<TextureRegion> buildAnimation(final TextureRegion[][] textures, final int tilesIndex) {
         final Animation<TextureRegion> animation = new Animation<TextureRegion>(AnimationPack.FRAME_DURATION,
                 textures[tilesIndex]);
@@ -76,6 +75,7 @@ class AnimationPack {
     }
 
     /**
+     * @param direction the direction of the wanted animation
      * @return the matching animation for the given entity direction.
      */
     public Animation<TextureRegion> getEntityDirectionAnimation(final EntityDirection direction) {
@@ -122,7 +122,9 @@ class AnimationPack {
     }
 
     /**
+     * @param direction the wanted direction
      * @return the matching idle frame for the given entity direction.
+     * 
      */
     public TextureRegion getEntityDirectionIdle(final EntityDirection direction) {
         return getEntityDirectionAnimation(direction).getKeyFrame(AnimationPack.ANIMATION_START);

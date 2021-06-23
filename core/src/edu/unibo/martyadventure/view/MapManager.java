@@ -71,7 +71,7 @@ public class MapManager {
      * Start loading the given map from file into memory
      *
      * @param mapName the map name you want to start to load
-     * @throws IOException
+     * @throws IOException if no map found
      **/
     public void preLoadMap(Maps mapName) throws IOException {
         // get the map path from the table and check it
@@ -85,11 +85,10 @@ public class MapManager {
     /**
      * Load the given map name from file to the local memory
      *
-     * @return the current loaded map name
      * @param mapName the map name you want to load
-     * @throws ExecutionException
-     * @throws InterruptedException
-     * @throws IOException
+     * @throws ExecutionException   for bad map loading
+     * @throws InterruptedException for bad map loading
+     * @throws IOException          for bad map loading
      */
     public void loadMap(Maps mapName) throws InterruptedException, ExecutionException, IOException {
 
@@ -145,11 +144,11 @@ public class MapManager {
         playerStartPosition.y = obj.getEllipse().y;
         playerStartPosition.x = playerStartPosition.x * UNIT_SCALE;
         playerStartPosition.y = playerStartPosition.y * UNIT_SCALE;
-        
-     // Setting biff spawn point
+
+        // Setting biff spawn point
         obj = (EllipseMapObject) biffSpawnLayer.getObjects().get(BIFF_SPAWN_OBJECT_NAME);
         biffStartPosition = new Vector2();
-        biffStartPosition.x = obj.getEllipse().x -20f;
+        biffStartPosition.x = obj.getEllipse().x - 20f;
         biffStartPosition.y = obj.getEllipse().y;
         biffStartPosition.x = biffStartPosition.x * UNIT_SCALE;
         biffStartPosition.y = biffStartPosition.y * UNIT_SCALE;
@@ -164,7 +163,7 @@ public class MapManager {
     public Vector2 getPlayerStartPosition() {
         return playerStartPosition;
     }
-    
+
     /** @return biff start position of the current map **/
     public Vector2 getBiffStartPosition() {
         return biffStartPosition;

@@ -44,7 +44,6 @@ public abstract class CharacterView<C extends Character> implements Controllable
     protected final float accelerationFactor;
     protected final float maxSpeed;
 
-
     /**
      * @return the sprite for the fighting screen.
      */
@@ -52,13 +51,13 @@ public abstract class CharacterView<C extends Character> implements Controllable
 
     /**
      * @param character          the character's model.
-     * @param initialiPosition   the map position map the character should start at.
+     * @param initialPosition    the map position map the character should start at.
      * @param maxAcceleration    the maximum acceleration of the character movement.
      * @param accelerationFactor the factor the character should accelerate it's
      *                           movement speed by.
      * @param maxSpeed           the maximum speed the character should move at.
      * @param texture            the character's texture.
-     * @param weaponview         the character weapon's view.
+     * @param weaponView         the character weapon's view.
      */
     CharacterView(final C character, final Vector2 initialPosition, final float maxAcceleration,
             final float accelerationFactor, final float maxSpeed, final TextureRegion texture,

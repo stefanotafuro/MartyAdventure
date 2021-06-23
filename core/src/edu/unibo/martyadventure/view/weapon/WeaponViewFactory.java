@@ -53,7 +53,7 @@ public class WeaponViewFactory {
     /**
      * Generate a random weapon based on the current map
      * 
-     * @param map
+     * @param map the map to scale the weapon damage
      * @return the new weapon
      */
     public static WeaponView createRandomWeaponView(MapManager.Maps map) {
@@ -65,7 +65,7 @@ public class WeaponViewFactory {
     /**
      * Generate the initial weapon for the player
      * 
-     * @return
+     * @return the initial player weapon
      */
     public static WeaponView createPlayerWeaponView() {
         Weapons w = Weapons.PUNCH;

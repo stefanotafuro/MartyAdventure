@@ -36,6 +36,8 @@ public class PlayerInputProcessor implements InputProcessor {
      * There may be 1 and only 1 player input processor to prevent multiple
      * instances catching each's other's keycodes or sending multiple updates to the
      * same player
+     * 
+     * @return the input processor
      */
     public static PlayerInputProcessor getPlayerInputProcessor() {
         if (PlayerInputProcessor.instance == null) {
@@ -58,7 +60,9 @@ public class PlayerInputProcessor implements InputProcessor {
 
     /**
      * Sets the given keycode to the given value
-     *
+     * 
+     * @param keycode the key pressed
+     * @param value   the direction value
      * @return true if the keycode was valid and the value has been set, false
      *         otherwise.
      */
@@ -72,7 +76,9 @@ public class PlayerInputProcessor implements InputProcessor {
     }
 
     /**
+     * @param keycode the given keycode
      * @return the matching key to the given keycode, if valid.
+     * 
      */
     private Optional<EntityDirection> matchKeycode(final int keycode) {
         switch (keycode) {
@@ -90,8 +96,9 @@ public class PlayerInputProcessor implements InputProcessor {
     }
 
     /**
-     * @param player set the player entity to update.
-     * @param setDefaults if true, set the player to the default state and direction.
+     * @param player      set the player entity to update.
+     * @param setDefaults if true, set the player to the default state and
+     *                    direction.
      */
     public void setPlayer(final ControllableEntity player, final boolean setDefaults) {
         this.playerEntity = player;

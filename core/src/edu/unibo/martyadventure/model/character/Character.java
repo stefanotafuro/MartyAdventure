@@ -11,11 +11,10 @@ public abstract class Character {
     private int hp;
     private Weapon weapon;
 
-
     /**
-     * @param name The name of the character.
-     * @param hp   The health points of the character.
-     * @param set  weapon the weapon of the character.
+     * @param name   The name of the character.
+     * @param hp     The health points of the character.
+     * @param weapon set the weapon of the character.
      */
     public Character(String name, int hp, Weapon weapon) {
         setName(name);

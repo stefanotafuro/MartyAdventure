@@ -20,7 +20,6 @@ public class TestPlayerInputProcessor {
         public EntityState state;
         public EntityDirection direction;
 
-
         @Override
         public void calculateNextPosition(@SuppressWarnings("hiding") EntityDirection direction,
                 @SuppressWarnings("unused") float delta) {
@@ -38,9 +37,7 @@ public class TestPlayerInputProcessor {
         }
     }
 
-
     private static final float DUMMY_DELTA = 0.1f;
-
 
     private void assertDirection(final EntityDirection direction, final PlayerInputProcessor inputProcessor) {
         assertEquals(direction, ((DummyControllableEntity) inputProcessor.getPlayer()).direction);
@@ -56,6 +53,8 @@ public class TestPlayerInputProcessor {
 
     /**
      * Get a clean input processor.
+     * 
+     * @return the input processor
      */
     private PlayerInputProcessor getInputProcessor() {
         final PlayerInputProcessor inputProcessor = PlayerInputProcessor.getPlayerInputProcessor();
@@ -68,6 +67,10 @@ public class TestPlayerInputProcessor {
     /**
      * Tests that the direction is correctly updated after each key press and
      * release.
+     * 
+     * @param keycode          the key pressed
+     * @param direction        direction of the entity
+     * @param differentKeycode check different
      */
     private void keyInput(final int keycode, final EntityDirection direction, final int differentKeycode) {
         final PlayerInputProcessor inputProcessor = getInputProcessor();
@@ -97,6 +100,9 @@ public class TestPlayerInputProcessor {
     /**
      * Test that a precedent vertical direction key press is kept after horizontal
      * keys are also pressed.
+     * 
+     * @param keycode   the key pressed
+     * @param direction the direction to check
      */
     private void verticalInputPriority(final int keycode, final EntityDirection direction) {
         final PlayerInputProcessor inputProcessor = getInputProcessor();

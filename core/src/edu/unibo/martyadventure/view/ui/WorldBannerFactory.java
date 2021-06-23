@@ -30,7 +30,7 @@ public class WorldBannerFactory {
     /**
      * Get the banner
      *
-     * @param map
+     * @param map the map to create the banner for
      * @return the banner texture
      */
     public Texture createBanner(Maps map) {

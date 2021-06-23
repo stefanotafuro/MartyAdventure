@@ -21,13 +21,14 @@ public class EnemyCharacterView extends CharacterView<EnemyCharacter> {
 
     private final WeaponView dropWeapon;
 
-
     /**
-     * @param character        the character's model.
-     * @param initialiPosition the map position map the character should start at.
-     * @param texture          the character's texture.
-     * @param weapon           the character's weapon.
-     * @param dropWeapon       the character's weapon to drop.
+     * @param character       the character's model.
+     * @param initialPosition the map position map the character should start at.
+     * @param texture         the character's texture.
+     * @param weapon          the character's weapon.
+     * @param dropWeapon      the character's weapon to drop.
+     * @throws ExecutionException   error character loading
+     * @throws InterruptedException error character loading
      */
     EnemyCharacterView(final EnemyCharacter character, final Vector2 initialPosition, final Texture texture,
             final WeaponView weapon, final WeaponView dropWeapon) throws InterruptedException, ExecutionException {

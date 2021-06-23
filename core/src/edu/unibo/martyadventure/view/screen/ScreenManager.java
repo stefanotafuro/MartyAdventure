@@ -43,7 +43,7 @@ public class ScreenManager {
     /**
      * Show the given screen
      * 
-     * @param s
+     * @param s the screen to load
      */
     private void loadScreen(final Screen s) {
         Game game = (Game) Gdx.app.getApplicationListener();
@@ -69,7 +69,7 @@ public class ScreenManager {
     /**
      * Change the movement screen based on the given map
      * 
-     * @param map
+     * @param map the map to load
      */
     public void changeMovementScreen(final Maps map) {
         clearDynamicScreen();
@@ -80,7 +80,7 @@ public class ScreenManager {
     /**
      * Change the current player
      * 
-     * @param player
+     * @param player the player which is playing
      */
     public void changePlayer(final Player player) {
         this.currentPlayer = player;
@@ -113,9 +113,9 @@ public class ScreenManager {
     /**
      * Load a new combat screen
      * 
-     * @param player
-     * @param enemy
-     * @param displayGameOver
+     * @param player          the player which is in fight
+     * @param enemy           the enemy which is in fight
+     * @param displayGameOver if is the last enemy
      */
     public void loadCombatScreen(final PlayerCharacterView player, final EnemyCharacterView enemy,
             final boolean displayGameOver) {
