@@ -374,7 +374,7 @@ class CombatGameScreen extends StaticScreen {
                     // show the window for weapon selection
                     weaponSelectionMode();
                 } else {
-                    // show lose screen
+                    // show lose and win screen based on playerWon
                     screenManager.loadGameOverScreen(playerWon);
                 }
             }

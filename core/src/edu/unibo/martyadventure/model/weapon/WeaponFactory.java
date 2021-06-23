@@ -113,11 +113,11 @@ public class WeaponFactory {
     public static Weapon createRandomWeaponLevel(String name, MapManager.Maps map, Weapon.WeaponType type) {
         switch (map) {
         case MAP1:
-            return createWeapon(name, (double) (randomDamageMultiplier() * LEVEL1), type);
+            return createWeapon(name, randomDamageMultiplier() * LEVEL1, type);
         case MAP2:
-            return createWeapon(name, (double) (randomDamageMultiplier() * LEVEL2), type);
+            return createWeapon(name, randomDamageMultiplier() * LEVEL2, type);
         case MAP3:
-            return createWeapon(name, (double) (randomDamageMultiplier() * LEVEL3), type);
+            return createWeapon(name, randomDamageMultiplier() * LEVEL3, type);
         default:
             throw new IllegalArgumentException("Wrong Map");
         }
@@ -132,9 +132,6 @@ public class WeaponFactory {
         return ((ThreadLocalRandom.current().nextFloat() % MAX_DAMAGE_MULTIPLIER) + MIN_DAMAGE_MULTIPLIER);
     }
 
-    /**
-     * Private constructor
-     */
     private WeaponFactory() {
 
     }
