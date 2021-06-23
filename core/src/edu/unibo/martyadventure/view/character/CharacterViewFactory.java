@@ -12,7 +12,9 @@ import edu.unibo.martyadventure.view.Toolbox;
 import edu.unibo.martyadventure.view.MapManager.Maps;
 import edu.unibo.martyadventure.view.weapon.WeaponView;
 import edu.unibo.martyadventure.view.weapon.WeaponViewFactory;
-
+/**
+ * Factory to get characters
+ */
 public class CharacterViewFactory {
 
     private static final String MARTY_PATH_1 = "Characters/Marty/MartyMove (1).png";
@@ -54,17 +56,35 @@ public class CharacterViewFactory {
         mapData.put(Maps.MAP3, new MapData(MARTY_PATH_3, BIFF_PATH_3, DOC_PATH_3, BOSS_HP_3, BULLY_HP_3));
     }
 
-
     public CharacterViewFactory() {
         Toolbox.queueTexture(ENEMY_PATH_1);
         Toolbox.queueTexture(ENEMY_PATH_2);
     }
 
+    /**
+     * Set up a player based on the current map
+     * 
+     * @param player
+     * @param initialPosition
+     * @param map
+     * @return the current player
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public PlayerCharacterView createPlayer(Player player, Vector2 initialPosition, Maps map)
             throws InterruptedException, ExecutionException {
         return new PlayerCharacterView(player.getName(), initialPosition, mapData.get(map).getTexturePathOf(player));
     }
 
+    /**
+     * Create enemy based on the current map
+     * 
+     * @param initialPosition
+     * @param map
+     * @return the enemy
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public EnemyCharacterView createEnemy(Vector2 initialPosition, Maps map)
             throws InterruptedException, ExecutionException {
         final WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);
@@ -77,6 +97,9 @@ public class CharacterViewFactory {
                 dropWeaponView);
     }
 
+    /**
+     * Create new boss based on the current player and map
+     */
     public BossCharacterView createBoss(final Player player, final Vector2 initialPosition, final Maps map)
             throws InterruptedException, ExecutionException {
         final WeaponView weaponView = WeaponViewFactory.createRandomWeaponView(map);

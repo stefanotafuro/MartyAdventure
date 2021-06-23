@@ -8,6 +8,9 @@ import edu.unibo.martyadventure.model.weapon.Weapon;
 import edu.unibo.martyadventure.model.weapon.WeaponFactory;
 import edu.unibo.martyadventure.view.MapManager;
 
+/**
+ * Generate weapons
+ */
 public class WeaponViewFactory {
 
     public enum Weapons {
@@ -20,11 +23,9 @@ public class WeaponViewFactory {
         PUNCH("Weapons/punch.png", "Pugno", Weapon.WeaponType.MELEE),
         REVOLVER("Weapons/Revolver.png", "Rivoltella", Weapon.WeaponType.RANGED);
 
-
         private final String texturePath;
         private final String weaponName;
         private final Weapon.WeaponType type;
-
 
         private Weapons(String path, String name, Weapon.WeaponType type) {
             texturePath = path;
@@ -45,17 +46,27 @@ public class WeaponViewFactory {
         }
     }
 
-
     private static Weapons getRandomWeapon() {
         return Weapons.values()[ThreadLocalRandom.current().nextInt(Weapons.values().length)];
     }
 
+    /**
+     * Generate a random weapon based on the current map
+     * 
+     * @param map
+     * @return the new weapon
+     */
     public static WeaponView createRandomWeaponView(MapManager.Maps map) {
         Weapons w = getRandomWeapon();
         return new WeaponView(WeaponFactory.createRandomWeaponLevel(w.getWeaponName(), map, w.getType()),
                 new Texture(w.getTexturePath()));
     }
 
+    /**
+     * Generate the initial weapon for the player
+     * 
+     * @return
+     */
     public static WeaponView createPlayerWeaponView() {
         Weapons w = Weapons.PUNCH;
         return new WeaponView(

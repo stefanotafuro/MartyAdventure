@@ -26,6 +26,9 @@ import edu.unibo.martyadventure.view.character.PlayerCharacterView;
 import edu.unibo.martyadventure.model.character.Character;
 import edu.unibo.martyadventure.model.character.PlayerCharacter;
 
+/**
+ * Screen that manage the fight and his visual representation
+ */
 class CombatGameScreen extends StaticScreen {
 
     private static final int ZOOM = 100;
@@ -71,7 +74,10 @@ class CombatGameScreen extends StaticScreen {
     private TextButton moveButton4;
     private Window weaponSelectionWindow;
 
-
+    /**
+     * @param index
+     * @return the move button with the click listener for fight
+     */
     private TextButton getIndexedButton(final int index) {
         final TextButton button = new TextButton(fight.getPlayer().getWeapon().getMoveList().get(index).getName(),
                 uiSkin);
@@ -86,6 +92,12 @@ class CombatGameScreen extends StaticScreen {
         return button;
     }
 
+    /**
+     * 
+     * @param text
+     * @param position
+     * @return a label
+     */
     private Label getLabel(final String text, final Vector2 position) {
         final Label label = new Label(text, uiSkin, "title");
         label.setSize(100, 100);
@@ -93,17 +105,34 @@ class CombatGameScreen extends StaticScreen {
         return label;
     }
 
+    /**
+     * 
+     * @param index
+     * @return the label that describe the indexed move
+     */
     private Label getMoveLabel(final int index) {
         return getLabel("Reload: " + fight.getPlayer().getWeapon().getMoveList().get(index).getReloadTime() + " Dmg: "
                 + getFullDamage(index), Vector2.Zero);
     }
-    
+
+    /**
+     * Show to the user the equipped weapon
+     * 
+     * @param weapon
+     * @param position
+     * @return a label with the weapon info
+     */
     private Label getWeaponLabel(final Weapon weapon, final Vector2 position) {
         return getLabel(
                 "Arma: " + weapon.getName() + " \nDanno: " + DECIMAL_FORMAT.format(weapon.getDamageMultiplier()),
                 position);
     }
 
+    /**
+     * Setup a hidden window to be shown at the end of the fight
+     * 
+     * @return a window for the drop weapon selection
+     */
     private Window getWeaponSelection() {
         Window weaponSelection = new Window("", super.uiSkin);
         weaponSelection.setBackground(new TextureRegionDrawable(Toolbox.getTexture(WEAPON_SELECTION_PATH)));
@@ -163,23 +192,39 @@ class CombatGameScreen extends StaticScreen {
         return weaponSelection;
     }
 
+    /**
+     * Called every frame, update the fight hp and info
+     */
     private void updateLabel() {
-        playerHpLabel.setText(fight.getPlayer().getName() + " HP: " + fight.getPlayer().getHp());
-        enemyHpLabel.setText(fight.getEnemy().getName() + " HP: " + fight.getEnemy().getHp());
+        playerHpLabel.setText(fight.getPlayer().getName() + " PV: " + fight.getPlayer().getHp());
+        enemyHpLabel.setText(fight.getEnemy().getName() + " PV: " + fight.getEnemy().getHp());
         updateFailLabel(fight.getPlayer(), playerFailLabel);
         updateFailLabel(fight.getEnemy(), enemyFailLabel);
     }
-    
+
+    /**
+     * Update the last attack info
+     * 
+     * @param character what character has attacked
+     * @param label     the label to change text
+     */
     private void updateFailLabel(final Character character, Label label) {
         if (fight.getLastMove(fight.getPlayer()) != null) {
-            if(fight.getLastFail(character)){
-                label.setText(character.getName() + " ha fallito l'attacco con " + fight.getLastMove(character).getName());
+            if (fight.getLastFail(character)) {
+                label.setText(
+                        character.getName() + " ha fallito l'attacco con " + fight.getLastMove(character).getName());
             } else {
                 label.setText(character.getName() + " ha colpito con " + fight.getLastMove(character).getName());
             }
         }
-}
+    }
 
+    /**
+     * Check if the move button can be used
+     * 
+     * @param button
+     * @param moveNumber
+     */
     private void checkButton(final TextButton button, final int moveNumber) {
         final PlayerCharacter player = fight.getPlayer();
         if (fight.isMoveUsable(player, player.getWeapon().getMoveList().get(moveNumber))) {
@@ -191,6 +236,15 @@ class CombatGameScreen extends StaticScreen {
         }
     }
 
+    /**
+     * Called every frame to draw the textures and sprites
+     * 
+     * @param <C>
+     * @param characterView
+     * @param characterPosition
+     * @param weaponPosition
+     * @param batch
+     */
     private <C extends Character> void drawCharacter(final CharacterView<C> characterView,
             final Vector2 characterPosition, final Vector2 weaponPosition, final Batch batch) {
         final Texture weapon = characterView.getWeaponView().getWeaponTexture();
@@ -200,6 +254,9 @@ class CombatGameScreen extends StaticScreen {
                 weapon.getHeight() * WEAPON_TEXTURE_SCALE);
     }
 
+    /**
+     * Set the window visible and disable all fight buttons
+     */
     private void weaponSelectionMode() {
         this.weaponSelectionWindow.setVisible(true);
         this.moveButton1.setTouchable(Touchable.disabled);
@@ -212,6 +269,13 @@ class CombatGameScreen extends StaticScreen {
         this.moveButton4.setDisabled(true);
     }
 
+    /**
+     * Get the damage that the move and the weapon combined does
+     * 
+     * @param moveNumber
+     * @return the damage as a product of the Move's damage and the Weapon's damage
+     *         multiplier
+     */
     private int getFullDamage(int moveNumber) {
         return (int) Math.round(fight.getPlayer().getWeapon().getMoveList().get(moveNumber).getDamage()
                 * fight.getPlayer().getWeapon().getDamageMultiplier());
@@ -293,6 +357,7 @@ class CombatGameScreen extends StaticScreen {
 
     @Override
     public void render(float delta) {
+        // Clean the screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -302,18 +367,21 @@ class CombatGameScreen extends StaticScreen {
         checkButton(moveButton3, 2);
         checkButton(moveButton4, 3);
 
+        // check winners
         final Character winner = fight.fightWinner();
         if (fight.fightWinner() != null) {
             final boolean playerWon = winner == fight.getPlayer();
             if (winner != null) {
                 if (!displayGameOver && playerWon) {
+                    // show the window for weapon selection
                     weaponSelectionMode();
                 } else {
+                    // show lose screen
                     screenManager.loadGameOverScreen(playerWon);
                 }
             }
         }
-
+        // update the screen
         stage.act();
         final Batch batch = stage.getBatch();
         batch.begin();

@@ -38,6 +38,9 @@ import edu.unibo.martyadventure.view.character.CharacterViewFactory;
 import edu.unibo.martyadventure.view.entity.EntityDirection;
 import edu.unibo.martyadventure.view.ui.WorldBannerFactory;
 
+/**
+ * Manage the player movement, map s, collision and enemy spawn
+ */
 class MovementGameScreen implements Screen {
 
     private static final int FADE_TIME = 4;
@@ -63,9 +66,9 @@ class MovementGameScreen implements Screen {
 
     private boolean disposed;
 
-
     public MovementGameScreen(final ScreenManager manager, final CharacterViewFactory characterFactory,
             final Player player, final Maps map) {
+        // instantiate factories and managers
         this.screenManager = manager;
         this.uiBatch = new SpriteBatch();
         this.loadingNewWorld = true;
@@ -73,36 +76,41 @@ class MovementGameScreen implements Screen {
         mapManager = new MapManager();
         WorldBannerFactory bFactory = new WorldBannerFactory();
 
+        // try to load map, if errors close the game
         try {
             mapManager.loadMap(map);
         } catch (InterruptedException | ExecutionException | IOException e1) {
             e1.printStackTrace();
+            Gdx.app.exit();
         }
 
-        // Camera.
+        // camera
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(ScreenManager.VIEWPORT.X_VIEWPORT, ScreenManager.VIEWPORT.Y_VIEWPORT, camera);
 
-        // Rederer.
+        // renderer
         mapRenderer = new OrthogonalTiledMapRenderer(mapManager.getCurrentMap(), MapManager.UNIT_SCALE);
         mapRenderer.setView(camera);
 
-        // Player.
+        // try to load the player, if errors close the game
         playerInitialPosition = mapManager.getPlayerStartPosition();
         try {
             this.playerView = cFactory.createPlayer(player, playerInitialPosition, map);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            Gdx.app.exit();
         }
 
-        // Boss.
+        // try to load the boss, if errors close the game
         try {
             bossView = cFactory.createBoss(player, mapManager.getBiffStartPosition(), map);
             bossView.setDirection(EntityDirection.DOWN);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            Gdx.app.exit();
         }
 
+        // show the current world banner
         worldBanner = new Sprite(bFactory.createBanner(map));
         worldBanner.setSize(Gdx.app.getGraphics().getWidth() / 2, Gdx.app.getGraphics().getHeight() / 4);
         worldBanner.setPosition(Gdx.app.getGraphics().getWidth() / 2 - worldBanner.getWidth() / 2,
@@ -113,6 +121,12 @@ class MovementGameScreen implements Screen {
         this.disposed = false;
     }
 
+    /**
+     * Setup the enemies of the level
+     * 
+     * @param enemyLayer
+     * @return a list of EnemyCharacterView
+     */
     private List<EnemyCharacterView> getEnemyList(final MapLayer enemyLayer) {
         final List<EnemyCharacterView> enemies = new ArrayList<>();
 
@@ -125,8 +139,8 @@ class MovementGameScreen implements Screen {
                         mapManager.getCurrentMapName()));
 
             } catch (InterruptedException | ExecutionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                Gdx.app.exit();
             }
         }
 
